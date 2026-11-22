@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>אורי תורג׳מן | בוק זוגי בשקיעה וצילום אירועים</title>
-  <meta name="description" content="בוקים זוגיים אינטימיים באור שקיעה רך, וצילום אירועים. רגעים טבעיים, חמים ולא מבוימים, עם ליווי אישי מהפנייה ועד התמונות." />
+  <title>אורי תורג׳מן | בוק זוגי בשקיעה</title>
+  <meta name="description" content="בוקים זוגיים אינטימיים באור שקיעה רך. רגעים טבעיים, חמים ולא מבוימים, עם ליווי אישי מההיכרות ועד התמונות." />
   <meta name="theme-color" content="#F6F0E6" />
 
   <!-- Open Graph: מה שמופיע כששולחים את הקישור בוואטסאפ / אינסטגרם -->
@@ -41,7 +41,7 @@
       <div class="hero__media" id="heroMedia" role="img" aria-label="זוג מחובק באור שקיעה רך"></div>
       <div class="hero__veil" aria-hidden="true"></div>
       <div class="hero__content">
-        <p class="eyebrow reveal">בוקים זוגיים · אור שקיעה · חתונות</p>
+        <p class="eyebrow reveal">בוקים זוגיים · אור שקיעה · Fine Art</p>
         <h1 id="hero-title" class="hero__title reveal">
           האור הרך של השקיעה,<br />
           <em>והרגע שבו אתם רק שניכם</em>
@@ -51,10 +51,7 @@
           רק אתם, נוף פתוח, אור זהוב ורגעים אמיתיים שנשארים איתכם לתמיד.
         </p>
         <div class="hero__actions reveal">
-          <a class="btn btn--primary" data-wa href="#" target="_blank" rel="noopener">
-            <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>
-            לשריון סשן זוגי בוואטסאפ
-          </a>
+          <a class="btn btn--primary" href="/hello">בואו נכיר</a>
           <a class="btn btn--ghost" href="#gallery">לצפייה בעבודות</a>
         </div>
       </div>
@@ -165,40 +162,37 @@
       </div>
     </section>
 
-    <!-- ===== 4.5 חתונות ואירועים ===== -->
-    <section class="section weddings" id="weddings" aria-labelledby="wed-title">
-      <div class="container weddings__grid">
-        <div class="weddings__text">
-          <header class="section__head section__head--start reveal">
-            <p class="eyebrow">חתונות ואירועים</p>
-            <h2 id="wed-title" class="section__title">היום הכי גדול שלכם, באותה עין שקטה</h2>
-            <p class="section__lead">
-              את רוב העבודה שלי אני עושה בחתונות. אני מגיע מוקדם, נשאר עד הרגע האחרון,
-              ונע בין האורחים בלי שירגישו אותי. מההתארגנות ועד הריקוד האחרון, אני שם כדי לתפוס
-              את מה שקורה באמת, ולא רק את מה שמסודר מול המצלמה.
-            </p>
-          </header>
 
-          <ul class="wed-list reveal">
-            <li><strong>התארגנות וחופה</strong><span>הרגעים השקטים שלפני, ההתרגשות של הרגע עצמו.</span></li>
-            <li><strong>סשן זוגי בשקיעה</strong><span>כמה דקות רק שניכם, באור הזהוב, באמצע היום הכי עמוס.</span></li>
-            <li><strong>הרחבה והאנשים</strong><span>החיבוקים, הדמעות, הצחוק של מי שבאו לחגוג איתכם.</span></li>
-            <li><strong>גם אירועים קטנים</strong><span>הצעות נישואין, חתונות אינטימיות וחגיגות משפחתיות.</span></li>
-          </ul>
-
-          <a class="btn btn--primary reveal" data-wa="wedding" href="#" target="_blank" rel="noopener">
-            <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>
-            לבדיקת תאריך פנוי לחתונה
-          </a>
+    <!-- ===== 5. החבילות (בלי מחירים) ===== -->
+    <section class="section packages" id="packages" aria-labelledby="pk-title">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">החבילות</p>
+          <h2 id="pk-title" class="section__title">שתי דרכים לספר את הסיפור שלכם</h2>
+          <p class="section__lead">כל סשן מתוזמן לשעה הזהובה ונערך בגוונים חמים וטבעיים. אחרי היכרות קצרה תקבלו דף אישי עם הערבים הפנויים, המחירים והחבילה שהכי מתאימה לכם.</p>
+        </header>
+        <!-- החבילות נטענות מתוך js/config.js -->
+        <div class="pk-grid" id="pkGrid"></div>
+        <div class="pk-cta reveal">
+          <a class="btn btn--primary btn--lg" href="/hello">בואו נכיר</a>
+          <p class="closing__hint">חמש שאלות קצרות, בערך דקה. בלי התחייבות.</p>
         </div>
-
-        <figure class="weddings__media reveal">
-          <div class="ph r-tall" id="weddingMedia" role="img" aria-label="זוג מתחתן מתחת לחופה באור אחר הצהריים"></div>
-        </figure>
       </div>
     </section>
 
-    <!-- ===== 5. סגירה / CTA ===== -->
+    <!-- ===== 6. המלצות ===== -->
+    <section class="section voices" id="voices" aria-labelledby="vc-title" hidden>
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">מה הזוגות אומרים</p>
+          <h2 id="vc-title" class="section__title">ערב אחד, וזיכרון לכל החיים</h2>
+        </header>
+        <!-- ההמלצות נטענות מתוך js/config.js -->
+        <div class="voices__grid" id="voicesGrid"></div>
+      </div>
+    </section>
+
+    <!-- ===== 7. סגירה / CTA ===== -->
     <section class="section closing" id="contact" aria-labelledby="close-title">
       <div class="container closing__inner reveal">
         <svg class="closing__sun" viewBox="0 0 120 60" aria-hidden="true">
@@ -206,17 +200,14 @@
           <line x1="0" y1="59" x2="120" y2="59" stroke="currentColor" stroke-width="1"/>
         </svg>
         <p class="eyebrow">השקיעה הבאה מחכה לכם</p>
-        <h2 id="close-title" class="section__title">בואו נבדוק זמינות לשקיעה הקרובה</h2>
+        <h2 id="close-title" class="section__title">בואו נכיר, ונמצא את הערב שלכם</h2>
         <p class="section__lead">
-          כתבו לי כמה מילים עליכם, ואני אחזור אליכם אישית. נמצא יחד את התאריך, השעה והמקום שירגישו נכון.
-          בלי התחייבות, רק שיחה נעימה.
+          ספרו לי בדקה מי אתם ומה אתם אוהבים, ותקבלו מיד דף אישי עם הערבים הפנויים והחבילות.
+          משם אני ממשיך איתכם אישית בוואטסאפ.
         </p>
-        <a class="btn btn--primary btn--lg" data-wa href="#" target="_blank" rel="noopener">
-          <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>
-          לבדיקת זמינות בוואטסאפ
-        </a>
-        <p class="closing__hint">ההודעה הראשונה כבר כתובה בשבילכם, רק לשלוח ✨</p>
-        <p class="closing__alt"><a class="link" href="/book">או בחרו בעצמכם תאריך פנוי וחבילה</a></p>
+        <a class="btn btn--primary btn--lg" href="/hello">בואו נכיר</a>
+        <p class="closing__hint">בלי התחייבות. התאריך נשמר רק אחרי אישור שלי ומקדמה.</p>
+        <p class="closing__alt"><a class="link" data-wa href="#" target="_blank" rel="noopener">מעדיפים לכתוב לי ישירות? לוואטסאפ</a></p>
       </div>
     </section>
   </main>
@@ -226,7 +217,7 @@
     <div class="container footer__inner">
       <span class="logo footer__logo" role="img" aria-label="Turgeman Ori, Fine Art Photography"></span>
       <p class="footer__brand" data-bind="businessName">אורי תורג׳מן</p>
-      <p class="footer__tag">בוקים זוגיים, חתונות ואירועים <span data-bind="locationDot"></span></p>
+      <p class="footer__tag">בוקים זוגיים באור שקיעה <span data-bind="locationDot"></span></p>
       <nav class="footer__links" aria-label="קישורים מהירים">
         <a data-ig href="#" target="_blank" rel="noopener" aria-label="אינסטגרם">
           <svg class="icon" aria-hidden="true"><use href="#i-ig"/></svg><span>אינסטגרם</span>

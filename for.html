@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>הדף האישי שלכם | אורי תורג׳מן</title>
+  <meta name="theme-color" content="#F6F0E6" />
+  <meta property="og:title" content="הדף האישי שלכם · בוק זוגי עם אורי תורג׳מן" />
+  <meta property="og:description" content="הערבים הפנויים, החבילות והסטטוס של ההזמנה שלכם, במקום אחד." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Assistant:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/logo.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/booking.css" />
+  <link rel="stylesheet" href="/css/journey.css" />
+</head>
+<body class="page-journey">
+
+  <header class="topbar is-scrolled">
+    <a href="/" class="brand" aria-label="לדף הבית">
+      <span class="logo brand__logo" role="img" aria-label="Turgeman Ori, Fine Art Photography"></span>
+    </a>
+    <a class="topbar__cta" id="topWa" href="#" target="_blank" rel="noopener">
+      <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>
+      <span>לדבר עם אורי</span>
+    </a>
+  </header>
+
+  <main class="mine container">
+    <p class="cal__loading" id="loading">טוען את הדף שלכם…</p>
+
+    <section class="mine__missing" id="missing" hidden>
+      <h1 class="section__title">לא מצאנו את הדף הזה</h1>
+      <p class="section__lead">ייתכן שהקישור לא הועתק עד הסוף. אפשר למלא שוב את השאלון, או לכתוב לי ישירות.</p>
+      <div class="mine__actions">
+        <a class="btn btn--primary" href="/hello">לשאלון ההיכרות</a>
+        <a class="btn btn--ghost" data-wa href="#" target="_blank" rel="noopener">וואטסאפ</a>
+      </div>
+    </section>
+
+    <div id="page" hidden>
+      <header class="mine__hero">
+        <p class="eyebrow">הדף האישי שלכם</p>
+        <h1 class="section__title" id="hello"></h1>
+        <p class="section__lead" id="lead"></p>
+      </header>
+
+      <ol class="track" id="track" aria-label="איפה אתם בתהליך">
+        <li>היכרות</li><li>בחירת ערב</li><li>אישור</li><li>מקדמה</li><li>שמור</li>
+      </ol>
+
+      <!-- ===== בחירה ===== -->
+      <section id="vChoose" hidden>
+        <p class="mine__note" id="chooseNote" hidden></p>
+
+        <div class="bstep">
+          <h2 class="bstep__title"><span class="bstep__n">1</span>החבילה</h2>
+          <div class="pkgs" id="pkgs" role="radiogroup" aria-label="חבילה"></div>
+        </div>
+
+        <div class="bstep">
+          <h2 class="bstep__title"><span class="bstep__n">2</span>הערב</h2>
+          <p class="admin__hint">הערבים המודגשים פנויים. ליד כל ערב תראו את שעת השקיעה, שסביבה אני בונה את הצילום.</p>
+          <div id="cal" class="cal" aria-live="polite"></div>
+          <p class="bstep__picked" id="picked" hidden></p>
+          <p class="bstep__empty" id="noDates" hidden>כרגע אין ערבים פתוחים בלוח. כתבו לי בוואטסאפ, ואמצא לכם ערב שמתאים.</p>
+        </div>
+
+        <div class="bstep summary">
+          <h2 class="bstep__title"><span class="bstep__n">3</span>סיכום</h2>
+          <dl class="sum" id="sum"></dl>
+          <label class="check">
+            <input type="checkbox" id="terms" />
+            <span>קראתי ואני מאשר/ת את <button type="button" class="link" data-open="termsDlg">התקנון</button></span>
+          </label>
+          <p class="form-error" id="chooseErr" role="alert" hidden></p>
+          <button type="button" class="btn btn--primary btn--lg" id="sendBtn">שליחת בקשה לשריון</button>
+          <p class="closing__hint">אין תשלום בשלב הזה. אחרי שאאשר, התאריך יישמר עבורכם לזמן קצוב לתשלום המקדמה.</p>
+        </div>
+      </section>
+
+      <!-- ===== ממתין לאישור ===== -->
+      <section id="vPending" class="state" hidden>
+        <svg class="closing__sun" viewBox="0 0 120 60" aria-hidden="true"><path d="M10 58 A50 50 0 0 1 110 58" fill="none" stroke="currentColor" stroke-width="1"/><line x1="0" y1="59" x2="120" y2="59" stroke="currentColor" stroke-width="1"/></svg>
+        <h2 class="section__title">הבקשה אצלי ✨</h2>
+        <p class="section__lead">אני עובר על הבקשה וחוזר אליכם בהקדם. ברגע שאאשר, הדף הזה יתעדכן ותוכלו לשמור את התאריך במקדמה.</p>
+        <dl class="sum" data-sum></dl>
+        <div class="mine__actions">
+          <a class="btn btn--primary" data-wa-ctx href="#" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>הודעה לאורי</a>
+          <button type="button" class="btn btn--ghost" id="changeBtn">שינוי הבקשה</button>
+        </div>
+      </section>
+
+      <!-- ===== ממתין למקדמה ===== -->
+      <section id="vDeposit" class="state" hidden>
+        <p class="eyebrow">אישרתי 🤍</p>
+        <h2 class="section__title">הערב שלכם מחכה לכם</h2>
+        <div class="hold" id="hold"></div>
+        <dl class="sum" data-sum></dl>
+        <div class="pay">
+          <p class="pay__title">תשלום מקדמה של <strong id="depAmt"></strong></p>
+          <div class="pay__btns">
+            <button type="button" class="btn btn--primary" data-pay="bit">תשלום ב-Bit</button>
+            <button type="button" class="btn btn--ghost" data-pay="card">תשלום באשראי</button>
+          </div>
+          <div class="pay__demo" id="payDemo" hidden>
+            <p><strong>מצב דמו.</strong> כאן ייפתח עמוד התשלום המאובטח של <span id="payName"></span>. בינתיים אפשר לאשר תשלום לדוגמה כדי לראות את ההמשך.</p>
+            <button type="button" class="btn btn--primary btn--sm" id="payConfirm">אישור תשלום לדוגמה</button>
+            <button type="button" class="btn btn--ghost btn--sm" id="payCancel">ביטול</button>
+          </div>
+          <p class="form-error" id="payErr" role="alert" hidden></p>
+          <p class="closing__hint">בתשלום אתם מאשרים את <button type="button" class="link" data-open="termsDlg">התקנון</button>. יתרת התשלום ביום הצילום.</p>
+        </div>
+      </section>
+
+      <!-- ===== שמור ===== -->
+      <section id="vBooked" class="state" hidden>
+        <svg class="closing__sun" viewBox="0 0 120 60" aria-hidden="true"><path d="M10 58 A50 50 0 0 1 110 58" fill="none" stroke="currentColor" stroke-width="1"/><line x1="0" y1="59" x2="120" y2="59" stroke="currentColor" stroke-width="1"/></svg>
+        <p class="eyebrow">זה רשמי</p>
+        <h2 class="section__title">הערב שלכם שמור</h2>
+        <p class="section__lead">את שעת המפגש המדויקת ואת המיקום אשלח לכם בוואטסאפ כמה ימים לפני, לפי שעת השקיעה באותו ערב. בינתיים, הכנתי לכם מדריך קטן.</p>
+        <dl class="sum" data-sum></dl>
+        <div class="mine__actions">
+          <a class="btn btn--primary" href="/guide" id="guideLink">למדריך ההכנה שלכם</a>
+          <button type="button" class="btn btn--ghost" id="icsBtn">הוספה ליומן</button>
+          <a class="btn btn--ghost" data-wa-ctx href="#" target="_blank" rel="noopener">וואטסאפ</a>
+        </div>
+      </section>
+
+      <!-- ===== אחרי הצילום ===== -->
+      <section id="vAfter" class="state" hidden>
+        <h2 class="section__title" id="afterTitle"></h2>
+        <p class="section__lead" id="afterText"></p>
+        <div class="mine__actions">
+          <a class="btn btn--primary" data-wa-ctx href="#" target="_blank" rel="noopener">וואטסאפ</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- ברוכים הבאים, אחרי השאלון -->
+  <dialog class="dlg" id="welcomeDlg" aria-labelledby="wTitle">
+    <form method="dialog" class="dlg__in">
+      <p class="eyebrow">נעים מאוד</p>
+      <h2 class="dlg__title" id="wTitle"></h2>
+      <p>אני אורי, צלם בוקים זוגיים באור שקיעה. קיבלתי את התשובות שלכם, וזה מה שקלטתי:</p>
+      <ul class="dlg__list" id="wList"></ul>
+      <p>שלחו לי את הסיכום בוואטסאפ, ואחזור אליכם בהקדם. בינתיים אפשר כבר להציץ בערבים הפנויים.</p>
+      <a class="btn btn--primary" id="wWa" href="#" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>שליחת הסיכום לאורי</a>
+      <button class="link dlg__skip" value="close">לראות את הערבים הפנויים</button>
+    </form>
+  </dialog>
+
+  <!-- הודעה קופצת: תאריך מוחזק -->
+  <dialog class="dlg" id="holdDlg" aria-labelledby="hTitle">
+    <form method="dialog" class="dlg__in">
+      <p class="eyebrow">שימו לב</p>
+      <h2 class="dlg__title" id="hTitle">התאריך שמור עבורכם לזמן מוגבל</h2>
+      <p id="hText"></p>
+      <button class="btn btn--primary" value="close">להשלמת ההזמנה</button>
+    </form>
+  </dialog>
+
+  <!-- התקנון -->
+  <dialog class="dlg dlg--wide" id="termsDlg" aria-labelledby="tTitle">
+    <form method="dialog" class="dlg__in">
+      <h2 class="dlg__title" id="tTitle">תקנון קצר</h2>
+      <ol class="terms" id="termsList"></ol>
+      <button class="btn btn--primary" value="close">הבנתי</button>
+    </form>
+  </dialog>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.57 2 2.13 6.43 2.13 11.9c0 1.75.46 3.46 1.33 4.97L2 22l5.27-1.38a9.9 9.9 0 0 0 4.76 1.21h.01c5.46 0 9.9-4.43 9.9-9.9A9.9 9.9 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.13.82.84-3.05-.2-.31a8.22 8.22 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24a8.24 8.24 0 0 1 8.24 8.25c0 4.55-3.7 8.24-8.24 8.24Zm4.52-6.17c-.25-.12-1.47-.72-1.69-.8-.23-.09-.39-.13-.56.12-.16.25-.64.8-.78.97-.14.16-.29.18-.54.06-.25-.12-1.04-.38-1.99-1.23-.73-.66-1.23-1.47-1.37-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.16 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.16-.48-.29Z"/></symbol>
+    <symbol id="i-ig" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M7.5 2.75h9a4.75 4.75 0 0 1 4.75 4.75v9a4.75 4.75 0 0 1-4.75 4.75h-9A4.75 4.75 0 0 1 2.75 16.5v-9A4.75 4.75 0 0 1 7.5 2.75Z"/><circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor"/></symbol>
+  </svg>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/sun.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/calendar.js"></script>
+  <script src="/js/for.js"></script>
+</body>
+</html>

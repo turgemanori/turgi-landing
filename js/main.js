@@ -12,10 +12,7 @@
   var igHandle = String(C.instagramHandle || "").replace(/^@/, "");
   var igUrl = "https://www.instagram.com/" + igHandle + "/";
 
-  var waWeddingUrl = "https://wa.me/" + waNumber + "?text=" + encodeURIComponent(C.whatsappWeddingMessage || C.whatsappMessage || "");
-  document.querySelectorAll("[data-wa]").forEach(function (a) {
-    a.href = a.getAttribute("data-wa") === "wedding" ? waWeddingUrl : waUrl;
-  });
+  document.querySelectorAll("[data-wa]").forEach(function (a) { a.href = waUrl; });
   document.querySelectorAll("[data-ig]").forEach(function (a) { a.href = igUrl; });
 
   // ----- טקסטים מתוך ההגדרות -----
@@ -28,7 +25,7 @@
     var key = el.getAttribute("data-bind");
     if (key in binds) el.textContent = binds[key];
   });
-  if (C.businessName) document.title = C.businessName + " | בוק זוגי בשקיעה וצילום אירועים";
+  if (C.businessName) document.title = C.businessName + " | בוק זוגי בשקיעה";
   var year = document.getElementById("year");
   if (year) year.textContent = new Date().getFullYear();
 
@@ -55,17 +52,39 @@
     about.innerHTML = '<span class="ph__label">כאן תופיע תמונה שלך בעבודה (4:5)</span>';
   }
 
-  // ----- תמונת סעיף החתונות -----
-  var wed = document.getElementById("weddingMedia");
-  if (wed && C.weddingImage) {
-    var wImg = new Image();
-    wImg.src = C.weddingImage;
-    wImg.alt = wed.getAttribute("aria-label") || "";
-    wImg.loading = "lazy";
-    wImg.className = "r-tall";
-    wed.replaceWith(wImg);
-  } else if (wed) {
-    wed.innerHTML = '<span class="ph__label">כאן תופיע תמונת חתונה (2:3)</span>';
+  // ----- חבילות (בלי מחיר) -----
+  var pkGrid = document.getElementById("pkGrid");
+  if (pkGrid && Array.isArray(C.packages)) {
+    C.packages.forEach(function (p, i) {
+      var card = document.createElement("article");
+      card.className = "pk reveal" + (i === 1 ? " pk--feature" : "");
+      var h = document.createElement("h3"); h.className = "pk__name"; h.textContent = p.name;
+      var t = document.createElement("p"); t.className = "pk__tag"; t.textContent = p.tagline || "";
+      var ul = document.createElement("ul"); ul.className = "pk__list";
+      (p.features || []).forEach(function (f) { var li = document.createElement("li"); li.textContent = f; ul.appendChild(li); });
+      card.appendChild(h); card.appendChild(t); card.appendChild(ul);
+      pkGrid.appendChild(card);
+    });
+  }
+
+  // ----- המלצות -----
+  var vGrid = document.getElementById("voicesGrid");
+  if (vGrid && Array.isArray(C.testimonials) && C.testimonials.length) {
+    C.testimonials.forEach(function (v) {
+      var fig = document.createElement("figure"); fig.className = "voice reveal";
+      var q = document.createElement("blockquote"); q.textContent = "״" + v.text + "״";
+      var cap = document.createElement("figcaption");
+      var who = document.createElement("strong"); who.textContent = v.who;
+      var what = document.createElement("span"); what.textContent = v.what || "";
+      cap.appendChild(who); cap.appendChild(what);
+      fig.appendChild(q); fig.appendChild(cap);
+      vGrid.appendChild(fig);
+    });
+    if (C.testimonialsDemo) {
+      var note = document.createElement("p"); note.className = "voices__demo"; note.textContent = "טקסט לדוגמה";
+      vGrid.after(note);
+    }
+    document.getElementById("voices").hidden = false;
   }
 
   // ----- גלריה -----

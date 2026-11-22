@@ -1,0 +1,65 @@
+/* דף המנהל: תוספות למסע החדש */
+.page-admin .admin { max-width: 1060px; display: block; }
+#dash > .bstep, #dash > .kpis { margin-bottom: 18px; }
+.admin__side { display: grid; gap: 18px; align-content: start; }
+
+.kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.kpi {
+  font: inherit; color: var(--espresso); text-align: start; cursor: pointer;
+  background: var(--white); border: 1px solid var(--beige); border-radius: 6px; padding: 16px 18px;
+  display: grid; gap: 2px;
+}
+.kpi strong { font-family: var(--font-display); font-size: 32px; font-weight: 500; line-height: 1.1; }
+.kpi span { font-size: 14px; color: var(--espresso-soft); }
+.kpi--hot { border-color: var(--bronze); box-shadow: 0 0 0 1px var(--bronze); }
+
+.badge--lead { background: #EEE6F3; color: #5B3F73; }
+.badge--hold { background: #F7E3C8; color: #8A5212; }
+.badge--booked { background: #E3EEDF; color: #2F5A26; }
+.badge--shot { background: #E2ECF1; color: #2A5468; }
+.badge--done { background: #E8E4DC; color: #4E4639; }
+.badge--off { background: #EFE7E4; color: #7C6A63; }
+
+.lcard { border: 1px solid var(--beige); border-radius: 6px; background: var(--ivory); }
+.lcard.is-open { background: var(--white); border-color: var(--sand); }
+.lcard__head {
+  width: 100%; font: inherit; color: inherit; background: none; border: 0; cursor: pointer; text-align: start;
+  display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 14px 16px; align-items: center;
+}
+.lcard__names { font-family: var(--font-display); font-size: 19px; }
+.lcard__when { grid-column: 1 / -1; font-size: 14.5px; color: var(--espresso-soft); }
+.lcard__body { padding: 0 16px 16px; display: none; }
+.lcard.is-open .lcard__body { display: block; }
+.sum--tight div { padding: 8px 0; font-size: 15px; }
+.lfields { margin-top: 14px; }
+.lfields select, .lfields input[type="date"], .lfields input[type="number"] {
+  font: inherit; font-size: 16px; color: var(--espresso); background: var(--ivory);
+  border: 1px solid var(--sand); border-radius: 4px; padding: 11px 12px; width: 100%;
+}
+.lcard__wa { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--beige); }
+.lcard__wa .admin__hint { margin-bottom: 0; }
+.lcard__wa .admin__actions { margin-top: 8px; }
+.lcard__link { margin-top: 12px; font-size: 14px; color: var(--espresso-soft); }
+.btn--danger { color: #7A2E17; border-color: #E6C9BD; }
+
+.wx { font-size: 15px; color: var(--espresso-soft); }
+.wx em { font-style: normal; font-size: 13px; }
+.wx__in { display: inline-block; background: var(--cream); padding: 6px 10px; border-radius: 4px; color: var(--espresso); }
+.wx--warn { background: #F6E3DA; color: #7A2E17; }
+
+.cal__day.is-hold { background: #F7E3C8; border-color: #D9A867; }
+.legend .l-hold { background: #F7E3C8; border-color: #D9A867; }
+
+.steps-mini { margin: 0 0 6px; padding: 0 20px 0 0; display: grid; gap: 8px; font-size: 15px; color: var(--espresso-soft); }
+.code { font-family: ui-monospace, Menlo, monospace; font-size: 13.5px; background: var(--cream); padding: 2px 6px; border-radius: 3px; color: var(--espresso); word-break: break-all; }
+.greet {
+  width: 100%; font: inherit; font-size: 15px; line-height: 1.6; color: var(--espresso);
+  background: var(--ivory); border: 1px solid var(--sand); border-radius: 4px; padding: 12px; resize: vertical;
+}
+
+@media (min-width: 640px) {
+  .kpis { grid-template-columns: repeat(4, 1fr); }
+  .lcard__head { grid-template-columns: auto auto 1fr; }
+  .lcard__when { grid-column: auto; text-align: end; }
+}
+[hidden] { display: none !important; }

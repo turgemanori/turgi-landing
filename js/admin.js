@@ -1,64 +1,74 @@
 /* דף המנהל. אין צורך לערוך כאן. */
 (function () {
   "use strict";
-  var C = window.SITE_CONFIG || {}, B = window.Booking;
+  var C = window.SITE_CONFIG || {}, B = window.Booking, esc = B.esc;
   var $ = function (id) { return document.getElementById(id); };
   var KEY = "turgi_admin_pass";
-  var pass = null, data = { dates: [], bookings: [] }, open = {}, original = {}, filter = "pending", cal;
+  var pass = null, data = { dates: [], leads: [], settings: {} }, open = {}, original = {}, cal;
+  var filter = "active", openCard = null;
   var today = B.iso(new Date());
-  var bookUrl = location.origin + "/book";
+  var helloUrl = location.origin + "/hello";
 
-  if (C.logo) document.documentElement.style.setProperty("--logo-url", "url('" + C.logo + "')");
+  B.logo();
+
+  var STATUS = {
+    lead: { t: "היכרות", c: "lead" },
+    pending: { t: "ממתין לאישור", c: "pending" },
+    awaiting_deposit: { t: "ממתין למקדמה", c: "hold" },
+    booked: { t: "שמור", c: "booked" },
+    shot: { t: "צולם", c: "shot" },
+    delivered: { t: "נמסר", c: "done" },
+    declined: { t: "נדחה", c: "off" },
+    expired: { t: "פג תוקף", c: "off" }
+  };
+  var FILTERS = [
+    ["active", "פעילים", function (l) { return ["lead", "pending", "awaiting_deposit", "booked", "shot"].indexOf(l.status) > -1; }],
+    ["lead", "היכרות", function (l) { return l.status === "lead"; }],
+    ["pending", "ממתינים לאישור", function (l) { return l.status === "pending"; }],
+    ["awaiting_deposit", "ממתינים למקדמה", function (l) { return l.status === "awaiting_deposit"; }],
+    ["booked", "שמורים", function (l) { return l.status === "booked"; }],
+    ["after", "צולמו ונמסרו", function (l) { return l.status === "shot" || l.status === "delivered"; }],
+    ["off", "נדחו ופג תוקף", function (l) { return l.status === "declined" || l.status === "expired"; }]
+  ];
 
   function store(v) { try { v ? sessionStorage.setItem(KEY, v) : sessionStorage.removeItem(KEY); } catch (e) {} }
   function stored() { try { return sessionStorage.getItem(KEY); } catch (e) { return null; } }
-
   function err(id, msg) { var e = $(id); e.textContent = msg || ""; e.hidden = !msg; }
+  function copy(text, btn, label) {
+    var done = function () { btn.textContent = "הועתק ✓"; setTimeout(function () { btn.textContent = label; }, 2000); };
+    if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, function () { window.prompt("העתיקו:", text); });
+    else window.prompt("העתיקו:", text);
+  }
 
   // ----- כניסה -----
   function login(p) {
     $("loginBtn").disabled = true;
-    return B.rpc("admin_get", { p_pass: p }).then(function (res) {
+    return B.rpc("admin_leads", { p_pass: p }).then(function (res) {
       pass = p; store(p); data = res || data;
       $("loginForm").hidden = true; $("dash").hidden = false; $("logoutBtn").hidden = false;
       setup();
-    }).catch(function (e) {
-      store(null);
-      err("loginError", e.message);
-    }).then(function () { $("loginBtn").disabled = false; });
+    }).catch(function (e) { store(null); err("loginError", e.message); })
+      .then(function () { $("loginBtn").disabled = false; });
   }
   $("loginForm").addEventListener("submit", function (ev) { ev.preventDefault(); err("loginError"); login($("loginPass").value); });
   $("logoutBtn").addEventListener("click", function () { store(null); location.reload(); });
   var s = stored(); if (s) login(s);
 
   function reload() {
-    return B.rpc("admin_get", { p_pass: pass }).then(function (res) { data = res; setup(); })
+    err("dashError");
+    return B.rpc("admin_leads", { p_pass: pass }).then(function (res) { data = res; setup(); })
       .catch(function (e) { err("dashError", e.message); });
   }
+  $("refreshBtn").addEventListener("click", reload);
 
-  // ----- לוח -----
-  function bookingsOn(iso) { return data.bookings.filter(function (b) { return b.day === iso; }); }
-  function dayState(iso) {
-    var past = iso < today, bs = bookingsOn(iso);
-    var approved = bs.some(function (b) { return b.status === "approved"; });
-    var pending = bs.some(function (b) { return b.status === "pending"; });
-    var cls = [];
-    if (past) cls.push("is-past");
-    if (approved) cls.push("is-booked"); else if (open[iso]) cls.push("is-open");
-    if (pending) cls.push("is-pending");
-    return { disabled: past || approved, cls: cls.join(" "), label: approved ? "מאושר" : open[iso] ? "פתוח" : "סגור" };
-  }
-  function dirty() {
-    var a = Object.keys(open).filter(function (d) { return open[d] && !original[d]; });
-    var r = Object.keys(original).filter(function (d) { return !open[d]; });
-    return { add: a, remove: r };
-  }
-  function refreshSave() {
-    var d = dirty(), n = d.add.length + d.remove.length;
-    $("saveDates").disabled = n === 0;
-    $("saveDates").textContent = n ? "שמירה (" + n + " שינויים)" : "שמירה";
+  function pageUrl(l) { return location.origin + "/for/" + l.token; }
+  function sunset(day) { return B.sunset(day); }
+  function meetTime(day) {
+    var Lc = C.sunLocation || window.Sun.DEFAULT;
+    return window.Sun.hhmm(window.Sun.sunsetMs(day, Lc.lat, Lc.lon) - 2 * 3600000);
   }
 
+  // ----- הכול -----
   function setup() {
     open = {}; original = {};
     (data.dates || []).forEach(function (d) { open[d] = true; original[d] = true; });
@@ -69,75 +79,300 @@
       });
     } else cal.render();
     refreshSave();
-    renderList();
-    $("shareWa").href = "https://wa.me/?text=" + encodeURIComponent("היי! כאן אפשר לראות את התאריכים הפנויים לבוק זוגי ולבחור חבילה ✨\n" + bookUrl);
+    kpis(); upcoming(); filters(); list(); settings();
+    $("shareWa").href = "https://wa.me/?text=" + encodeURIComponent("היי! כאן מכירים בדקה, ומקבלים דף אישי עם הערבים הפנויים לבוק זוגי בשקיעה ✨\n" + helloUrl);
+    if (location.hash === "#upcoming") setTimeout(function () { $("upcoming").scrollIntoView({ behavior: "smooth" }); }, 200);
+  }
+  $("copyLink").addEventListener("click", function () { copy(helloUrl, $("copyLink"), "העתקת קישור לשאלון"); });
+
+  // ----- מה דורש טיפול -----
+  function kpis() {
+    var L = data.leads || [];
+    var c = function (st) { return L.filter(function (l) { return l.status === st; }).length; };
+    var items = [
+      ["lead", c("lead"), "היכרויות חדשות"],
+      ["pending", c("pending"), "ממתינים לאישור שלך"],
+      ["awaiting_deposit", c("awaiting_deposit"), "ממתינים למקדמה"],
+      ["booked", c("booked"), "צילומים שמורים"]
+    ];
+    $("kpis").innerHTML = items.map(function (k) {
+      return '<button type="button" class="kpi' + (k[1] && k[0] === "pending" ? " kpi--hot" : "") + '" data-f="' + k[0] + '"><strong>' + k[1] + "</strong><span>" + k[2] + "</span></button>";
+    }).join("");
+    $("kpis").querySelectorAll("[data-f]").forEach(function (b) {
+      b.addEventListener("click", function () { filter = b.getAttribute("data-f"); filters(); list(); $("leadList").scrollIntoView({ behavior: "smooth", block: "start" }); });
+    });
   }
 
+  // ----- לוח שנה -----
+  function on(iso) { return (data.leads || []).filter(function (l) { return l.day === iso; }); }
+  function dayState(iso) {
+    var past = iso < today, ls = on(iso), cls = [];
+    var booked = ls.some(function (l) { return ["booked", "shot", "delivered"].indexOf(l.status) > -1; });
+    var hold = ls.some(function (l) { return l.status === "awaiting_deposit"; });
+    var pending = ls.some(function (l) { return l.status === "pending"; });
+    if (past) cls.push("is-past");
+    if (booked) cls.push("is-booked"); else if (hold) cls.push("is-hold"); else if (open[iso]) cls.push("is-open");
+    if (pending) cls.push("is-pending");
+    var label = booked ? "שמור" : hold ? "מוחזק" : open[iso] ? "פתוח" : "סגור";
+    return { disabled: past || booked || hold, cls: cls.join(" "), label: label };
+  }
+  function dirty() {
+    return {
+      add: Object.keys(open).filter(function (d) { return open[d] && !original[d]; }),
+      remove: Object.keys(original).filter(function (d) { return !open[d]; })
+    };
+  }
+  function refreshSave() {
+    var d = dirty(), n = d.add.length + d.remove.length;
+    $("saveDates").disabled = n === 0;
+    $("saveDates").textContent = n ? "שמירה (" + n + " שינויים)" : "שמירה";
+  }
   $("saveDates").addEventListener("click", function () {
-    var d = dirty(), btn = $("saveDates");
-    btn.disabled = true;
+    var d = dirty(); $("saveDates").disabled = true;
     B.rpc("admin_set_dates", { p_pass: pass, p_add: d.add, p_remove: d.remove })
       .then(function () { $("savedNote").textContent = "נשמר ✓"; return reload(); })
       .catch(function (e) { err("dashError", e.message); refreshSave(); });
   });
 
-  $("copyLink").addEventListener("click", function () {
-    var b = $("copyLink");
-    var done = function () { b.textContent = "הקישור הועתק ✓"; setTimeout(function () { b.textContent = "העתקת קישור ההזמנה"; }, 2000); };
-    if (navigator.clipboard) navigator.clipboard.writeText(bookUrl).then(done, function () { prompt("העתיקו את הקישור:", bookUrl); });
-    else prompt("העתיקו את הקישור:", bookUrl);
-  });
+  // ----- הודעות מוכנות לוואטסאפ -----
+  function first(l) { return l.names; }
+  function messages(l) {
+    var p = l.package ? B.pkg(l.package) : null, url = pageUrl(l), out = [];
+    var d = l.day ? B.prettyDate(l.day) : "";
+    if (l.status === "lead") {
+      out.push(["הודעת היכרות", "היי " + first(l) + ", כאן אורי 🙂\nתודה שמילאתם את השאלון, כיף להכיר!" +
+        (l.occasion ? "\nראיתי שזה " + l.occasion + ", איזה יופי." : "") +
+        "\nבדף האישי שלכם מחכים הערבים הפנויים והחבילות:\n" + url + "\nאשמח לענות על כל שאלה."]);
+    }
+    if (l.status === "pending") {
+      out.push(["אישור + קישור למקדמה", "היי " + first(l) + "! 🤍\nאישרתי את " + d + ".\nהתאריך שמור לכם עד מחר ב-10:00 בבוקר. כדי לשמור אותו סופית, משלמים מקדמה של " +
+        B.money(B.deposit(p)) + " כאן:\n" + url]);
+      out.push(["הערב לא מתאפשר", "היי " + first(l) + ", תודה על הבקשה 🙏\nלצערי " + d + " לא מתאפשר הפעם. בדף שלכם אפשר לבחור ערב אחר:\n" + url]);
+    }
+    if (l.status === "awaiting_deposit") {
+      out.push(["תזכורת מקדמה", "היי " + first(l) + ", רק מזכיר בעדינות 🙂\n" + d + " שמור לכם עד " + B.holdText(l.hold_until) +
+        ". אחרי זה הוא חוזר להיות פנוי לזוגות אחרים.\nלתשלום המקדמה:\n" + url]);
+    }
+    if (l.status === "booked") {
+      out.push(["פרטי מפגש", "היי " + first(l) + "! מתרגש לקראת " + d + " ✨\n" +
+        (l.location ? "נפגשים ב" + l.location + " " : "נפגשים ") + "בשעה " + meetTime(l.day) + " (השקיעה ב-" + sunset(l.day) + ").\n" +
+        "המדריך עם כל מה שכדאי להכין: " + location.origin + "/guide"]);
+      out.push(["מדריך הכנה", "היי " + first(l) + ", הכנתי לכם מדריך קטן לקראת הצילום: מה ללבוש, מה להביא ורשימת משימות 🤍\n" + location.origin + "/guide"]);
+    }
+    if (l.status === "shot") {
+      out.push(["תודה על הערב", "היי " + first(l) + ", תודה על ערב מקסים 🤍\nאני כבר עובר על התמונות, ואעדכן כשהגלריה מוכנה."]);
+    }
+    if (l.status === "delivered") {
+      out.push(["התמונות מוכנות", "היי " + first(l) + "! התמונות שלכם מוכנות ✨\nשלחתי לכם את הגלריה למייל" + (l.email ? " (" + l.email + ")" : "") + ". מקווה שתאהבו כמו שאני אהבתי."]);
+      out.push(["בקשת המלצה", "היי " + first(l) + ", אם נהניתם, אשמח מאוד לכמה מילים על החוויה 🙏 זה עוזר לזוגות אחרים להכיר אותי."]);
+    }
+    if (l.status === "declined" || l.status === "expired") {
+      out.push(["הזמנה לבחור שוב", "היי " + first(l) + ", עדיין יש ערבים פנויים, ואשמח לצלם אתכם 🙂\n" + url]);
+    }
+    return out;
+  }
 
-  // ----- רשימת בקשות -----
-  document.querySelectorAll(".tab").forEach(function (t) {
-    t.addEventListener("click", function () {
-      filter = t.getAttribute("data-filter");
-      document.querySelectorAll(".tab").forEach(function (x) { x.classList.toggle("is-active", x === t); });
-      renderList();
-    });
-  });
-
-  var LABEL = { pending: "ממתינה", approved: "מאושרת", declined: "נדחתה" };
-  function renderList() {
-    var ul = $("blist"); ul.innerHTML = "";
-    var list = data.bookings.filter(function (b) { return b.status === filter; });
-    document.querySelector('.tab[data-filter="pending"]').textContent =
-      "ממתינות (" + data.bookings.filter(function (b) { return b.status === "pending"; }).length + ")";
-    if (!list.length) { ul.innerHTML = '<li class="empty">אין כאן בקשות כרגע.</li>'; return; }
-    list.forEach(function (b) {
-      var p = B.pkg(b.package);
+  // ----- צילומים קרובים -----
+  function upcoming() {
+    var lim = new Date(); lim.setDate(lim.getDate() + 10); var limIso = B.iso(lim);
+    var L = (data.leads || []).filter(function (l) { return l.status === "booked" && l.day >= today && l.day <= limIso; })
+      .sort(function (a, b) { return a.day < b.day ? -1 : 1; });
+    var ul = $("upList"); ul.innerHTML = "";
+    if (!L.length) { ul.innerHTML = '<li class="empty">אין צילומים שמורים ב-10 הימים הקרובים.</li>'; return; }
+    L.forEach(function (l) {
       var li = document.createElement("li"); li.className = "bcard";
-      li.innerHTML =
-        '<div class="bcard__top"><span class="bcard__date"></span><span class="badge badge--' + b.status + '">' + LABEL[b.status] + "</span></div>" +
-        '<div class="bcard__meta"><strong class="n"></strong> · <bdi dir="ltr" class="bphone"></bdi></div>' +
-        '<div class="bcard__meta pk"></div>' +
-        (b.note ? '<div class="bcard__note"></div>' : "") +
-        '<div class="admin__actions"></div>';
-      li.querySelector(".bcard__date").textContent = B.prettyDate(b.day);
-      li.querySelector(".n").textContent = b.name;
-      li.querySelector(".bphone").textContent = b.phone;
-      li.querySelector(".pk").textContent = p.name + " · ₪" + p.price;
-      if (b.note) li.querySelector(".bcard__note").textContent = b.note;
-      var act = li.querySelector(".admin__actions");
-      function btn(text, cls, fn) { var x = document.createElement("button"); x.type = "button"; x.className = "btn btn--sm " + cls; x.textContent = text; x.onclick = fn; act.appendChild(x); }
-      if (b.status !== "approved") btn("אישור", "btn--primary", function () { setStatus(b, "approved"); });
-      if (b.status !== "declined") btn(b.status === "approved" ? "ביטול" : "דחייה", "btn--ghost", function () { setStatus(b, "declined"); });
-      if (b.status === "declined") btn("החזרה להמתנה", "btn--ghost", function () { setStatus(b, "pending"); });
-      var wa = document.createElement("a");
-      wa.className = "btn btn--ghost btn--sm"; wa.target = "_blank"; wa.rel = "noopener"; wa.textContent = "וואטסאפ";
-      wa.href = B.waLink(b.phone, b.status === "approved"
-        ? "היי " + b.name + ", הבוק ב" + B.prettyDate(b.day) + " מאושר! ✨ נדבר על הלוקיישן והשעה."
-        : "היי " + b.name + ", קיבלתי את הבקשה לבוק ב" + B.prettyDate(b.day) + " 🙂");
-      act.appendChild(wa);
+      li.innerHTML = '<div class="bcard__top"><span class="bcard__date">' + esc(B.prettyDate(l.day)) + '</span><span class="badge badge--booked">שמור</span></div>' +
+        '<div class="bcard__meta"><strong>' + esc(l.names) + "</strong> · " + esc(B.pkg(l.package).name) + "</div>" +
+        '<div class="bcard__meta">שקיעה ' + sunset(l.day) + " · מפגש " + meetTime(l.day) + (l.location ? " · " + esc(l.location) : " · <em>עוד אין מיקום</em>") + "</div>" +
+        '<div class="wx" data-wx>בודק תחזית…</div><div class="admin__actions"></div>';
       ul.appendChild(li);
+      weather(l).then(function (w) {
+        li.querySelector("[data-wx]").innerHTML = w ? w.html : "התחזית תופיע עד 16 יום לפני הצילום.";
+        var a = document.createElement("a"); a.className = "btn btn--primary btn--sm"; a.target = "_blank"; a.rel = "noopener";
+        a.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>הודעת תיאום ומזג אוויר';
+        a.href = B.waLink(l.phone, "היי " + first(l) + "! מתרגש לקראת " + B.prettyDate(l.day) + " ✨\n" +
+          (w ? "התחזית לשעת הצילום: " + w.text + ".\n" : "") +
+          (l.location ? "נפגשים ב" + l.location + " " : "נפגשים ") + "בשעה " + meetTime(l.day) + ", והשקיעה ב-" + sunset(l.day) + ".\n" +
+          "כל מה שכדאי להכין: " + location.origin + "/guide");
+        li.querySelector(".admin__actions").appendChild(a);
+      });
     });
   }
 
-  function setStatus(b, status) {
-    B.rpc("admin_set_status", { p_pass: pass, p_id: b.id, p_status: status })
-      .then(reload)
+  var geoCache = {};
+  function geocode(name) {
+    var D = C.sunLocation || window.Sun.DEFAULT;
+    if (!name) return Promise.resolve({ lat: D.lat, lon: D.lon, guess: true });
+    if (geoCache[name]) return Promise.resolve(geoCache[name]);
+    return fetch("https://geocoding-api.open-meteo.com/v1/search?count=1&language=he&countryCode=IL&name=" + encodeURIComponent(name))
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        var g = j && j.results && j.results[0];
+        geoCache[name] = g ? { lat: g.latitude, lon: g.longitude } : { lat: D.lat, lon: D.lon, guess: true };
+        return geoCache[name];
+      }).catch(function () { return { lat: D.lat, lon: D.lon, guess: true }; });
+  }
+  function weather(l) {
+    var diff = (B.parseIso(l.day) - B.parseIso(today)) / 86400000;
+    if (diff > 15) return Promise.resolve(null);
+    return geocode(l.location).then(function (g) {
+      return fetch("https://api.open-meteo.com/v1/forecast?latitude=" + g.lat + "&longitude=" + g.lon +
+        "&hourly=temperature_2m,precipitation_probability,cloud_cover,wind_speed_10m&timezone=Asia%2FJerusalem&start_date=" + l.day + "&end_date=" + l.day)
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          var h = j && j.hourly; if (!h || !h.time) return null;
+          var hour = parseInt(sunset(l.day), 10) - 1, i = Math.max(0, Math.min(h.time.length - 1, hour));
+          var t = Math.round(h.temperature_2m[i]), rain = h.precipitation_probability[i], cloud = h.cloud_cover[i], wind = Math.round(h.wind_speed_10m[i]);
+          var warn = rain >= 40 ? " wx--warn" : "";
+          var text = t + "°, סיכוי לגשם " + rain + "%, עננות " + cloud + "%, רוח " + wind + " קמ״ש";
+          return {
+            text: text,
+            html: '<span class="wx__in' + warn + '">' + (rain >= 40 ? "☔ " : cloud > 70 ? "☁️ " : "🌅 ") + esc(text) +
+              (g.guess ? " <em>(לפי מרכז הארץ, כי לא זוהה מיקום)</em>" : "") + "</span>"
+          };
+        });
+    }).catch(function () { return null; });
+  }
+
+  // ----- רשימת הזוגות -----
+  function filters() {
+    var box = $("filters"); box.innerHTML = "";
+    FILTERS.forEach(function (f) {
+      var n = (data.leads || []).filter(f[2]).length;
+      var b = document.createElement("button"); b.type = "button";
+      b.className = "tab" + (filter === f[0] ? " is-active" : ""); b.textContent = f[1] + " (" + n + ")";
+      b.addEventListener("click", function () { filter = f[0]; filters(); list(); });
+      box.appendChild(b);
+    });
+  }
+
+  function list() {
+    var f = FILTERS.filter(function (x) { return x[0] === filter; })[0] || FILTERS[0];
+    var L = (data.leads || []).filter(f[2]);
+    var ul = $("leadList"); ul.innerHTML = "";
+    if (!L.length) { ul.innerHTML = '<li class="empty">אין כאן זוגות כרגע.</li>'; return; }
+    L.forEach(function (l) { ul.appendChild(card(l)); });
+  }
+
+  function card(l) {
+    var st = STATUS[l.status] || { t: l.status, c: "off" }, p = l.package ? B.pkg(l.package) : null;
+    var li = document.createElement("li"); li.className = "lcard" + (openCard === l.id ? " is-open" : "");
+    var when = l.day ? B.shortDate(l.day) + " · שקיעה " + sunset(l.day) : "עוד לא בחרו ערב";
+    li.innerHTML =
+      '<button type="button" class="lcard__head" aria-expanded="' + (openCard === l.id) + '">' +
+        '<span class="lcard__names">' + esc(l.names) + "</span>" +
+        '<span class="badge badge--' + st.c + '">' + st.t + "</span>" +
+        '<span class="lcard__when">' + esc(when) + (p ? " · " + esc(p.name) : "") + "</span>" +
+      "</button>" +
+      '<div class="lcard__body"></div>';
+    li.querySelector(".lcard__head").addEventListener("click", function () {
+      openCard = openCard === l.id ? null : l.id; list();
+    });
+    if (openCard === l.id) body(li.querySelector(".lcard__body"), l, p);
+    return li;
+  }
+
+  function body(el, l, p) {
+    var rows = [
+      ["טלפון", '<bdi dir="ltr">' + esc(l.phone) + "</bdi>"],
+      ["מייל", l.email ? '<bdi dir="ltr">' + esc(l.email) + "</bdi>" : "—"],
+      ["אינסטגרם", l.instagram ? '<a class="link" target="_blank" rel="noopener" href="https://instagram.com/' + encodeURIComponent(l.instagram) + '">@' + esc(l.instagram) + "</a>" : "—"],
+      ["הסיבה", esc(l.occasion || "—")],
+      ["נוף", esc((l.landscape || "—").split(",").join(", "))],
+      ["מתי", esc(l.timing || "—")],
+      ["המלצה", esc(B.pkg(l.recommended).name)]
+    ];
+    if (p) rows.push(["מחיר / מקדמה", B.money(p.price) + " / " + B.money(B.deposit(p)) + (l.deposit_paid_at ? " ✓ " + esc(l.deposit_method || "") : "")]);
+    if (l.hold_until && l.status === "awaiting_deposit") rows.push(["מוחזק עד", esc(B.holdText(l.hold_until))]);
+    rows.push(["נכנס", new Date(l.created_at).toLocaleString("he-IL", { dateStyle: "short", timeStyle: "short", timeZone: "Asia/Jerusalem" })]);
+
+    el.innerHTML =
+      '<dl class="sum sum--tight">' + rows.map(function (r) { return "<div><dt>" + r[0] + "</dt><dd>" + r[1] + "</dd></div>"; }).join("") + "</dl>" +
+      '<div class="fields lfields">' +
+        '<label class="field"><span>ערב</span><input type="date" data-k="day" value="' + (l.day || "") + '" /></label>' +
+        '<label class="field"><span>חבילה</span><select data-k="package"><option value="">—</option>' +
+          (C.packages || []).map(function (x) { return '<option value="' + x.id + '"' + (l.package === x.id ? " selected" : "") + ">" + esc(x.name) + "</option>"; }).join("") + "</select></label>" +
+        '<label class="field"><span>מיקום (יופיע ביומן)</span><input type="text" data-k="location" maxlength="160" value="' + esc(l.location || "") + '" placeholder="למשל: חוף פלמחים" /></label>' +
+        '<label class="field"><span>זמן נסיעה בדקות</span><input type="number" data-k="travel_minutes" min="0" max="600" inputmode="numeric" value="' + (l.travel_minutes == null ? "" : l.travel_minutes) + '" /></label>' +
+        '<label class="field field--wide"><span>הערות פרטיות</span><textarea data-k="admin_note" rows="2" maxlength="2000">' + esc(l.admin_note || "") + "</textarea></label>" +
+      "</div>" +
+      '<div class="admin__actions" data-act></div>' +
+      '<div class="lcard__wa"><p class="admin__hint">הודעות מוכנות בוואטסאפ</p><div class="admin__actions" data-wa></div></div>' +
+      '<p class="lcard__link">הדף של הזוג: <a class="link" target="_blank" rel="noopener" href="' + pageUrl(l) + '">פתיחה</a> · <button type="button" class="link" data-copy>העתקה</button></p>';
+
+    var act = el.querySelector("[data-act]");
+    function btn(text, cls, fn) { var x = document.createElement("button"); x.type = "button"; x.className = "btn btn--sm " + cls; x.textContent = text; x.onclick = fn; act.appendChild(x); }
+    btn("שמירת פרטים", "btn--ghost", function () { save(el, l); });
+    var s = l.status;
+    if (s === "pending" || ((s === "declined" || s === "expired") && l.day)) btn("אישור (מחזיק עד מחר 10:00)", "btn--primary", function () { action(l, "approve"); });
+    if (s === "awaiting_deposit") {
+      btn("סימון מקדמה כשולמה", "btn--primary", function () { action(l, "mark_paid"); });
+      btn("הארכה עד מחר 10:00", "btn--ghost", function () { action(l, "extend"); });
+    }
+    if (s === "booked") btn("סימון כצולם", "btn--primary", function () { action(l, "shot"); });
+    if (s === "shot") btn("סימון כנמסר", "btn--primary", function () { action(l, "delivered"); });
+    if (s === "pending" || s === "awaiting_deposit") btn("דחייה", "btn--ghost", function () { action(l, "decline"); });
+    if (s === "booked") btn("ביטול השריון", "btn--ghost", function () { if (window.confirm("לבטל את השריון של " + l.names + "?")) action(l, "decline"); });
+    if (s === "declined" || s === "expired") btn("החזרה להמתנה", "btn--ghost", function () { action(l, "restore"); });
+    btn("מחיקה", "btn--ghost btn--danger", function () { if (window.confirm("למחוק את " + l.names + " לגמרי?")) action(l, "delete"); });
+
+    var wa = el.querySelector("[data-wa]");
+    messages(l).forEach(function (m) {
+      var a = document.createElement("a"); a.className = "btn btn--ghost btn--sm"; a.target = "_blank"; a.rel = "noopener";
+      a.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>' + esc(m[0]);
+      a.href = B.waLink(l.phone, m[1]); wa.appendChild(a);
+    });
+    var free = document.createElement("a"); free.className = "btn btn--ghost btn--sm"; free.target = "_blank"; free.rel = "noopener";
+    free.textContent = "שיחה ריקה"; free.href = B.waLink(l.phone, ""); wa.appendChild(free);
+    el.querySelector("[data-copy]").addEventListener("click", function (e) { copy(pageUrl(l), e.target, "העתקה"); });
+  }
+
+  function save(el, l) {
+    var d = {};
+    el.querySelectorAll("[data-k]").forEach(function (f) { d[f.getAttribute("data-k")] = f.value; });
+    B.rpc("admin_lead_save", { p_pass: pass, p_id: l.id, p_data: d }).then(reload).catch(function (e) { err("dashError", e.message); });
+  }
+  function action(l, a) {
+    B.rpc("admin_lead_action", { p_pass: pass, p_id: l.id, p_action: a })
+      .then(function () { if (a === "delete") openCard = null; return reload(); })
+      .catch(function (e) { err("dashError", e.message); window.scrollTo({ top: 0, behavior: "smooth" }); });
+  }
+
+  // ----- הגדרות: יומן, התראות, הודעת פתיחה -----
+  function calUrl() { return location.host + "/api/calendar?key=" + encodeURIComponent(data.settings.cal_key || ""); }
+  function settings() {
+    var st = data.settings || {};
+    $("calSub").href = "webcal://" + calUrl();
+    $("ntOff").hidden = !!st.ntfy_topic; $("ntSetup").hidden = !st.ntfy_topic;
+    $("ntTopic").textContent = st.ntfy_topic || "";
+    $("greetText").value =
+      "היי, כאן אורי 🙂\n" +
+      "תודה שכתבתם לי! אני צלם בוקים זוגיים באור שקיעה, ואני כבר שמח להכיר.\n" +
+      "קיבלתי את הפרטים שלכם, ואחזור אליכם אישית בהקדם.\n" +
+      "בינתיים, אם עוד לא מילאתם, כאן מכירים בדקה ומקבלים דף אישי עם הערבים הפנויים:\n" + helloUrl;
+  }
+  $("calCopy").addEventListener("click", function () { copy("webcal://" + calUrl(), $("calCopy"), "העתקת הקישור"); });
+  $("calRotate").addEventListener("click", function () {
+    if (!window.confirm("להחליף את מפתח היומן? הקישור הישן יפסיק לעבוד, ותצטרך להירשם מחדש.")) return;
+    saveSettings(data.settings.ntfy_topic, true).then(function () { $("calNote").textContent = "המפתח הוחלף. הוסיפו את היומן מחדש."; });
+  });
+  function saveSettings(topic, rotate) {
+    return B.rpc("admin_settings_save", { p_pass: pass, p_ntfy_topic: topic || "", p_rotate_cal: !!rotate })
+      .then(function (s2) { data.settings.cal_key = s2.cal_key; data.settings.ntfy_topic = s2.ntfy_topic; settings(); })
       .catch(function (e) { err("dashError", e.message); });
   }
+  function randTopic() {
+    var a = new Uint8Array(10); (window.crypto || window.msCrypto).getRandomValues(a);
+    return "turgi-" + Array.prototype.map.call(a, function (b) { return ("0" + b.toString(16)).slice(-2); }).join("");
+  }
+  $("ntOn").addEventListener("click", function () { saveSettings(randTopic(), false); });
+  $("ntOffBtn").addEventListener("click", function () { if (window.confirm("לכבות את ההתראות?")) saveSettings("", false); });
+  $("ntCopy").addEventListener("click", function () { copy(data.settings.ntfy_topic, $("ntCopy"), "העתקת שם הערוץ"); });
+  $("ntTest").addEventListener("click", function () {
+    B.rpc("admin_test_notify", { p_pass: pass }).then(function () { $("ntNote").textContent = "נשלחה התראת בדיקה. אמורה להגיע תוך כמה שניות."; })
+      .catch(function (e) { $("ntNote").textContent = e.message; });
+  });
+  $("greetCopy").addEventListener("click", function () { copy($("greetText").value, $("greetCopy"), "העתקת הנוסח"); });
 
   // ----- סיסמה -----
   $("pwForm").addEventListener("submit", function (ev) {

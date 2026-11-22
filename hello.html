@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>בואו נכיר | אורי תורג׳מן</title>
+  <meta name="description" content="חמש שאלות קצרות לפני בוק זוגי בשקיעה. בסוף תקבלו דף אישי עם הערבים הפנויים והחבילות." />
+  <meta name="theme-color" content="#F6F0E6" />
+  <meta property="og:title" content="בואו נכיר · בוק זוגי בשקיעה עם אורי תורג׳מן" />
+  <meta property="og:description" content="דקה אחת, חמש שאלות, ודף אישי עם הערבים הפנויים בשבילכם." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Assistant:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/logo.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/booking.css" />
+  <link rel="stylesheet" href="/css/journey.css" />
+</head>
+<body class="page-journey">
+
+  <header class="topbar is-scrolled">
+    <a href="/" class="brand" aria-label="לדף הבית">
+      <span class="logo brand__logo" role="img" aria-label="Turgeman Ori, Fine Art Photography"></span>
+    </a>
+    <a class="topbar__cta" data-wa href="#" target="_blank" rel="noopener">
+      <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>
+      <span>וואטסאפ</span>
+    </a>
+  </header>
+
+  <main class="quiz">
+    <div class="quiz__progress" aria-hidden="true"><span id="bar"></span></div>
+
+    <form id="quiz" class="quiz__card" novalidate>
+
+      <!-- פתיחה -->
+      <section class="q is-active" data-step="0">
+        <svg class="closing__sun" viewBox="0 0 120 60" aria-hidden="true">
+          <path d="M10 58 A50 50 0 0 1 110 58" fill="none" stroke="currentColor" stroke-width="1"/>
+          <line x1="0" y1="59" x2="120" y2="59" stroke="currentColor" stroke-width="1"/>
+        </svg>
+        <p class="eyebrow">נעים להכיר</p>
+        <h1 class="q__title">לפני שנבחר ערב, ספרו לי קצת עליכם</h1>
+        <p class="q__lead">חמש שאלות קצרות, בערך דקה. בסוף תקבלו דף אישי עם הערבים הפנויים, המחירים והחבילה שאני ממליץ לכם.</p>
+        <button type="button" class="btn btn--primary btn--lg" data-next>מתחילים</button>
+      </section>
+
+      <!-- 1 -->
+      <section class="q" data-step="1" aria-labelledby="q1">
+        <p class="q__count">1 מתוך 5</p>
+        <h2 class="q__title" id="q1">איך קוראים לכם?</h2>
+        <label class="field">
+          <span class="sr-only">השמות של שניכם</span>
+          <input id="fNames" type="text" maxlength="80" autocomplete="off" placeholder="לדוגמה: נועה ואיתי" />
+        </label>
+        <p class="q__err" id="e1" hidden>כתבו בבקשה את השמות של שניכם.</p>
+      </section>
+
+      <!-- 2 -->
+      <section class="q" data-step="2" aria-labelledby="q2">
+        <p class="q__count">2 מתוך 5</p>
+        <h2 class="q__title" id="q2">מה מביא אתכם לצלם עכשיו?</h2>
+        <div class="chips" data-group="occasion" data-single>
+          <button type="button" class="chip">יום נישואין</button>
+          <button type="button" class="chip">לפני חתונה</button>
+          <button type="button" class="chip">הריון</button>
+          <button type="button" class="chip">חוויה זוגית</button>
+          <button type="button" class="chip">סתם כי מתחשק</button>
+          <button type="button" class="chip">מתנה</button>
+        </div>
+      </section>
+
+      <!-- 3 -->
+      <section class="q" data-step="3" aria-labelledby="q3">
+        <p class="q__count">3 מתוך 5</p>
+        <h2 class="q__title" id="q3">איזה נוף מדבר אליכם?</h2>
+        <p class="q__lead">אפשר לבחור יותר מאחד.</p>
+        <div class="chips" data-group="landscape">
+          <button type="button" class="chip">ים</button>
+          <button type="button" class="chip">שדות</button>
+          <button type="button" class="chip">מדבר</button>
+          <button type="button" class="chip">עיר</button>
+          <button type="button" class="chip">בבית</button>
+          <button type="button" class="chip" data-solo>עוד לא יודעים</button>
+        </div>
+        <p class="q__err" id="e3" hidden>בחרו לפחות אפשרות אחת.</p>
+      </section>
+
+      <!-- 4 -->
+      <section class="q" data-step="4" aria-labelledby="q4">
+        <p class="q__count">4 מתוך 5</p>
+        <h2 class="q__title" id="q4">מתי בערך?</h2>
+        <div class="chips" data-group="timing" data-single>
+          <button type="button" class="chip">בחודש הקרוב</button>
+          <button type="button" class="chip">תוך שלושה חודשים</button>
+          <button type="button" class="chip">גמישים</button>
+        </div>
+      </section>
+
+      <!-- 5 -->
+      <section class="q" data-step="5" aria-labelledby="q5">
+        <p class="q__count">5 מתוך 5</p>
+        <h2 class="q__title" id="q5">איך נשארים בקשר?</h2>
+        <div class="fields">
+          <label class="field">
+            <span>וואטסאפ</span>
+            <input id="fPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="050-0000000" dir="ltr" />
+          </label>
+          <label class="field">
+            <span>מייל <em>(לקבלות ולשליחת התמונות)</em></span>
+            <input id="fEmail" type="email" inputmode="email" autocomplete="email" maxlength="120" placeholder="name@example.com" dir="ltr" />
+          </label>
+          <label class="field field--wide">
+            <span>אינסטגרם <em>(לא חובה)</em></span>
+            <input id="fIg" type="text" maxlength="40" autocomplete="off" placeholder="@" dir="ltr" />
+          </label>
+        </div>
+        <p class="q__err" id="e5" hidden></p>
+      </section>
+
+      <nav class="quiz__nav" id="nav" hidden>
+        <button type="button" class="quiz__back" data-back>חזרה</button>
+        <button type="button" class="btn btn--primary" id="nextBtn" data-next>המשך</button>
+      </nav>
+    </form>
+  </main>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.57 2 2.13 6.43 2.13 11.9c0 1.75.46 3.46 1.33 4.97L2 22l5.27-1.38a9.9 9.9 0 0 0 4.76 1.21h.01c5.46 0 9.9-4.43 9.9-9.9A9.9 9.9 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.13.82.84-3.05-.2-.31a8.22 8.22 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24a8.24 8.24 0 0 1 8.24 8.25c0 4.55-3.7 8.24-8.24 8.24Zm4.52-6.17c-.25-.12-1.47-.72-1.69-.8-.23-.09-.39-.13-.56.12-.16.25-.64.8-.78.97-.14.16-.29.18-.54.06-.25-.12-1.04-.38-1.99-1.23-.73-.66-1.23-1.47-1.37-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.16 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.16-.48-.29Z"/></symbol>
+    <symbol id="i-ig" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M7.5 2.75h9a4.75 4.75 0 0 1 4.75 4.75v9a4.75 4.75 0 0 1-4.75 4.75h-9A4.75 4.75 0 0 1 2.75 16.5v-9A4.75 4.75 0 0 1 7.5 2.75Z"/><circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor"/></symbol>
+  </svg>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/hello.js"></script>
+</body>
+</html>
