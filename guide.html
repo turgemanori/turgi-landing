@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>מדריך הכנה לבוק זוגי | אורי תורג׳מן</title>
   <meta name="description" content="כל מה שכדאי לדעת לפני בוק זוגי בשקיעה: מה ללבוש, פלטות צבעים, מה להביא ורשימת משימות." />
-  <meta name="theme-color" content="#F6F0E6" />
+  <meta name="theme-color" content="#F1EEE9" />
   <meta property="og:title" content="המדריך שלכם לערב מושלם · אורי תורג׳מן" />
   <meta property="og:description" content="מה ללבוש, מה להביא, ורשימת משימות קטנה לפני הבוק הזוגי בשקיעה." />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -155,7 +155,7 @@
   <footer class="footer">
     <div class="container footer__inner">
       <span class="logo footer__logo" role="img" aria-label="Turgeman Ori, Fine Art Photography"></span>
-      <p class="footer__copy">נתראה בשקיעה 🤍</p>
+      <p class="footer__copy">נתראה בשקיעה</p>
     </div>
   </footer>
 
@@ -170,7 +170,7 @@
     (function () {
       var C = window.SITE_CONFIG || {}, B = window.Booking;
       B.logo();
-      document.querySelectorAll("[data-wa]").forEach(function (a) { a.href = B.waLink(C.whatsappNumber, "היי אורי, יש לי שאלה לגבי ההכנה לצילום 🙂"); });
+      document.querySelectorAll("[data-wa]").forEach(function (a) { a.href = B.waLink(C.whatsappNumber, "היי אורי, יש לי שאלה לגבי ההכנה לצילום"); });
       var imgs = C.guideImages || {};
       document.querySelectorAll("[data-img]").forEach(function (el) {
         var src = imgs[el.getAttribute("data-img")];
@@ -181,7 +181,7 @@
       var boxes = document.querySelectorAll("#todoList input");
       function prog() {
         var n = 0; boxes.forEach(function (b) { if (b.checked) n++; });
-        document.getElementById("todoProgress").textContent = n === boxes.length ? "הכול מוכן. נתראה בשקיעה ✨" : n + " מתוך " + boxes.length + " משימות";
+        document.getElementById("todoProgress").textContent = n === boxes.length ? "הכול מוכן. נתראה בשקיעה" : n + " מתוך " + boxes.length + " משימות";
       }
       boxes.forEach(function (b) {
         b.checked = !!st[b.getAttribute("data-k")];

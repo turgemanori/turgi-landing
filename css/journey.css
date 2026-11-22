@@ -10,10 +10,10 @@
   min-height: 100svh; display: grid; place-items: center;
   padding: 110px var(--gutter) 60px;
   background:
-    radial-gradient(90% 50% at 50% 0%, rgba(255, 232, 196, .55), transparent 70%),
+    radial-gradient(90% 50% at 50% 0%, rgba(255, 255, 255, .7), transparent 70%),
     linear-gradient(180deg, var(--ivory) 0%, var(--cream) 100%);
 }
-.quiz__progress { position: fixed; top: 0; right: 0; left: 0; height: 3px; z-index: 60; background: rgba(166, 124, 82, .12); }
+.quiz__progress { position: fixed; top: 0; right: 0; left: 0; height: 3px; z-index: 60; background: rgba(91, 56, 38, .12); }
 .quiz__progress span { display: block; height: 100%; width: 0; background: var(--bronze); transition: width .5s var(--ease); margin-right: 0; }
 .quiz__card { width: 100%; max-width: 560px; }
 .q { display: none; text-align: center; animation: qIn .55s var(--ease); }
@@ -111,6 +111,7 @@ button.link { font: inherit; background: none; padding: 0 0 1px; cursor: pointer
 .dlg__in p { color: var(--espresso-soft); font-weight: 300; }
 .dlg__in .btn { width: 100%; max-width: 340px; }
 .dlg__list { list-style: none; margin: 0; padding: 14px 18px; display: grid; gap: 6px; background: var(--cream); border-radius: 6px; width: 100%; text-align: start; font-size: 15.5px; }
+.dlg__story { margin: 0; padding: 18px 20px; background: var(--cream); border-radius: 6px; width: 100%; text-align: start; font-family: var(--font-display); font-size: 18px; line-height: 1.7; font-weight: 300; color: var(--espresso); border-right: 2px solid var(--bronze-light); }
 .dlg__skip { color: var(--espresso-soft); font-size: 15px; }
 .terms { margin: 0; padding: 0 20px 0 0; text-align: start; display: grid; gap: 10px; font-size: 15.5px; color: var(--espresso-soft); }
 

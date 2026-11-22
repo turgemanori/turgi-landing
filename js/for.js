@@ -28,7 +28,7 @@
   function missing() { $("loading").hidden = true; $("missing").hidden = false; }
 
   function ctxWa(extra) {
-    var t = "היי אורי, כאן " + L.names + " 🙂" + (extra ? "\n" + extra : "") + "\nהדף שלנו: " + pageUrl;
+    var t = "היי אורי, כאן " + L.names + "" + (extra ? "\n" + extra : "") + "\nהדף שלנו: " + pageUrl;
     return B.waLink(C.whatsappNumber, t);
   }
 
@@ -84,7 +84,7 @@
     } else {
       $("hello").textContent = L.names + ", תודה על ערב מקסים";
       $("lead").textContent = "";
-      $("afterTitle").textContent = s === "delivered" ? "התמונות שלכם אצלכם 🤍" : "עכשיו אני עורך את התמונות שלכם";
+      $("afterTitle").textContent = s === "delivered" ? "התמונות שלכם אצלכם" : "עכשיו אני עורך את התמונות שלכם";
       $("afterText").textContent = s === "delivered"
         ? "היה לי כיף גדול לצלם אתכם. אם תרצו לשתף כמה מילים על החוויה, זה עוזר לי מאוד ואשמח לשמוע."
         : "אני עובר על כל פריים בשקט ובקפידה. ברגע שהגלריה תהיה מוכנה, אשלח לכם אותה בוואטסאפ ובמייל.";
@@ -99,17 +99,37 @@
   }
 
   // ----- ברוכים הבאים: סיכום הפרטים שנקלטו -----
+  // הסיכום כפסקה אחת, כמו סיפור של הערב שהם חולמים עליו
+  var OCCASION = {
+    "יום נישואין": "אנחנו רוצים לחגוג את יום הנישואין שלנו בערב אחד שכולו שלנו",
+    "לפני חתונה": "החתונה שלנו מתקרבת, ולפני כל ההמולה אנחנו רוצים לעצור לערב אחד רק של שנינו",
+    "הריון": "אנחנו מחכים לתינוק, ורוצים לשמור את התקופה הקסומה הזאת לתמיד",
+    "חוויה זוגית": "אנחנו חולמים על ערב זוגי אחד שכולו שלנו",
+    "סתם כי מתחשק": "בלי סיבה מיוחדת, פשוט בא לנו לעצור את הזמן לערב יפה אחד ביחד",
+    "מתנה": "הכול מתחיל ממתנה, ואנחנו רוצים להפוך אותה לערב שלא נשכח"
+  };
+  var PLACE = { "ים": "מול הים", "שדות": "בשדות פתוחים", "מדבר": "במרחבי המדבר", "עיר": "בסמטאות העיר", "בבית": "בבית שלנו" };
+  var TIMING = {
+    "בחודש הקרוב": "נשמח שזה יקרה כבר בחודש הקרוב.",
+    "תוך שלושה חודשים": "נשמח שזה יקרה בחודשים הקרובים.",
+    "גמישים": "בתאריכים אנחנו גמישים, העיקר שיהיה מושלם."
+  };
+  function story() {
+    var places = (L.landscape || "").split(",").map(function (x) { return PLACE[x.trim()]; }).filter(Boolean);
+    var where = places.length === 0 ? ", ואת המקום עוד לא בחרנו, אז נשמח שתציע לנו פינה עם אור יפה."
+      : ", " + (places.length > 1 ? places.slice(0, -1).join(", ") + " או " + places[places.length - 1] : places[0]) +
+        ", כשהשמש שוקעת והאור נהיה רך וחם סביבנו.";
+    var t = (OCCASION[L.occasion] || "אנחנו חולמים על בוק זוגי בשקיעה") + where;
+    if (TIMING[L.timing]) t += " " + TIMING[L.timing];
+    return t;
+  }
+
   function welcome() {
-    $("wTitle").textContent = L.names + " 🤍";
-    var items = [];
-    if (L.occasion) items.push("הסיבה: " + L.occasion);
-    if (L.landscape) items.push("הנוף: " + L.landscape.split(",").join(", "));
-    if (L.timing) items.push("מתי: " + L.timing);
-    if (L.email) items.push("מייל לקבלות ולתמונות: " + L.email);
-    $("wList").innerHTML = items.map(function (t) { return "<li>" + B.esc(t) + "</li>"; }).join("");
+    $("wTitle").textContent = L.names;
+    var text = story();
+    $("wStory").textContent = text;
     $("wWa").href = B.waLink(C.whatsappNumber,
-      "היי אורי! כאן " + L.names + " 🙂\nמילאנו את השאלון באתר:\n" + items.map(function (t) { return "• " + t; }).join("\n") +
-      "\nהדף שלנו: " + pageUrl);
+      "היי אורי, כאן " + L.names + ". " + text + " מחכים לשמוע ממך.\n\nהדף שלנו: " + pageUrl);
     openDlg($("welcomeDlg"));
   }
 

@@ -80,7 +80,7 @@
     } else cal.render();
     refreshSave();
     kpis(); upcoming(); filters(); list(); settings();
-    $("shareWa").href = "https://wa.me/?text=" + encodeURIComponent("היי! כאן מכירים בדקה, ומקבלים דף אישי עם הערבים הפנויים לבוק זוגי בשקיעה ✨\n" + helloUrl);
+    $("shareWa").href = "https://wa.me/?text=" + encodeURIComponent("היי! כאן מכירים בדקה, ומקבלים דף אישי עם הערבים הפנויים לבוק זוגי בשקיעה\n" + helloUrl);
     if (location.hash === "#upcoming") setTimeout(function () { $("upcoming").scrollIntoView({ behavior: "smooth" }); }, 200);
   }
   $("copyLink").addEventListener("click", function () { copy(helloUrl, $("copyLink"), "העתקת קישור לשאלון"); });
@@ -140,34 +140,34 @@
     var p = l.package ? B.pkg(l.package) : null, url = pageUrl(l), out = [];
     var d = l.day ? B.prettyDate(l.day) : "";
     if (l.status === "lead") {
-      out.push(["הודעת היכרות", "היי " + first(l) + ", כאן אורי 🙂\nתודה שמילאתם את השאלון, כיף להכיר!" +
+      out.push(["הודעת היכרות", "היי " + first(l) + ", כאן אורי\nתודה שמילאתם את השאלון, כיף להכיר!" +
         (l.occasion ? "\nראיתי שזה " + l.occasion + ", איזה יופי." : "") +
         "\nבדף האישי שלכם מחכים הערבים הפנויים והחבילות:\n" + url + "\nאשמח לענות על כל שאלה."]);
     }
     if (l.status === "pending") {
-      out.push(["אישור + קישור למקדמה", "היי " + first(l) + "! 🤍\nאישרתי את " + d + ".\nהתאריך שמור לכם עד מחר ב-10:00 בבוקר. כדי לשמור אותו סופית, משלמים מקדמה של " +
+      out.push(["אישור + קישור למקדמה", "היי " + first(l) + "!\nאישרתי את " + d + ".\nהתאריך שמור לכם עד מחר ב-10:00 בבוקר. כדי לשמור אותו סופית, משלמים מקדמה של " +
         B.money(B.deposit(p)) + " כאן:\n" + url]);
-      out.push(["הערב לא מתאפשר", "היי " + first(l) + ", תודה על הבקשה 🙏\nלצערי " + d + " לא מתאפשר הפעם. בדף שלכם אפשר לבחור ערב אחר:\n" + url]);
+      out.push(["הערב לא מתאפשר", "היי " + first(l) + ", תודה על הבקשה\nלצערי " + d + " לא מתאפשר הפעם. בדף שלכם אפשר לבחור ערב אחר:\n" + url]);
     }
     if (l.status === "awaiting_deposit") {
-      out.push(["תזכורת מקדמה", "היי " + first(l) + ", רק מזכיר בעדינות 🙂\n" + d + " שמור לכם עד " + B.holdText(l.hold_until) +
+      out.push(["תזכורת מקדמה", "היי " + first(l) + ", רק מזכיר בעדינות\n" + d + " שמור לכם עד " + B.holdText(l.hold_until) +
         ". אחרי זה הוא חוזר להיות פנוי לזוגות אחרים.\nלתשלום המקדמה:\n" + url]);
     }
     if (l.status === "booked") {
-      out.push(["פרטי מפגש", "היי " + first(l) + "! מתרגש לקראת " + d + " ✨\n" +
+      out.push(["פרטי מפגש", "היי " + first(l) + "! מתרגש לקראת " + d + "\n" +
         (l.location ? "נפגשים ב" + l.location + " " : "נפגשים ") + "בשעה " + meetTime(l.day) + " (השקיעה ב-" + sunset(l.day) + ").\n" +
         "המדריך עם כל מה שכדאי להכין: " + location.origin + "/guide"]);
-      out.push(["מדריך הכנה", "היי " + first(l) + ", הכנתי לכם מדריך קטן לקראת הצילום: מה ללבוש, מה להביא ורשימת משימות 🤍\n" + location.origin + "/guide"]);
+      out.push(["מדריך הכנה", "היי " + first(l) + ", הכנתי לכם מדריך קטן לקראת הצילום: מה ללבוש, מה להביא ורשימת משימות\n" + location.origin + "/guide"]);
     }
     if (l.status === "shot") {
-      out.push(["תודה על הערב", "היי " + first(l) + ", תודה על ערב מקסים 🤍\nאני כבר עובר על התמונות, ואעדכן כשהגלריה מוכנה."]);
+      out.push(["תודה על הערב", "היי " + first(l) + ", תודה על ערב מקסים\nאני כבר עובר על התמונות, ואעדכן כשהגלריה מוכנה."]);
     }
     if (l.status === "delivered") {
-      out.push(["התמונות מוכנות", "היי " + first(l) + "! התמונות שלכם מוכנות ✨\nשלחתי לכם את הגלריה למייל" + (l.email ? " (" + l.email + ")" : "") + ". מקווה שתאהבו כמו שאני אהבתי."]);
-      out.push(["בקשת המלצה", "היי " + first(l) + ", אם נהניתם, אשמח מאוד לכמה מילים על החוויה 🙏 זה עוזר לזוגות אחרים להכיר אותי."]);
+      out.push(["התמונות מוכנות", "היי " + first(l) + "! התמונות שלכם מוכנות\nשלחתי לכם את הגלריה למייל" + (l.email ? " (" + l.email + ")" : "") + ". מקווה שתאהבו כמו שאני אהבתי."]);
+      out.push(["בקשת המלצה", "היי " + first(l) + ", אם נהניתם, אשמח מאוד לכמה מילים על החוויה זה עוזר לזוגות אחרים להכיר אותי."]);
     }
     if (l.status === "declined" || l.status === "expired") {
-      out.push(["הזמנה לבחור שוב", "היי " + first(l) + ", עדיין יש ערבים פנויים, ואשמח לצלם אתכם 🙂\n" + url]);
+      out.push(["הזמנה לבחור שוב", "היי " + first(l) + ", עדיין יש ערבים פנויים, ואשמח לצלם אתכם\n" + url]);
     }
     return out;
   }
@@ -190,7 +190,7 @@
         li.querySelector("[data-wx]").innerHTML = w ? w.html : "התחזית תופיע עד 16 יום לפני הצילום.";
         var a = document.createElement("a"); a.className = "btn btn--primary btn--sm"; a.target = "_blank"; a.rel = "noopener";
         a.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>הודעת תיאום ומזג אוויר';
-        a.href = B.waLink(l.phone, "היי " + first(l) + "! מתרגש לקראת " + B.prettyDate(l.day) + " ✨\n" +
+        a.href = B.waLink(l.phone, "היי " + first(l) + "! מתרגש לקראת " + B.prettyDate(l.day) + "\n" +
           (w ? "התחזית לשעת הצילום: " + w.text + ".\n" : "") +
           (l.location ? "נפגשים ב" + l.location + " " : "נפגשים ") + "בשעה " + meetTime(l.day) + ", והשקיעה ב-" + sunset(l.day) + ".\n" +
           "כל מה שכדאי להכין: " + location.origin + "/guide");
@@ -227,7 +227,7 @@
           var text = t + "°, סיכוי לגשם " + rain + "%, עננות " + cloud + "%, רוח " + wind + " קמ״ש";
           return {
             text: text,
-            html: '<span class="wx__in' + warn + '">' + (rain >= 40 ? "☔ " : cloud > 70 ? "☁️ " : "🌅 ") + esc(text) +
+            html: '<span class="wx__in' + warn + '">' + (rain >= 40 ? "גשם אפשרי: " : "") + esc(text) +
               (g.guess ? " <em>(לפי מרכז הארץ, כי לא זוהה מיקום)</em>" : "") + "</span>"
           };
         });
@@ -346,7 +346,7 @@
     $("ntOff").hidden = !!st.ntfy_topic; $("ntSetup").hidden = !st.ntfy_topic;
     $("ntTopic").textContent = st.ntfy_topic || "";
     $("greetText").value =
-      "היי, כאן אורי 🙂\n" +
+      "היי, כאן אורי\n" +
       "תודה שכתבתם לי! אני צלם בוקים זוגיים באור שקיעה, ואני כבר שמח להכיר.\n" +
       "קיבלתי את הפרטים שלכם, ואחזור אליכם אישית בהקדם.\n" +
       "בינתיים, אם עוד לא מילאתם, כאן מכירים בדקה ומקבלים דף אישי עם הערבים הפנויים:\n" + helloUrl;

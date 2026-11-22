@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="robots" content="noindex, nofollow" />
   <title>הדף האישי שלכם | אורי תורג׳מן</title>
-  <meta name="theme-color" content="#F6F0E6" />
+  <meta name="theme-color" content="#F1EEE9" />
   <meta property="og:title" content="הדף האישי שלכם · בוק זוגי עם אורי תורג׳מן" />
   <meta property="og:description" content="הערבים הפנויים, החבילות והסטטוס של ההזמנה שלכם, במקום אחד." />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -84,8 +84,8 @@
 
       <!-- ===== ממתין לאישור ===== -->
       <section id="vPending" class="state" hidden>
-        <svg class="closing__sun" viewBox="0 0 120 60" aria-hidden="true"><path d="M10 58 A50 50 0 0 1 110 58" fill="none" stroke="currentColor" stroke-width="1"/><line x1="0" y1="59" x2="120" y2="59" stroke="currentColor" stroke-width="1"/></svg>
-        <h2 class="section__title">הבקשה אצלי ✨</h2>
+        <svg class="closing__sun" viewBox="0 8 120 56" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"><path d="M34 62 A26 26 0 0 1 86 62"/><line x1="92.3" y1="55.1" x2="101.1" y2="53.3"/><line x1="86.7" y1="42.6" x2="94.0" y2="37.3"/><line x1="76.5" y1="33.4" x2="81.0" y2="25.6"/><line x1="60.0" y1="29.0" x2="60.0" y2="17.0"/><line x1="43.5" y1="33.4" x2="39.0" y2="25.6"/><line x1="33.3" y1="42.6" x2="26.0" y2="37.3"/><line x1="27.7" y1="55.1" x2="18.9" y2="53.3"/><line x1="0" y1="63" x2="120" y2="63"/></g></svg>
+        <h2 class="section__title">הבקשה אצלי</h2>
         <p class="section__lead">אני עובר על הבקשה וחוזר אליכם בהקדם. ברגע שאאשר, הדף הזה יתעדכן ותוכלו לשמור את התאריך במקדמה.</p>
         <dl class="sum" data-sum></dl>
         <div class="mine__actions">
@@ -96,7 +96,7 @@
 
       <!-- ===== ממתין למקדמה ===== -->
       <section id="vDeposit" class="state" hidden>
-        <p class="eyebrow">אישרתי 🤍</p>
+        <p class="eyebrow">אישרתי</p>
         <h2 class="section__title">הערב שלכם מחכה לכם</h2>
         <div class="hold" id="hold"></div>
         <dl class="sum" data-sum></dl>
@@ -118,7 +118,7 @@
 
       <!-- ===== שמור ===== -->
       <section id="vBooked" class="state" hidden>
-        <svg class="closing__sun" viewBox="0 0 120 60" aria-hidden="true"><path d="M10 58 A50 50 0 0 1 110 58" fill="none" stroke="currentColor" stroke-width="1"/><line x1="0" y1="59" x2="120" y2="59" stroke="currentColor" stroke-width="1"/></svg>
+        <svg class="closing__sun" viewBox="0 8 120 56" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"><path d="M34 62 A26 26 0 0 1 86 62"/><line x1="92.3" y1="55.1" x2="101.1" y2="53.3"/><line x1="86.7" y1="42.6" x2="94.0" y2="37.3"/><line x1="76.5" y1="33.4" x2="81.0" y2="25.6"/><line x1="60.0" y1="29.0" x2="60.0" y2="17.0"/><line x1="43.5" y1="33.4" x2="39.0" y2="25.6"/><line x1="33.3" y1="42.6" x2="26.0" y2="37.3"/><line x1="27.7" y1="55.1" x2="18.9" y2="53.3"/><line x1="0" y1="63" x2="120" y2="63"/></g></svg>
         <p class="eyebrow">זה רשמי</p>
         <h2 class="section__title">הערב שלכם שמור</h2>
         <p class="section__lead">את שעת המפגש המדויקת ואת המיקום אשלח לכם בוואטסאפ כמה ימים לפני, לפי שעת השקיעה באותו ערב. בינתיים, הכנתי לכם מדריך קטן.</p>
@@ -146,8 +146,8 @@
     <form method="dialog" class="dlg__in">
       <p class="eyebrow">נעים מאוד</p>
       <h2 class="dlg__title" id="wTitle"></h2>
-      <p>אני אורי, צלם בוקים זוגיים באור שקיעה. קיבלתי את התשובות שלכם, וזה מה שקלטתי:</p>
-      <ul class="dlg__list" id="wList"></ul>
+      <p>אני אורי, צלם בוקים זוגיים באור שקיעה. קיבלתי את התשובות שלכם, וכך נשמע הערב שאתם חולמים עליו:</p>
+      <blockquote class="dlg__story" id="wStory"></blockquote>
       <p>שלחו לי את הסיכום בוואטסאפ, ואחזור אליכם בהקדם. בינתיים אפשר כבר להציץ בערבים הפנויים.</p>
       <a class="btn btn--primary" id="wWa" href="#" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>שליחת הסיכום לאורי</a>
       <button class="link dlg__skip" value="close">לראות את הערבים הפנויים</button>

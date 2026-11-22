@@ -14,7 +14,7 @@ window.SITE_CONFIG = {
   whatsappNumber: "972544922465",
 
   // הודעת הפתיחה שתופיע מוכנה בוואטסאפ (לכפתורי הוואטסאפ הכלליים)
-  whatsappMessage: "היי אורי, אשמח לשמוע פרטים על בוק זוגי בשקיעה ✨",
+  whatsappMessage: "היי אורי, אשמח לשמוע פרטים על בוק זוגי בשקיעה",
 
   // שם המשתמש באינסטגרם (בלי @)
   instagramHandle: "turgi_photographer",

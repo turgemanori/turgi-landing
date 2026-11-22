@@ -129,7 +129,7 @@
 .bcard__note { font-size: 15px; font-weight: 300; background: var(--white); padding: 8px 10px; border-radius: 4px; }
 .bcard .admin__actions { margin-top: 6px; }
 .badge { font-size: 12px; padding: 3px 10px; border-radius: 999px; font-weight: 500; }
-.badge--pending { background: #F5EAD9; color: #7A5524; }
+.badge--pending { background: #EEE9E2; color: #5B3826; }
 .badge--approved { background: #E3EEDF; color: #2F5A26; }
 .badge--declined { background: #EFE7E4; color: #7C6A63; }
 .empty { color: var(--espresso-soft); font-weight: 300; padding: 10px 0; }
