@@ -1,7 +1,7 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/for/:token", "destination": "/for.html" }
+    { "source": "/for/:token", "destination": "/for" }
   ],
   "redirects": [
     { "source": "/book", "destination": "/hello", "permanent": false }
