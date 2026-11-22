@@ -35,6 +35,27 @@ window.SITE_CONFIG = {
   // תמונת סעיף החתונות (2:3). השאירו ריק "" ל-placeholder.
   weddingImage: "",
 
+  // ===== מערכת ההזמנות (דף /book ודף /admin) =====
+  // חיבור למסד הנתונים ב-Supabase. המפתח הזה ציבורי בכוונה (publishable).
+  supabaseUrl: "https://xbtibqgluyzasrtmotjk.supabase.co",
+  supabaseKey: "sb_publishable_1Ao_qT8WnBrolvISQpC1KA_-RvU5qKU",
+
+  // החבילות שמוצגות בדף ההזמנה. id חייב להישאר basic / premium.
+  packages: [
+    {
+      id: "basic",
+      name: "חבילת שקיעה",
+      price: 1200,
+      features: ["שעת צילום בלוקיישן לבחירתכם", "100 תמונות ערוכות באיכות מלאה"]
+    },
+    {
+      id: "premium",
+      name: "חבילת פרימיום",
+      price: 1500,
+      features: ["צילום ללא הגבלת זמן", "כמה לוקיישנים לבחירה והחלפת לוקים", "150 תמונות ערוכות באיכות מלאה", "אלבום מודפס"]
+    }
+  ],
+
   // גלריה: src = נתיב לתמונה (ריק = placeholder), alt = תיאור בעברית,
   // ratio = יחס גובה-רוחב: "portrait" (4:5), "tall" (2:3), "landscape" (3:2), "square" (1:1)
   gallery: [

@@ -400,6 +400,7 @@ p { margin: 0; }
 .closing .eyebrow { justify-content: center; }
 .closing .section__lead { margin-bottom: 38px; }
 .closing .btn { width: 100%; max-width: 380px; }
+.closing__alt { margin-top: 26px; font-size: 16px; }
 .closing__hint { margin-top: 18px; font-size: 14.5px; color: var(--espresso-soft); font-weight: 300; }
 
 /* ===== 6. פוטר ===== */

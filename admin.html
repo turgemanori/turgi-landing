@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>ניהול תאריכים | אורי תורג׳מן</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Assistant:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/logo.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/booking.css" />
+</head>
+<body class="page-admin">
+
+  <header class="topbar is-scrolled">
+    <a href="/" class="brand" aria-label="לדף הבית">
+      <span class="logo brand__logo" role="img" aria-label="Turgeman Ori, Fine Art Photography"></span>
+    </a>
+    <button type="button" class="topbar__cta" id="logoutBtn" hidden>יציאה</button>
+  </header>
+
+  <main class="admin container">
+
+    <!-- כניסה -->
+    <form class="admin__login" id="loginForm">
+      <p class="eyebrow" style="justify-content:center">דף מנהל</p>
+      <h1 class="section__title">כניסה</h1>
+      <label class="field">
+        <span>סיסמה</span>
+        <input id="loginPass" type="password" autocomplete="current-password" required />
+      </label>
+      <p class="form-error" id="loginError" role="alert" hidden></p>
+      <button class="btn btn--primary" type="submit" id="loginBtn">כניסה</button>
+    </form>
+
+    <!-- לוח הבקרה -->
+    <div id="dash" hidden>
+      <div class="admin__bar">
+        <h1>התאריכים וההזמנות שלך</h1>
+        <div class="admin__actions" style="margin:0">
+          <button type="button" class="btn btn--ghost btn--sm" id="copyLink">העתקת קישור ההזמנה</button>
+          <a class="btn btn--ghost btn--sm" id="shareWa" href="#" target="_blank" rel="noopener">שליחת הקישור בוואטסאפ</a>
+        </div>
+      </div>
+
+      <div class="admin__grid">
+        <section class="bstep" aria-labelledby="calTitle">
+          <h2 id="calTitle" class="bstep__title">פתיחת תאריכים</h2>
+          <p class="admin__hint">לחיצה על יום פותחת אותו לבוקים, לחיצה נוספת סוגרת. בסוף לוחצים "שמירה".</p>
+          <div id="adminCal" class="cal"></div>
+          <div class="legend" aria-hidden="true">
+            <span><i class="l-open"></i>פתוח</span>
+            <span><i class="l-pending"></i>יש בקשה ממתינה</span>
+            <span><i class="l-booked"></i>מאושר (סגור)</span>
+          </div>
+          <div class="admin__actions">
+            <button type="button" class="btn btn--primary btn--sm" id="saveDates" disabled>שמירה</button>
+            <span class="saved-note" id="savedNote" aria-live="polite"></span>
+          </div>
+        </section>
+
+        <section class="bstep" aria-labelledby="bkTitle">
+          <h2 id="bkTitle" class="bstep__title">בקשות שריון</h2>
+          <div class="tabs" role="tablist">
+            <button type="button" class="tab is-active" data-filter="pending">ממתינות</button>
+            <button type="button" class="tab" data-filter="approved">מאושרות</button>
+            <button type="button" class="tab" data-filter="declined">נדחו</button>
+          </div>
+          <ul class="blist" id="blist"></ul>
+        </section>
+
+        <section class="bstep" aria-labelledby="pwTitle">
+          <h2 id="pwTitle" class="bstep__title">שינוי סיסמה</h2>
+          <form id="pwForm" class="fields">
+            <label class="field field--wide">
+              <span>סיסמה חדשה (לפחות 8 תווים)</span>
+              <input id="newPass" type="password" autocomplete="new-password" minlength="8" required />
+            </label>
+            <div class="admin__actions" style="margin:0">
+              <button class="btn btn--ghost btn--sm" type="submit">עדכון סיסמה</button>
+              <span class="saved-note" id="pwNote" aria-live="polite"></span>
+            </div>
+          </form>
+        </section>
+      </div>
+      <p class="form-error" id="dashError" role="alert" hidden style="margin-top:18px"></p>
+    </div>
+  </main>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.57 2 2.13 6.43 2.13 11.9c0 1.75.46 3.46 1.33 4.97L2 22l5.27-1.38a9.9 9.9 0 0 0 4.76 1.21h.01c5.46 0 9.9-4.43 9.9-9.9A9.9 9.9 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.13.82.84-3.05-.2-.31a8.22 8.22 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24a8.24 8.24 0 0 1 8.24 8.25c0 4.55-3.7 8.24-8.24 8.24Zm4.52-6.17c-.25-.12-1.47-.72-1.69-.8-.23-.09-.39-.13-.56.12-.16.25-.64.8-.78.97-.14.16-.29.18-.54.06-.25-.12-1.04-.38-1.99-1.23-.73-.66-1.23-1.47-1.37-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.16 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.16-.48-.29Z"/></symbol>
+  </svg>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
