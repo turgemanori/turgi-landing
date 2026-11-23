@@ -197,14 +197,21 @@ p { margin: 0; }
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, .35) 0%, rgba(255, 255, 255, 0) 30%),
-    linear-gradient(0deg, rgba(255, 255, 255, .95) 0%, rgba(255, 255, 255, .84) 27%, rgba(255, 255, 255, .3) 42%, rgba(255, 255, 255, 0) 54%);
+    linear-gradient(180deg, rgba(255, 255, 255, .7) 0%, rgba(255, 255, 255, .45) 26%, rgba(255, 255, 255, 0) 42%),
+    linear-gradient(0deg, rgba(255, 255, 255, .94) 0%, rgba(255, 255, 255, .7) 16%, rgba(255, 255, 255, 0) 32%);
 }
+/* הכותרות למעלה, בחלק הבהיר של התמונה. המשפט והכפתורים למטה. באמצע רואים את התמונה. */
 .hero__content {
   width: 100%;
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 120px var(--gutter) 44px;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 112px var(--gutter) 40px;
 }
 .hero__title {
   font-size: clamp(34px, 9.2vw, 84px);
@@ -223,7 +230,7 @@ p { margin: 0; }
   font-size: clamp(17px, 4.4vw, 20px);
   font-weight: 400;
   color: var(--espresso);
-  margin-bottom: 30px;
+  margin-bottom: 22px;
 }
 .hero__actions { display: flex; gap: 10px; }
 .hero__actions .btn { flex: 1; padding-inline: 14px; }
@@ -475,8 +482,8 @@ p { margin: 0; }
       linear-gradient(180deg, rgba(255, 255, 255, .3) 0%, rgba(255, 255, 255, 0) 25%),
       linear-gradient(270deg, rgba(255, 255, 255, .94) 0%, rgba(255, 255, 255, .74) 30%, rgba(255, 255, 255, .1) 50%, rgba(255, 255, 255, 0) 62%);
   }
-  .hero { align-items: flex-end; }
-  .hero__content { padding-block: 140px 104px; }
+  .hero { align-items: stretch; }
+  .hero__content { padding-block: 150px 72px; }
   .hero__title { max-width: 720px; }
   .hero__scroll { display: block; }
 
@@ -546,7 +553,7 @@ p { margin: 0; }
 
 /* תמונת הפתיחה: הכלה במרכז-שמאל, הטקסט מימין */
 @media (min-width: 900px) {
-  .hero__media { background-position: 50% 68%; }
+  .hero__media { background-position: 50% 56%; }
 }
 
 
