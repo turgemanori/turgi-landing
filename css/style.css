@@ -13,8 +13,10 @@
   --bronze-light: #A07E69;
   --white: #FFFFFF;
 
-  --font-display: "Frank Ruhl Libre", "Times New Roman", serif;
-  --font-body: "Assistant", "Heebo", system-ui, sans-serif;
+  /* כותרות: Bellefair, סריף עדין עם ניגודיות גבוהה (עברית ולטינית), בסגנון מגזיני של צילום Fine Art.
+     טקסט: IBM Plex Sans Hebrew, סנס-סריף מדויק וקריא, שנותן לדף תחושה בנויה ולא גנרית. */
+  --font-display: "Bellefair", "Frank Ruhl Libre", "Times New Roman", serif;
+  --font-body: "IBM Plex Sans Hebrew", "Assistant", system-ui, sans-serif;
 
   --radius: 2px;
   --gutter: 22px;
@@ -205,7 +207,7 @@ p { margin: 0; }
   padding: 120px var(--gutter) 96px;
 }
 .hero__title {
-  font-size: clamp(38px, 10.5vw, 76px);
+  font-size: clamp(42px, 11.6vw, 84px);
   font-weight: 400;
   line-height: 1.12;
   letter-spacing: -.005em;
@@ -257,7 +259,7 @@ p { margin: 0; }
 .section__head .eyebrow { justify-content: center; }
 .section__head--start { text-align: start; margin-inline: 0; margin-bottom: 40px; }
 .section__head--start .eyebrow { justify-content: flex-start; }
-.section__title { font-size: clamp(30px, 7.6vw, 50px); margin-bottom: 22px; }
+.section__title { font-size: clamp(33px, 8.4vw, 56px); margin-bottom: 22px; }
 .section__lead { font-size: clamp(17px, 4.2vw, 19px); font-weight: 300; color: var(--espresso-soft); }
 
 /* ===== 2. החוויה ===== */
@@ -285,7 +287,7 @@ p { margin: 0; }
   padding-top: 5px;
   letter-spacing: .06em;
 }
-.step__title { font-size: 24px; margin-bottom: 8px; }
+.step__title { font-size: 27px; margin-bottom: 8px; }
 .step p { color: var(--espresso-soft); font-weight: 300; }
 
 /* ===== 3. גלריה ===== */
@@ -369,7 +371,7 @@ p { margin: 0; }
   background: var(--bronze-light);
   box-shadow: 0 0 0 5px rgba(201, 163, 122, .18);
 }
-.feature h3 { font-size: 22px; margin-bottom: 6px; }
+.feature h3 { font-size: 25px; margin-bottom: 6px; }
 .feature p { color: var(--espresso-soft); font-weight: 300; }
 .about__note {
   margin-top: 40px;
@@ -527,7 +529,7 @@ p { margin: 0; }
 .voices { background: var(--cream); }
 .voices__grid { display: grid; gap: 18px; }
 .voice { margin: 0; padding: 30px 26px; border-top: 1px solid var(--sand); }
-.voice blockquote { margin: 0 0 18px; font-family: var(--font-display); font-size: 21px; line-height: 1.6; font-weight: 300; }
+.voice blockquote { margin: 0 0 18px; font-family: var(--font-display); font-size: 23px; line-height: 1.6; font-weight: 400; }
 .voice figcaption { display: grid; gap: 2px; font-size: 15px; }
 .voice figcaption strong { font-weight: 500; }
 .voice figcaption span { color: var(--espresso-soft); font-weight: 300; }
@@ -551,7 +553,7 @@ p { margin: 0; }
 .sessions { background: var(--cream); }
 .sessions__list { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--sand); }
 .session { padding: 26px 0; border-bottom: 1px solid var(--sand); display: grid; gap: 6px; }
-.session h3 { font-size: 24px; }
+.session h3 { font-size: 27px; }
 .session p { color: var(--espresso-soft); font-weight: 300; }
 
 /* ===== מה מקבלים ===== */
