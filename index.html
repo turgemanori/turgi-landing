@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Assistant:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/logo.css?v=4" />
-  <link rel="stylesheet" href="css/style.css?v=4" />
+  <link rel="stylesheet" href="css/style.css?v=5" />
 </head>
 <body>
 
@@ -28,10 +28,7 @@
     <a href="#top" class="brand" aria-label="אורי תורג׳מן, לראש הדף">
       <span class="logo brand__logo" role="img" aria-label="Turgeman Ori, Fine Art Photography"></span>
     </a>
-    <a class="topbar__cta" data-wa href="#" target="_blank" rel="noopener">
-      <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>
-      <span>וואטסאפ</span>
-    </a>
+    <a class="topbar__cta topbar__cta--late" id="topCta" href="/hello">בואו נכיר</a>
   </header>
 
   <main id="top">
@@ -41,18 +38,18 @@
       <div class="hero__media" id="heroMedia" role="img" aria-label="כלה בשמלה לבנה והינומה ארוכה בין שורות כרם באור שקיעה"></div>
       <div class="hero__veil" aria-hidden="true"></div>
       <div class="hero__content">
-        <p class="eyebrow reveal">בוקים זוגיים · אור שקיעה · Fine Art</p>
+        <p class="eyebrow reveal" data-t="hero.1">בוקים זוגיים · אור שקיעה · Fine Art</p>
         <h1 id="hero-title" class="hero__title reveal">
-          האור הרך של השקיעה,<br />
-          <em>והרגע שבו אתם רק שניכם</em>
+          <span data-t="hero.2">האור הרך של השקיעה,</span><br />
+          <em data-t="hero.3">והרגע שבו אתם רק שניכם</em>
         </h1>
-        <p class="hero__sub reveal">
+        <p class="hero__sub reveal" data-t="hero.4">
           בוק זוגי אינטימי וחם, בלי פוזות מאולצות ובלי לחץ.
           רק אתם, נוף פתוח, אור זהוב ורגעים אמיתיים שנשארים איתכם לתמיד.
         </p>
         <div class="hero__actions reveal">
-          <a class="btn btn--primary" href="/hello">בואו נכיר</a>
-          <a class="btn btn--ghost" href="#gallery">לצפייה בעבודות</a>
+          <a class="btn btn--primary" href="/hello" data-t="hero.5">בואו נכיר</a>
+          <a class="btn btn--ghost" href="#gallery" data-t="hero.6">לצפייה בעבודות</a>
         </div>
       </div>
       <a href="#experience" class="hero__scroll" aria-label="גלילה לסעיף הבא"><span></span></a>
@@ -62,9 +59,9 @@
     <section class="section experience" id="experience" aria-labelledby="exp-title">
       <div class="container">
         <header class="section__head reveal">
-          <p class="eyebrow">החוויה הזוגית</p>
-          <h2 id="exp-title" class="section__title">סשן שמרגיש כמו ערב טוב ביחד</h2>
-          <p class="section__lead">
+          <p class="eyebrow" data-t="experience.1">החוויה הזוגית</p>
+          <h2 id="exp-title" class="section__title" data-t="experience.2">סשן שמרגיש כמו ערב טוב ביחד</h2>
+          <p class="section__lead" data-t="experience.3">
             רוב הזוגות מגיעים עם קצת התרגשות ומשפט אחד: "אנחנו לא ממש מצטלמים טוב".
             אחרי עשר דקות הם כבר שוכחים מהמצלמה. זה בדיוק הרגע שאני מחכה לו.
           </p>
@@ -73,23 +70,23 @@
         <ol class="steps">
           <li class="step reveal">
             <span class="step__num">01</span>
-            <h3 class="step__title">זרימה נינוחה</h3>
-            <p>נתחיל בהליכה, בשיחה, בצחוק. אין רשימת פוזות ואין שעון שמלחיץ. הקצב הוא שלכם.</p>
+            <h3 class="step__title" data-t="experience.5">זרימה נינוחה</h3>
+            <p data-t="experience.6">נתחיל בהליכה, בשיחה, בצחוק. אין רשימת פוזות ואין שעון שמלחיץ. הקצב הוא שלכם.</p>
           </li>
           <li class="step reveal">
             <span class="step__num">02</span>
-            <h3 class="step__title">הכוונה עדינה</h3>
-            <p>אני נותן כיוון קטן כשצריך: איפה לעמוד, לאן להסתכל, מתי להתקרב. כזה שלא מרגיש מבוים.</p>
+            <h3 class="step__title" data-t="experience.8">הכוונה עדינה</h3>
+            <p data-t="experience.9">אני נותן כיוון קטן כשצריך: איפה לעמוד, לאן להסתכל, מתי להתקרב. כזה שלא מרגיש מבוים.</p>
           </li>
           <li class="step reveal">
             <span class="step__num">03</span>
-            <h3 class="step__title">חיבור אמיתי</h3>
-            <p>המבט, המגע, השקט שבין המילים. הרגעים הקטנים שרק אתם מכירים, נשמרים בתמונה.</p>
+            <h3 class="step__title" data-t="experience.11">חיבור אמיתי</h3>
+            <p data-t="experience.12">המבט, המגע, השקט שבין המילים. הרגעים הקטנים שרק אתם מכירים, נשמרים בתמונה.</p>
           </li>
           <li class="step reveal">
             <span class="step__num">04</span>
-            <h3 class="step__title">אור שקיעה מדויק</h3>
-            <p>אני מתזמן את הסשן לשעה הזהובה, כשהאור רך, חם ומחמיא, ויודע בדיוק איפה למקם אתכם מולו.</p>
+            <h3 class="step__title" data-t="experience.14">אור שקיעה מדויק</h3>
+            <p data-t="experience.15">אני מתזמן את הסשן לשעה הזהובה, כשהאור רך, חם ומחמיא, ויודע בדיוק איפה למקם אתכם מולו.</p>
           </li>
         </ol>
       </div>
@@ -99,9 +96,9 @@
     <section class="section gallery" id="gallery" aria-labelledby="gal-title">
       <div class="container">
         <header class="section__head reveal">
-          <p class="eyebrow">השראה</p>
-          <h2 id="gal-title" class="section__title">רגעים מתוך סשנים זוגיים</h2>
-          <p class="section__lead">אור טבעי, צבעים חמים ורגש אמיתי. כל זוג, סיפור אחר.</p>
+          <p class="eyebrow" data-t="gallery.1">השראה</p>
+          <h2 id="gal-title" class="section__title" data-t="gallery.2">רגעים מתוך סשנים זוגיים</h2>
+          <p class="section__lead" data-t="gallery.3">אור טבעי, צבעים חמים ורגש אמיתי. כל זוג, סיפור אחר.</p>
         </header>
 
         <!-- התמונות נטענות מתוך js/config.js (מערך gallery) -->
@@ -124,37 +121,37 @@
 
         <div class="about__text">
           <header class="section__head section__head--start reveal">
-            <p class="eyebrow">למה דווקא איתי</p>
-            <h2 id="about-title" class="section__title">יחס אישי, עין רגישה ושקט מקצועי</h2>
+            <p class="eyebrow" data-t="about.1">למה דווקא איתי</p>
+            <h2 id="about-title" class="section__title" data-t="about.2">יחס אישי, עין רגישה ושקט מקצועי</h2>
           </header>
 
           <ul class="features">
             <li class="feature reveal">
               <span class="feature__mark" aria-hidden="true"></span>
               <div>
-                <h3>ליווי אישי מהרגע הראשון</h3>
-                <p>אני מלווה אתכם מההודעה הראשונה בוואטסאפ, דרך בחירת הלוקיישן והבגדים, ועד שהתמונות אצלכם. ותמיד אפשר לכתוב לי עם כל שאלה.</p>
+                <h3 data-t="about.3">ליווי אישי מהרגע הראשון</h3>
+                <p data-t="about.4">אני מלווה אתכם מההודעה הראשונה בוואטסאפ, דרך בחירת הלוקיישן והבגדים, ועד שהתמונות אצלכם. ותמיד אפשר לכתוב לי עם כל שאלה.</p>
               </div>
             </li>
             <li class="feature reveal">
               <span class="feature__mark" aria-hidden="true"></span>
               <div>
-                <h3>עבודה שקטה ומדויקת</h3>
-                <p>אני עובד בשקט, בלי רעש ובלי הצגות. נוכחות רגועה שמאפשרת לכם להיות עצמכם, ותשומת לב לכל פרט קטן.</p>
+                <h3 data-t="about.5">עבודה שקטה ומדויקת</h3>
+                <p data-t="about.6">אני עובד בשקט, בלי רעש ובלי הצגות. נוכחות רגועה שמאפשרת לכם להיות עצמכם, ותשומת לב לכל פרט קטן.</p>
               </div>
             </li>
             <li class="feature reveal">
               <span class="feature__mark" aria-hidden="true"></span>
               <div>
-                <h3>שליטה באור ובתנועה</h3>
-                <p>הבנה עמוקה של אור טבעי, של כיוון וזמן, ושל איך תנועה קטנה הופכת תמונה יפה לתמונה חיה.</p>
+                <h3 data-t="about.7">שליטה באור ובתנועה</h3>
+                <p data-t="about.8">הבנה עמוקה של אור טבעי, של כיוון וזמן, ושל איך תנועה קטנה הופכת תמונה יפה לתמונה חיה.</p>
               </div>
             </li>
             <li class="feature reveal">
               <span class="feature__mark" aria-hidden="true"></span>
               <div>
-                <h3>עין שמחפשת רגש</h3>
-                <p>אסתטיקה נקייה ועריכה בגוונים חמים וטבעיים. תמונות שתרצו לתלות על הקיר, ולא רק לשמור בטלפון.</p>
+                <h3 data-t="about.9">עין שמחפשת רגש</h3>
+                <p data-t="about.10">אסתטיקה נקייה ועריכה בגוונים חמים וטבעיים. תמונות שתרצו לתלות על הקיר, ולא רק לשמור בטלפון.</p>
               </div>
             </li>
           </ul>
@@ -164,31 +161,128 @@
 
 
 
-    <!-- ===== 6. המלצות ===== -->
+    <!-- ===== 5. למי זה מתאים ===== -->
+    <section class="section sessions" id="sessions" aria-labelledby="ses-title">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow" data-t="sessions.1">למי זה מתאים</p>
+          <h2 id="ses-title" class="section__title" data-t="sessions.2">כל סיבה טובה לערב אחד ביחד</h2>
+        </header>
+        <ul class="sessions__list">
+          <li class="session reveal">
+            <h3 data-t="sessions.3">יום נישואין</h3>
+            <p data-t="sessions.4">שנה, חמש או עשרים. ערב אחד לחגוג את מה שבניתם יחד.</p>
+          </li>
+          <li class="session reveal">
+            <h3 data-t="sessions.5">לפני החתונה</h3>
+            <p data-t="sessions.6">להכיר את המצלמה לפני היום הגדול, ולקבל תמונות להזמנה ולשמירת התאריך.</p>
+          </li>
+          <li class="session reveal">
+            <h3 data-t="sessions.7">הריון</h3>
+            <p data-t="sessions.8">הציפייה, הבטן והשקט שלפני. בוק רך וטבעי לשניכם, לפני שתהיו שלושה.</p>
+          </li>
+          <li class="session reveal">
+            <h3 data-t="sessions.9">סתם כי מתחשק</h3>
+            <p data-t="sessions.10">לא צריך סיבה. ערב טוב ביחד, ותמונות שתשמחו לחזור אליהן.</p>
+          </li>
+          <li class="session reveal">
+            <h3 data-t="sessions.11">במתנה</h3>
+            <p><span data-t="sessions.12">רוצים להפתיע את בן או בת הזוג?</span> <a class="link" data-wa="gift" href="#" target="_blank" rel="noopener" data-t="sessions.13">כתבו לי</a> <span data-t="sessions.14">ונתאם הכול בשקט.</span></p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== 6. מה מקבלים ===== -->
+    <!-- המספרים כאן כתובים ידנית לפי החבילות ב-js/config.js. משנים חבילה? מעדכנים גם כאן. -->
+    <section class="section included" id="included" aria-labelledby="inc-title">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow" data-t="included.1">מה מקבלים</p>
+          <h2 id="inc-title" class="section__title" data-t="included.2">בלי הפתעות, הכול ברור מראש</h2>
+        </header>
+        <dl class="facts">
+          <div class="fact reveal">
+            <dt data-t="included.3">שעה ומעלה</dt>
+            <dd data-t="included.4">שעת צילום מלאה בחבילת השקיעה. בפרימיום: בלי שעון, כמה לוקיישנים ואלבום מודפס.</dd>
+          </div>
+          <div class="fact reveal">
+            <dt data-t="included.9">100–150</dt>
+            <dd data-t="included.5">תמונות ערוכות באיכות מלאה, בגלריה דיגיטלית שנוח לשתף ולהוריד.</dd>
+          </div>
+          <div class="fact reveal">
+            <dt data-t="included.6">השעה הזהובה</dt>
+            <dd data-t="included.7">הצילום מתוזמן לשקיעה של הערב שבחרתם, כשהאור הכי רך ומחמיא.</dd>
+          </div>
+          <div class="fact reveal" data-needs="deliveryTime">
+            <dt data-bind="deliveryTime"></dt>
+            <dd data-t="included.8">עד שהתמונות הערוכות אצלכם.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ===== 7. המלצות ===== -->
     <section class="section voices" id="voices" aria-labelledby="vc-title" hidden>
       <div class="container">
         <header class="section__head reveal">
-          <p class="eyebrow">מה הזוגות אומרים</p>
-          <h2 id="vc-title" class="section__title">ערב אחד, וזיכרון לכל החיים</h2>
+          <p class="eyebrow" data-t="voices.1">מה הזוגות אומרים</p>
+          <h2 id="vc-title" class="section__title" data-t="voices.2">ערב אחד, וזיכרון לכל החיים</h2>
         </header>
         <!-- ההמלצות נטענות מתוך js/config.js -->
         <div class="voices__grid" id="voicesGrid"></div>
       </div>
     </section>
 
-    <!-- ===== 7. סגירה / CTA ===== -->
+    <!-- ===== 8. שאלות נפוצות ===== -->
+    <section class="section faq" id="faq" aria-labelledby="faq-title">
+      <div class="container faq__inner">
+        <header class="section__head reveal">
+          <p class="eyebrow" data-t="faq.1">שאלות נפוצות</p>
+          <h2 id="faq-title" class="section__title" data-t="faq.2">מה שזוגות שואלים לפני</h2>
+        </header>
+        <div class="faq__list">
+          <details class="qa reveal">
+            <summary data-t="faq.3">איפה מצלמים?</summary>
+            <p data-t="faq.4">בים, בשדות, במדבר, בעיר ואפילו אצלכם בבית. אחרי שנכיר נבחר יחד לוקיישן שמתאים לכם ולכיוון של השקיעה באותו ערב.</p>
+          </details>
+          <details class="qa reveal">
+            <summary data-t="faq.5">מה ללבוש?</summary>
+            <p data-t="faq.6">אחרי שקובעים תקבלו ממני מדריך הכנה קצר עם רעיונות ללבוש ולגוונים. בגדול: צבעים רכים וטבעיים שמשתלבים זה בזה, בלי הדפסים ולוגואים גדולים, ומשהו שנוח לכם לזוז בו.</p>
+          </details>
+          <details class="qa reveal">
+            <summary data-t="faq.7">אנחנו לא ממש מצטלמים טוב. זה בסדר?</summary>
+            <p data-t="faq.8">זה בדיוק מה שרוב הזוגות אומרים לי. אין רשימת פוזות: נלך, נדבר, נצחק, ואני אתן כיוון קטן רק כשצריך. אחרי כמה דקות שוכחים מהמצלמה.</p>
+          </details>
+          <details class="qa reveal">
+            <summary data-t="faq.9">ומה אם יורד גשם?</summary>
+            <p data-t="faq.10">אם התחזית לא מאפשרת צילום (גשם, סערה או אובך כבד), נקבע יחד תאריך חלופי והמקדמה עוברת אליו במלואה.</p>
+          </details>
+          <details class="qa reveal" data-needs="deliveryTime">
+            <summary data-t="faq.11">מתי מקבלים את התמונות?</summary>
+            <p>תוך <span data-bind="deliveryTime"></span>, <span data-t="faq.12">ערוכות ובאיכות מלאה, בגלריה דיגיטלית.</span></p>
+          </details>
+          <details class="qa reveal">
+            <summary data-t="faq.13">איך שומרים תאריך?</summary>
+            <p><span data-t="faq.14">עונים על חמש שאלות קצרות ומקבלים מיד דף אישי עם הערבים הפנויים והחבילות. התאריך נשמר אחרי אישור שלי ומקדמה של</span> <span data-bind="depositPercent"></span>%.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 9. סגירה / CTA ===== -->
     <section class="section closing" id="contact" aria-labelledby="close-title">
       <div class="container closing__inner reveal">
         <svg class="closing__sun" viewBox="0 8 120 56" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"><path d="M34 62 A26 26 0 0 1 86 62"/><line x1="92.3" y1="55.1" x2="101.1" y2="53.3"/><line x1="86.7" y1="42.6" x2="94.0" y2="37.3"/><line x1="76.5" y1="33.4" x2="81.0" y2="25.6"/><line x1="60.0" y1="29.0" x2="60.0" y2="17.0"/><line x1="43.5" y1="33.4" x2="39.0" y2="25.6"/><line x1="33.3" y1="42.6" x2="26.0" y2="37.3"/><line x1="27.7" y1="55.1" x2="18.9" y2="53.3"/><line x1="0" y1="63" x2="120" y2="63"/></g></svg>
-        <p class="eyebrow">השקיעה הבאה מחכה לכם</p>
-        <h2 id="close-title" class="section__title">בואו נכיר, ונמצא את הערב שלכם</h2>
-        <p class="section__lead">
+        <p class="eyebrow" data-t="contact.1">השקיעה הבאה מחכה לכם</p>
+        <h2 id="close-title" class="section__title" data-t="contact.2">בואו נכיר, ונמצא את הערב שלכם</h2>
+        <p class="section__lead" data-t="contact.3">
           ספרו לי בדקה מי אתם ומה אתם אוהבים, ותקבלו מיד דף אישי עם הערבים הפנויים והחבילות.
           משם אני ממשיך איתכם אישית בוואטסאפ.
         </p>
-        <a class="btn btn--primary btn--lg" href="/hello">בואו נכיר</a>
-        <p class="closing__hint">בלי התחייבות. התאריך נשמר רק אחרי אישור שלי ומקדמה.</p>
-        <p class="closing__alt"><a class="link" data-wa href="#" target="_blank" rel="noopener">מעדיפים לכתוב לי ישירות? לוואטסאפ</a></p>
+        <a class="btn btn--primary btn--lg" href="/hello" data-t="contact.4">בואו נכיר</a>
+        <p class="closing__hint" data-t="contact.5">בלי התחייבות. התאריך נשמר רק אחרי אישור שלי ומקדמה.</p>
+        <p class="closing__alt"><a class="link" data-wa href="#" target="_blank" rel="noopener" data-t="contact.6">מעדיפים לכתוב לי ישירות? לוואטסאפ</a></p>
       </div>
     </section>
   </main>
@@ -198,24 +292,19 @@
     <div class="container footer__inner">
       <span class="logo footer__logo" role="img" aria-label="Turgeman Ori, Fine Art Photography"></span>
       <p class="footer__brand" data-bind="businessName">אורי תורג׳מן</p>
-      <p class="footer__tag">בוקים זוגיים באור שקיעה <span data-bind="locationDot"></span></p>
+      <p class="footer__tag"><span data-t="footer.1">בוקים זוגיים באור שקיעה</span> <span data-bind="locationDot"></span></p>
       <nav class="footer__links" aria-label="קישורים מהירים">
         <a data-ig href="#" target="_blank" rel="noopener" aria-label="אינסטגרם">
-          <svg class="icon" aria-hidden="true"><use href="#i-ig"/></svg><span>אינסטגרם</span>
+          <svg class="icon" aria-hidden="true"><use href="#i-ig"/></svg><span data-t="footer.2">אינסטגרם</span>
         </a>
         <a data-wa href="#" target="_blank" rel="noopener" aria-label="וואטסאפ">
-          <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg><span>וואטסאפ</span>
+          <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg><span data-t="footer.3">וואטסאפ</span>
         </a>
       </nav>
       <p class="footer__copy">© <span id="year"></span> <span data-bind="businessName">אורי תורג׳מן</span>. כל הזכויות שמורות.</p>
-      <a class="footer__admin" href="/admin">כניסת מנהל</a>
     </div>
   </footer>
 
-  <!-- כפתור וואטסאפ צף (מובייל) -->
-  <a class="fab" id="fab" data-wa href="#" target="_blank" rel="noopener" aria-label="שליחת הודעה בוואטסאפ">
-    <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>
-  </a>
 
   <!-- אייקונים -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -223,7 +312,7 @@
     <symbol id="i-ig" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M7.5 2.75h9a4.75 4.75 0 0 1 4.75 4.75v9a4.75 4.75 0 0 1-4.75 4.75h-9A4.75 4.75 0 0 1 2.75 16.5v-9A4.75 4.75 0 0 1 7.5 2.75Z"/><circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor"/></symbol>
   </svg>
 
-  <script src="js/config.js?v=5"></script>
-  <script src="js/main.js?v=4"></script>
+  <script src="js/config.js?v=6"></script>
+  <script src="js/main.js?v=5"></script>
 </body>
 </html>

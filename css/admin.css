@@ -64,4 +64,24 @@
   .lcard__head { grid-template-columns: auto auto 1fr; }
   .lcard__when { grid-column: auto; text-align: end; }
 }
+/* טקסטים בדף הנחיתה */
+.tx-groups { display: grid; gap: 10px; }
+.tx-group { border: 1px solid var(--beige); border-radius: 6px; background: var(--ivory); }
+.tx-group[open] { background: var(--white); border-color: var(--sand); }
+.tx-group summary {
+  list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 14px 16px; font-family: var(--font-display); font-size: 19px;
+}
+.tx-group summary::-webkit-details-marker { display: none; }
+.tx-group summary em { font-family: var(--font-body); font-style: normal; font-size: 14px; color: var(--espresso-soft); }
+.tx-field { display: grid; gap: 6px; padding: 0 16px 14px; }
+.tx-field__top { display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: var(--espresso-soft); }
+.tx-field textarea {
+  width: 100%; font: inherit; font-size: 16px; line-height: 1.6; color: var(--espresso);
+  background: var(--ivory); border: 1px solid var(--sand); border-radius: 4px; padding: 10px 12px; resize: vertical;
+}
+.tx-field.is-changed textarea { border-color: var(--bronze); background: var(--white); }
+.tx-reset { font: inherit; font-size: 13.5px; color: var(--bronze); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; }
+.tx-save { position: sticky; bottom: 0; background: var(--white); padding: 12px 0 4px; margin-top: 8px; }
+
 [hidden] { display: none !important; }

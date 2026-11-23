@@ -6,21 +6,55 @@
   var C = window.SITE_CONFIG || {};
   document.documentElement.classList.remove("no-js");
 
+  // ----- טקסטים שנערכו בדף המנהל (נשמרים ב-Supabase, טבלת site_texts) -----
+  // טקסט שלא נערך נשאר כמו שהוא כתוב ב-index.html.
+  var TEXTS_KEY = "site_texts_v1";
+  function applyTexts(map) {
+    if (!map || typeof map !== "object") return;
+    document.querySelectorAll("[data-t]").forEach(function (el) {
+      var key = el.getAttribute("data-t");
+      if (!el.hasAttribute("data-t-orig")) el.setAttribute("data-t-orig", el.textContent);
+      var v = map[key];
+      el.textContent = typeof v === "string" && v.trim() ? v : el.getAttribute("data-t-orig");
+    });
+  }
+  try { applyTexts(JSON.parse(localStorage.getItem(TEXTS_KEY) || "null")); } catch (e) {}
+  if (C.supabaseUrl && C.supabaseKey && window.fetch) {
+    fetch(C.supabaseUrl + "/rest/v1/rpc/public_site_texts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", apikey: C.supabaseKey },
+      body: "{}"
+    }).then(function (r) { return r.ok ? r.json() : null; }).then(function (map) {
+      if (!map) return;
+      applyTexts(map);
+      try { localStorage.setItem(TEXTS_KEY, JSON.stringify(map)); } catch (e) {}
+    }).catch(function () {});
+  }
+
   // ----- קישורי וואטסאפ ואינסטגרם -----
   var waNumber = String(C.whatsappNumber || "").replace(/\D/g, "");
   var waUrl = "https://wa.me/" + waNumber + "?text=" + encodeURIComponent(C.whatsappMessage || "");
   var igHandle = String(C.instagramHandle || "").replace(/^@/, "");
   var igUrl = "https://www.instagram.com/" + igHandle + "/";
 
-  document.querySelectorAll("[data-wa]").forEach(function (a) { a.href = waUrl; });
+  var waGiftUrl = "https://wa.me/" + waNumber + "?text=" + encodeURIComponent(C.whatsappGiftMessage || C.whatsappMessage || "");
+  document.querySelectorAll("[data-wa]").forEach(function (a) {
+    a.href = a.getAttribute("data-wa") === "gift" ? waGiftUrl : waUrl;
+  });
   document.querySelectorAll("[data-ig]").forEach(function (a) { a.href = igUrl; });
 
   // ----- טקסטים מתוך ההגדרות -----
   var binds = {
     businessName: C.businessName || "",
     instagramAt: igHandle ? "@" + igHandle : "",
-    locationDot: C.location ? "· " + C.location : ""
+    locationDot: C.location ? "· " + C.location : "",
+    deliveryTime: C.deliveryTime || "",
+    depositPercent: String(C.depositPercent || 10)
   };
+  // פריטים שתלויים בהגדרה שעוד לא מולאה (למשל זמן מסירה) מוסתרים
+  document.querySelectorAll("[data-needs]").forEach(function (el) {
+    if (!C[el.getAttribute("data-needs")]) el.hidden = true;
+  });
   document.querySelectorAll("[data-bind]").forEach(function (el) {
     var key = el.getAttribute("data-bind");
     if (key in binds) el.textContent = binds[key];
@@ -105,11 +139,18 @@
   // ----- כותרת עליונה וכפתור צף בגלילה -----
   var topbar = document.getElementById("topbar");
   var fab = document.getElementById("fab");
+  var topCta = document.getElementById("topCta");
+  var heroCta = document.querySelector(".hero__actions .btn--primary");
   var heroEl = document.querySelector(".hero");
   function onScroll() {
     var y = window.scrollY || window.pageYOffset;
     if (topbar) topbar.classList.toggle("is-scrolled", y > 40);
     if (fab && heroEl) fab.classList.toggle("is-visible", y > heroEl.offsetHeight * 0.7);
+    // הכפתור העליון מופיע רק אחרי שהכפתור המרכזי בפתיחה כבר לא על המסך
+    if (topCta) {
+      var past = heroCta ? heroCta.getBoundingClientRect().bottom < 0 : y > 400;
+      topCta.classList.toggle("is-shown", past);
+    }
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();

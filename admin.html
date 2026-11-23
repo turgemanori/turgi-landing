@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="/css/style.css?v=4" />
   <link rel="stylesheet" href="/css/booking.css?v=4" />
   <link rel="stylesheet" href="/css/journey.css?v=4" />
-  <link rel="stylesheet" href="/css/admin.css?v=4" />
+  <link rel="stylesheet" href="/css/admin.css?v=5" />
 </head>
 <body class="page-admin">
 
@@ -64,6 +64,18 @@
         <h2 id="bdTitle" class="bstep__title">כל הזוגות</h2>
         <div class="tabs" id="filters" role="tablist"></div>
         <ul class="blist" id="leadList"></ul>
+      </section>
+
+      <!-- טקסטים באתר -->
+      <section class="bstep" id="textsBox" aria-labelledby="txTitle">
+        <h2 id="txTitle" class="bstep__title">טקסטים בדף הנחיתה</h2>
+        <p class="admin__hint">פותחים סעיף, משנים את הנוסח ולוחצים "שמירת הטקסטים". השינוי מופיע באתר מיד. כדי לחזור לנוסח המקורי מוחקים את כל הטקסט בשדה, או לוחצים "החזרה למקור".</p>
+        <div id="txGroups" class="tx-groups"><p class="admin__hint">טוען את הטקסטים…</p></div>
+        <div class="admin__actions tx-save">
+          <button type="button" class="btn btn--primary btn--sm" id="txSave" disabled>שמירת הטקסטים</button>
+          <a class="btn btn--ghost btn--sm" href="/" target="_blank" rel="noopener">צפייה בדף</a>
+          <span class="saved-note" id="txNote" aria-live="polite"></span>
+        </div>
       </section>
 
       <div class="admin__grid">
@@ -148,10 +160,10 @@
     <symbol id="i-ig" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M7.5 2.75h9a4.75 4.75 0 0 1 4.75 4.75v9a4.75 4.75 0 0 1-4.75 4.75h-9A4.75 4.75 0 0 1 2.75 16.5v-9A4.75 4.75 0 0 1 7.5 2.75Z"/><circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor"/></symbol>
   </svg>
 
-  <script src="/js/config.js?v=5"></script>
+  <script src="/js/config.js?v=6"></script>
   <script src="/js/sun.js?v=4"></script>
   <script src="/js/api.js?v=4"></script>
   <script src="/js/calendar.js?v=4"></script>
-  <script src="/js/admin.js?v=4"></script>
+  <script src="/js/admin.js?v=5"></script>
 </body>
 </html>
