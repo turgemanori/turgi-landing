@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Assistant:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/logo.css?v=4" />
-  <link rel="stylesheet" href="css/style.css?v=4" />
+  <link rel="stylesheet" href="css/style.css?v=5" />
 </head>
 <body>
 
@@ -28,10 +28,7 @@
     <a href="#top" class="brand" aria-label="אורי תורג׳מן, לראש הדף">
       <span class="logo brand__logo" role="img" aria-label="Turgeman Ori, Fine Art Photography"></span>
     </a>
-    <a class="topbar__cta" data-wa href="#" target="_blank" rel="noopener">
-      <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>
-      <span>וואטסאפ</span>
-    </a>
+    <a class="topbar__cta" href="/hello">בואו נכיר</a>
   </header>
 
   <main id="top">
@@ -164,7 +161,68 @@
 
 
 
-    <!-- ===== 6. המלצות ===== -->
+    <!-- ===== 5. למי זה מתאים ===== -->
+    <section class="section sessions" id="sessions" aria-labelledby="ses-title">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">למי זה מתאים</p>
+          <h2 id="ses-title" class="section__title">כל סיבה טובה לערב אחד ביחד</h2>
+        </header>
+        <ul class="sessions__list">
+          <li class="session reveal">
+            <h3>יום נישואין</h3>
+            <p>שנה, חמש או עשרים. ערב אחד לחגוג את מה שבניתם יחד.</p>
+          </li>
+          <li class="session reveal">
+            <h3>לפני החתונה</h3>
+            <p>להכיר את המצלמה לפני היום הגדול, ולקבל תמונות להזמנה ולשמירת התאריך.</p>
+          </li>
+          <li class="session reveal">
+            <h3>הריון</h3>
+            <p>הציפייה, הבטן והשקט שלפני. בוק רך וטבעי לשניכם, לפני שתהיו שלושה.</p>
+          </li>
+          <li class="session reveal">
+            <h3>סתם כי מתחשק</h3>
+            <p>לא צריך סיבה. ערב טוב ביחד, ותמונות שתשמחו לחזור אליהן.</p>
+          </li>
+          <li class="session reveal">
+            <h3>במתנה</h3>
+            <p>רוצים להפתיע את בן או בת הזוג? <a class="link" data-wa="gift" href="#" target="_blank" rel="noopener">כתבו לי</a> ונתאם הכול בשקט.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== 6. מה מקבלים ===== -->
+    <!-- המספרים כאן כתובים ידנית לפי החבילות ב-js/config.js. משנים חבילה? מעדכנים גם כאן. -->
+    <section class="section included" id="included" aria-labelledby="inc-title">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow">מה מקבלים</p>
+          <h2 id="inc-title" class="section__title">בלי הפתעות, הכול ברור מראש</h2>
+        </header>
+        <dl class="facts">
+          <div class="fact reveal">
+            <dt>שעה ומעלה</dt>
+            <dd>שעת צילום מלאה בחבילת השקיעה. בפרימיום: בלי שעון, כמה לוקיישנים ואלבום מודפס.</dd>
+          </div>
+          <div class="fact reveal">
+            <dt><bdi>100–150</bdi></dt>
+            <dd>תמונות ערוכות באיכות מלאה, בגלריה דיגיטלית שנוח לשתף ולהוריד.</dd>
+          </div>
+          <div class="fact reveal">
+            <dt>השעה הזהובה</dt>
+            <dd>הצילום מתוזמן לשקיעה של הערב שבחרתם, כשהאור הכי רך ומחמיא.</dd>
+          </div>
+          <div class="fact reveal" data-needs="deliveryTime">
+            <dt data-bind="deliveryTime"></dt>
+            <dd>עד שהתמונות הערוכות אצלכם.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ===== 7. המלצות ===== -->
     <section class="section voices" id="voices" aria-labelledby="vc-title" hidden>
       <div class="container">
         <header class="section__head reveal">
@@ -176,7 +234,43 @@
       </div>
     </section>
 
-    <!-- ===== 7. סגירה / CTA ===== -->
+    <!-- ===== 8. שאלות נפוצות ===== -->
+    <section class="section faq" id="faq" aria-labelledby="faq-title">
+      <div class="container faq__inner">
+        <header class="section__head reveal">
+          <p class="eyebrow">שאלות נפוצות</p>
+          <h2 id="faq-title" class="section__title">מה שזוגות שואלים לפני</h2>
+        </header>
+        <div class="faq__list">
+          <details class="qa reveal">
+            <summary>איפה מצלמים?</summary>
+            <p>בים, בשדות, במדבר, בעיר ואפילו אצלכם בבית. אחרי שנכיר נבחר יחד לוקיישן שמתאים לכם ולכיוון של השקיעה באותו ערב.</p>
+          </details>
+          <details class="qa reveal">
+            <summary>מה ללבוש?</summary>
+            <p>אחרי שקובעים תקבלו ממני מדריך הכנה קצר עם רעיונות ללבוש ולגוונים. בגדול: צבעים רכים וטבעיים שמשתלבים זה בזה, בלי הדפסים ולוגואים גדולים, ומשהו שנוח לכם לזוז בו.</p>
+          </details>
+          <details class="qa reveal">
+            <summary>אנחנו לא ממש מצטלמים טוב. זה בסדר?</summary>
+            <p>זה בדיוק מה שרוב הזוגות אומרים לי. אין רשימת פוזות: נלך, נדבר, נצחק, ואני אתן כיוון קטן רק כשצריך. אחרי כמה דקות שוכחים מהמצלמה.</p>
+          </details>
+          <details class="qa reveal">
+            <summary>ומה אם יורד גשם?</summary>
+            <p>אם התחזית לא מאפשרת צילום (גשם, סערה או אובך כבד), נקבע יחד תאריך חלופי והמקדמה עוברת אליו במלואה.</p>
+          </details>
+          <details class="qa reveal" data-needs="deliveryTime">
+            <summary>מתי מקבלים את התמונות?</summary>
+            <p>תוך <span data-bind="deliveryTime"></span>, ערוכות ובאיכות מלאה, בגלריה דיגיטלית.</p>
+          </details>
+          <details class="qa reveal">
+            <summary>איך שומרים תאריך?</summary>
+            <p>עונים על חמש שאלות קצרות ומקבלים מיד דף אישי עם הערבים הפנויים והחבילות. התאריך נשמר אחרי אישור שלי ומקדמה של <span data-bind="depositPercent"></span>%.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 9. סגירה / CTA ===== -->
     <section class="section closing" id="contact" aria-labelledby="close-title">
       <div class="container closing__inner reveal">
         <svg class="closing__sun" viewBox="0 8 120 56" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"><path d="M34 62 A26 26 0 0 1 86 62"/><line x1="92.3" y1="55.1" x2="101.1" y2="53.3"/><line x1="86.7" y1="42.6" x2="94.0" y2="37.3"/><line x1="76.5" y1="33.4" x2="81.0" y2="25.6"/><line x1="60.0" y1="29.0" x2="60.0" y2="17.0"/><line x1="43.5" y1="33.4" x2="39.0" y2="25.6"/><line x1="33.3" y1="42.6" x2="26.0" y2="37.3"/><line x1="27.7" y1="55.1" x2="18.9" y2="53.3"/><line x1="0" y1="63" x2="120" y2="63"/></g></svg>
@@ -208,14 +302,9 @@
         </a>
       </nav>
       <p class="footer__copy">© <span id="year"></span> <span data-bind="businessName">אורי תורג׳מן</span>. כל הזכויות שמורות.</p>
-      <a class="footer__admin" href="/admin">כניסת מנהל</a>
     </div>
   </footer>
 
-  <!-- כפתור וואטסאפ צף (מובייל) -->
-  <a class="fab" id="fab" data-wa href="#" target="_blank" rel="noopener" aria-label="שליחת הודעה בוואטסאפ">
-    <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>
-  </a>
 
   <!-- אייקונים -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -223,7 +312,7 @@
     <symbol id="i-ig" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M7.5 2.75h9a4.75 4.75 0 0 1 4.75 4.75v9a4.75 4.75 0 0 1-4.75 4.75h-9A4.75 4.75 0 0 1 2.75 16.5v-9A4.75 4.75 0 0 1 7.5 2.75Z"/><circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor"/></symbol>
   </svg>
 
-  <script src="js/config.js?v=5"></script>
-  <script src="js/main.js?v=4"></script>
+  <script src="js/config.js?v=6"></script>
+  <script src="js/main.js?v=5"></script>
 </body>
 </html>

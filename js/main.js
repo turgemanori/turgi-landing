@@ -12,15 +12,24 @@
   var igHandle = String(C.instagramHandle || "").replace(/^@/, "");
   var igUrl = "https://www.instagram.com/" + igHandle + "/";
 
-  document.querySelectorAll("[data-wa]").forEach(function (a) { a.href = waUrl; });
+  var waGiftUrl = "https://wa.me/" + waNumber + "?text=" + encodeURIComponent(C.whatsappGiftMessage || C.whatsappMessage || "");
+  document.querySelectorAll("[data-wa]").forEach(function (a) {
+    a.href = a.getAttribute("data-wa") === "gift" ? waGiftUrl : waUrl;
+  });
   document.querySelectorAll("[data-ig]").forEach(function (a) { a.href = igUrl; });
 
   // ----- טקסטים מתוך ההגדרות -----
   var binds = {
     businessName: C.businessName || "",
     instagramAt: igHandle ? "@" + igHandle : "",
-    locationDot: C.location ? "· " + C.location : ""
+    locationDot: C.location ? "· " + C.location : "",
+    deliveryTime: C.deliveryTime || "",
+    depositPercent: String(C.depositPercent || 10)
   };
+  // פריטים שתלויים בהגדרה שעוד לא מולאה (למשל זמן מסירה) מוסתרים
+  document.querySelectorAll("[data-needs]").forEach(function (el) {
+    if (!C[el.getAttribute("data-needs")]) el.hidden = true;
+  });
   document.querySelectorAll("[data-bind]").forEach(function (el) {
     var key = el.getAttribute("data-bind");
     if (key in binds) el.textContent = binds[key];
