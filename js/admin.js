@@ -84,10 +84,91 @@
       });
     } else cal.render();
     refreshSave();
-    kpis(); upcoming(); filters(); list(); settings();
+    kpis(); upcoming(); filters(); list(); settings(); texts();
     $("shareWa").href = "https://wa.me/?text=" + encodeURIComponent("היי! כאן מכירים בדקה, ומקבלים דף אישי עם הערבים הפנויים לבוק זוגי בשקיעה\n" + helloUrl);
     if (location.hash === "#upcoming") setTimeout(function () { $("upcoming").scrollIntoView({ behavior: "smooth" }); }, 200);
   }
+  // ----- טקסטים בדף הנחיתה -----
+  // הנוסח המקורי נקרא מ-index.html (כל אלמנט עם data-t), והשינויים נשמרים בטבלה site_texts.
+  var TX_GROUPS = {
+    hero: "פתיחה", experience: "החוויה הזוגית", gallery: "גלריה", about: "למה דווקא איתי",
+    sessions: "למי זה מתאים", included: "מה מקבלים", voices: "המלצות", faq: "שאלות נפוצות",
+    contact: "סגירה", footer: "פוטר"
+  };
+  var tx = null; // { fields: [{key, orig, label, el}], saved: {} }
+  function txLabel(node) {
+    var t = node.tagName.toLowerCase(), cls = node.className || "";
+    if (/eyebrow/.test(cls)) return "שורה קטנה מעל הכותרת";
+    if (t === "h1" || t === "h2" || (t === "span" && node.closest("h1")) || (t === "em" && node.closest("h1"))) return "כותרת";
+    if (t === "summary") return "שאלה";
+    if (t === "h3" || t === "dt" || t === "strong") return "כותרת משנה";
+    if (t === "a") return /btn/.test(cls) ? "כפתור" : "קישור";
+    if (node.closest("summary") || node.closest(".qa")) return "תשובה";
+    return "טקסט";
+  }
+  function texts() {
+    if (tx) return;
+    tx = { fields: [], saved: {} };
+    Promise.all([
+      fetch("/?texts=" + Date.now()).then(function (r) { return r.text(); }),
+      B.rpc("public_site_texts")
+    ]).then(function (res) {
+      var doc = new DOMParser().parseFromString(res[0], "text/html");
+      tx.saved = res[1] || {};
+      var groups = {}, order = [];
+      doc.querySelectorAll("[data-t]").forEach(function (node) {
+        var key = node.getAttribute("data-t"), g = key.split(".")[0];
+        if (!groups[g]) { groups[g] = []; order.push(g); }
+        groups[g].push({ key: key, orig: node.textContent.replace(/\s+/g, " ").trim(), label: txLabel(node) });
+      });
+      var box = $("txGroups"); box.innerHTML = "";
+      order.forEach(function (g) {
+        var det = document.createElement("details"); det.className = "tx-group";
+        var changed = groups[g].filter(function (f) { return tx.saved[f.key]; }).length;
+        det.innerHTML = "<summary><span>" + esc(TX_GROUPS[g] || g) + "</span><em>" + groups[g].length + " טקסטים" + (changed ? " · " + changed + " שונו" : "") + "</em></summary>";
+        groups[g].forEach(function (f) {
+          var wrap = document.createElement("label"); wrap.className = "field tx-field";
+          var cur = tx.saved[f.key] || f.orig;
+          wrap.innerHTML = '<span class="tx-field__top"><span>' + esc(f.label) + '</span><button type="button" class="tx-reset">החזרה למקור</button></span>';
+          var ta = document.createElement("textarea");
+          ta.rows = Math.min(6, Math.max(1, Math.ceil(f.orig.length / 60)));
+          ta.value = cur; ta.maxLength = 3000;
+          wrap.appendChild(ta);
+          f.el = ta;
+          var reset = wrap.querySelector(".tx-reset");
+          function mark() {
+            var diff = ta.value.trim() && ta.value.trim() !== f.orig;
+            wrap.classList.toggle("is-changed", !!diff); reset.hidden = !diff;
+          }
+          reset.addEventListener("click", function (ev) { ev.preventDefault(); ta.value = f.orig; mark(); txDirty(); });
+          ta.addEventListener("input", function () { mark(); txDirty(); });
+          mark();
+          det.appendChild(wrap);
+          tx.fields.push(f);
+        });
+        box.appendChild(det);
+      });
+    }).catch(function (e) {
+      tx = null;
+      $("txGroups").innerHTML = '<p class="form-error">לא הצלחנו לטעון את הטקסטים. ' + esc(e.message || "") + "</p>";
+    });
+  }
+  function txDirty() { $("txSave").disabled = false; $("txNote").textContent = ""; }
+  $("txSave").addEventListener("click", function () {
+    if (!tx) return;
+    var out = {};
+    tx.fields.forEach(function (f) {
+      var v = f.el.value.trim();
+      out[f.key] = v && v !== f.orig ? v : null;
+    });
+    $("txSave").disabled = true; $("txNote").textContent = "שומר…";
+    B.rpc("admin_site_texts_save", { p_pass: pass, p_texts: out }).then(function (saved) {
+      tx.saved = saved || {};
+      try { localStorage.removeItem("site_texts_v1"); } catch (e) {}
+      $("txNote").textContent = "נשמר ✓ השינויים כבר באתר.";
+    }).catch(function (e) { $("txSave").disabled = false; $("txNote").textContent = ""; err("dashError", e.message); });
+  });
+
   $("copyLink").addEventListener("click", function () { copy(helloUrl, $("copyLink"), "העתקת קישור לשאלון"); });
 
   // ----- מה דורש טיפול -----

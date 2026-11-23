@@ -160,6 +160,9 @@ p { margin: 0; }
 }
 .topbar__cta .icon { width: 17px; height: 17px; color: var(--bronze); }
 .topbar__cta:hover { background: var(--cream); border-color: var(--espresso); }
+/* בדף הבית: הכפתור העליון מוסתר בפתיחה (יש שם כפתור מרכזי) ומופיע אחרי גלילה */
+.topbar__cta--late { opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity .35s var(--ease), transform .35s var(--ease), visibility .35s, background .3s, border-color .3s; }
+.topbar__cta--late.is-shown { opacity: 1; visibility: visible; transform: none; }
 
 /* ===== Hero ===== */
 .hero {
