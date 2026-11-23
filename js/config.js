@@ -31,8 +31,8 @@ window.SITE_CONFIG = {
 
   // ===== תמונות =====
   // נתיב לתמונה בתיקייה images. ריק "" = רקע placeholder בגוון חול.
-  heroImage: "images/photos/vineyard-veil.jpg",
-  aboutImage: "images/photos/smile.jpg",
+  heroImage: "images/photos/sunset-horse.jpg",
+  aboutImage: "images/photos/ori.jpg",
   // תמונות למדריך ההכנה (/guide)
   guideImages: {
     cover: "images/photos/vineyard-bouquet.jpg", // תמונת פתיחה רחבה
@@ -97,10 +97,13 @@ window.SITE_CONFIG = {
   // גלריה: src = נתיב לתמונה (ריק = placeholder), alt = תיאור בעברית,
   // ratio = יחס גובה-רוחב: "portrait" (4:5), "tall" (2:3), "landscape" (3:2), "square" (1:1)
   gallery: [
-    { src: "images/photos/cave-light.jpg", alt: "כלה עומדת במערה, קרן אור רכה יורדת עליה מלמעלה", ratio: "tall" },
+    { src: "images/photos/garden-smile.jpg", alt: "זוג מחובק בגן, הכלה מחייכת אליו באור רך של אחר הצהריים", ratio: "portrait" },
+    { src: "images/photos/cliff-kiss.jpg", alt: "החתן מנשק את הכלה על המצח, על צוק לבן מול השמש", ratio: "portrait" },
+    { src: "images/photos/proposal-bw.jpg", alt: "רגע אחרי הצעת נישואין, בשחור-לבן: היא מחבקת אותו עם הטבעת על היד", ratio: "portrait" },
+    { src: "images/photos/dead-sea.jpg", alt: "זוג צוחק על חוף ים המלח, במים טורקיז ומלח לבן", ratio: "portrait" },
+    { src: "images/photos/garden-embrace.jpg", alt: "החתן מחבק את הכלה מאחור בגן ירוק", ratio: "portrait" },
     { src: "images/photos/vineyard-veil.jpg", alt: "כלה בין שורות כרם באור שקיעה, ההינומה נפרשת ברוח", ratio: "portrait" },
-    { src: "images/photos/smile.jpg", alt: "כלה מחייכת מעבר לכתף עם זר ורדרד", ratio: "portrait" },
-    { src: "images/photos/cave-veil.jpg", alt: "כלה מרימה הינומה ארוכה באור שחודר למערה", ratio: "tall" },
-    { src: "images/photos/vineyard-bouquet.jpg", alt: "כלה בשביל בין שורות הכרם, מניפה זר פרחים באוויר", ratio: "portrait" }
+    { src: "images/photos/garden-walk.jpg", alt: "זוג הולך יד ביד בשביל בגן, מביטים אחד בשנייה", ratio: "portrait" },
+    { src: "images/photos/cave-veil.jpg", alt: "כלה מרימה הינומה ארוכה באור שחודר למערה", ratio: "portrait" }
   ]
 };
