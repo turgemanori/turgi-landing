@@ -53,8 +53,13 @@
     el.innerHTML = rows.map(function (r) { return "<div><dt>" + B.esc(r[0]) + "</dt><dd>" + B.esc(r[1]) + "</dd></div>"; }).join("");
   }
 
+  var BASE = (C.packages || []).map(function (p) { return p.price; });
   function render() {
     $("loading").hidden = true; $("page").hidden = false;
+    // מחיר מיוחד שאורי קבע לזוג הזה (אם יש)
+    (C.packages || []).forEach(function (p, i) { var o = L["price_" + p.id]; p.price = o != null ? o : BASE[i]; });
+    $("personal").hidden = !L.page_note;
+    $("personalText").textContent = L.page_note || "";
     document.title = L.names + " | הדף האישי שלכם";
     document.querySelectorAll("[data-wa-ctx]").forEach(function (a) { a.href = ctxWa(""); });
     $("topWa").href = ctxWa("");
@@ -90,6 +95,8 @@
         : "אני עובר על כל פריים בשקט ובקפידה. ברגע שהגלריה תהיה מוכנה, אשלח לכם אותה בוואטסאפ ובמייל.";
       track(5); view("vAfter");
     }
+
+    if (L.page_title) $("hello").textContent = L.page_title;
 
     var q = new URLSearchParams(location.search);
     if (q.get("welcome") === "1" && s === "lead") {

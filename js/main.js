@@ -52,21 +52,6 @@
     about.innerHTML = '<span class="ph__label">כאן תופיע תמונה שלך בעבודה (4:5)</span>';
   }
 
-  // ----- חבילות (בלי מחיר) -----
-  var pkGrid = document.getElementById("pkGrid");
-  if (pkGrid && Array.isArray(C.packages)) {
-    C.packages.forEach(function (p, i) {
-      var card = document.createElement("article");
-      card.className = "pk reveal" + (i === 1 ? " pk--feature" : "");
-      var h = document.createElement("h3"); h.className = "pk__name"; h.textContent = p.name;
-      var t = document.createElement("p"); t.className = "pk__tag"; t.textContent = p.tagline || "";
-      var ul = document.createElement("ul"); ul.className = "pk__list";
-      (p.features || []).forEach(function (f) { var li = document.createElement("li"); li.textContent = f; ul.appendChild(li); });
-      card.appendChild(h); card.appendChild(t); card.appendChild(ul);
-      pkGrid.appendChild(card);
-    });
-  }
-
   // ----- המלצות -----
   var vGrid = document.getElementById("voicesGrid");
   if (vGrid && Array.isArray(C.testimonials) && C.testimonials.length) {

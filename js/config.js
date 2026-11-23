@@ -24,11 +24,11 @@ window.SITE_CONFIG = {
 
   // ===== תמונות =====
   // נתיב לתמונה בתיקייה images. ריק "" = רקע placeholder בגוון חול.
-  heroImage: "",
-  aboutImage: "",
+  heroImage: "images/photos/vineyard-veil.jpg",
+  aboutImage: "images/photos/smile.jpg",
   // תמונות למדריך ההכנה (/guide)
   guideImages: {
-    cover: "",      // תמונת פתיחה רחבה (3:2)
+    cover: "images/photos/vineyard-bouquet.jpg", // תמונת פתיחה רחבה
     outfit1: "",    // השראה ללבוש בגווני קרם (4:5)
     outfit2: "",    // השראה ללבוש בגווני אדמה (4:5)
     outfit3: ""     // השראה ללבוש בגוונים רכים (4:5)
@@ -90,13 +90,10 @@ window.SITE_CONFIG = {
   // גלריה: src = נתיב לתמונה (ריק = placeholder), alt = תיאור בעברית,
   // ratio = יחס גובה-רוחב: "portrait" (4:5), "tall" (2:3), "landscape" (3:2), "square" (1:1)
   gallery: [
-    { src: "", alt: "זוג מחובק בשדה זהוב באור שקיעה רך", ratio: "tall" },
-    { src: "", alt: "ידיים שלובות בקרבת חוף הים, בגוונים חמים", ratio: "square" },
-    { src: "", alt: "זוג צוחק בהליכה על החוף בשעת השקיעה", ratio: "landscape" },
-    { src: "", alt: "מבט קרוב ואינטימי בין בני הזוג באור טבעי", ratio: "portrait" },
-    { src: "", alt: "צללית של זוג מול השמש השוקעת", ratio: "landscape" },
-    { src: "", alt: "רגע שקט של נשיקה על המצח, ברקע נוף פתוח", ratio: "tall" },
-    { src: "", alt: "זוג יושב על שמיכה בשדה, אור זהוב מאחור", ratio: "portrait" },
-    { src: "", alt: "פרט קרוב של טבעות ואור חם על הידיים", ratio: "square" }
+    { src: "images/photos/cave-light.jpg", alt: "כלה עומדת במערה, קרן אור רכה יורדת עליה מלמעלה", ratio: "tall" },
+    { src: "images/photos/vineyard-veil.jpg", alt: "כלה בין שורות כרם באור שקיעה, ההינומה נפרשת ברוח", ratio: "portrait" },
+    { src: "images/photos/smile.jpg", alt: "כלה מחייכת מעבר לכתף עם זר ורדרד", ratio: "portrait" },
+    { src: "images/photos/cave-veil.jpg", alt: "כלה מרימה הינומה ארוכה באור שחודר למערה", ratio: "tall" },
+    { src: "images/photos/vineyard-bouquet.jpg", alt: "כלה בשביל בין שורות הכרם, מניפה זר פרחים באוויר", ratio: "portrait" }
   ]
 };

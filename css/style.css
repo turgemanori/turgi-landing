@@ -2,15 +2,15 @@
    פלטת צבעים וטיפוגרפיה — לשינוי האווירה מעדכנים כאן
    ========================================================== */
 :root {
-  --cream: #F1EEE9;
-  --ivory: #FAF9F7;
-  --beige: #E5E0D9;
-  --sand: #CEC6BB;
-  --sand-deep: #ABA196;
-  --espresso: #2B1C15;
-  --espresso-soft: #5C4D44;
-  --bronze: #5B3826;
-  --bronze-light: #8E6E5C;
+  --cream: #ECE9E4;
+  --ivory: #FFFFFF;
+  --beige: #E0DBD4;
+  --sand: #C9C0B5;
+  --sand-deep: #A39789;
+  --espresso: #3A2217;
+  --espresso-soft: #6A5A50;
+  --bronze: #6B4029;
+  --bronze-light: #A07E69;
   --white: #FFFFFF;
 
   --font-display: "Frank Ruhl Libre", "Times New Roman", serif;
@@ -88,15 +88,15 @@ p { margin: 0; }
   box-shadow: 0 10px 30px -12px rgba(46, 33, 26, .55);
 }
 .btn--primary .icon { color: var(--bronze-light); }
-.btn--primary:hover { background: #3E2A20; transform: translateY(-2px); box-shadow: 0 16px 36px -14px rgba(46, 33, 26, .6); }
+.btn--primary:hover { background: #4E2F20; transform: translateY(-2px); box-shadow: 0 16px 36px -14px rgba(46, 33, 26, .6); }
 .btn--ghost {
   color: var(--espresso);
   border: 1px solid rgba(46, 33, 26, .28);
-  background: rgba(251, 248, 242, .4);
+  background: rgba(255, 255, 255, .4);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
-.btn--ghost:hover { border-color: var(--espresso); background: rgba(251, 248, 242, .75); }
+.btn--ghost:hover { border-color: var(--espresso); background: rgba(255, 255, 255, .75); }
 .btn--lg { min-height: 60px; padding: 16px 38px; font-size: 18px; }
 
 .link {
@@ -121,7 +121,7 @@ p { margin: 0; }
   transition: background .4s var(--ease), box-shadow .4s var(--ease), padding .4s var(--ease);
 }
 .topbar.is-scrolled {
-  background: rgba(251, 248, 242, .88);
+  background: rgba(255, 255, 255, .88);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 1px 0 rgba(46, 33, 26, .07);
@@ -176,7 +176,7 @@ p { margin: 0; }
   inset: 0;
   z-index: -2;
   background-size: cover;
-  background-position: center 35%;
+  background-position: 30% 20%;
   transform: scale(1.06);
   animation: heroZoom 14s var(--ease) forwards;
 }
@@ -192,8 +192,8 @@ p { margin: 0; }
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(180deg, rgba(251, 248, 242, .35) 0%, rgba(251, 248, 242, 0) 30%),
-    linear-gradient(0deg, rgba(251, 248, 242, .97) 0%, rgba(251, 248, 242, .85) 32%, rgba(251, 248, 242, .25) 62%, rgba(251, 248, 242, 0) 80%);
+    linear-gradient(180deg, rgba(255, 255, 255, .35) 0%, rgba(255, 255, 255, 0) 30%),
+    linear-gradient(0deg, rgba(255, 255, 255, .97) 0%, rgba(255, 255, 255, .85) 32%, rgba(255, 255, 255, .25) 62%, rgba(255, 255, 255, 0) 80%);
 }
 .hero__content {
   width: 100%;
@@ -464,8 +464,8 @@ p { margin: 0; }
   .hero { align-items: center; }
   .hero__veil {
     background:
-      linear-gradient(180deg, rgba(251, 248, 242, .3) 0%, rgba(251, 248, 242, 0) 25%),
-      linear-gradient(270deg, rgba(251, 248, 242, .96) 0%, rgba(251, 248, 242, .82) 34%, rgba(251, 248, 242, .15) 62%, rgba(251, 248, 242, 0) 78%);
+      linear-gradient(180deg, rgba(255, 255, 255, .3) 0%, rgba(255, 255, 255, 0) 25%),
+      linear-gradient(270deg, rgba(255, 255, 255, .96) 0%, rgba(255, 255, 255, .82) 34%, rgba(255, 255, 255, .15) 62%, rgba(255, 255, 255, 0) 78%);
   }
   .hero__content { padding-block: 140px 120px; }
   .hero__title { max-width: 720px; }
@@ -534,3 +534,10 @@ p { margin: 0; }
   .voices__grid { grid-template-columns: repeat(3, 1fr); gap: 34px; }
 }
 [hidden] { display: none !important; }
+
+/* תמונת הפתיחה: הכלה במרכז-שמאל, הטקסט מימין */
+@media (min-width: 900px) {
+  .hero__media { background-position: 22% 42%; }
+}
+.footer__admin { display: inline-block; margin-top: 14px; font-size: 12.5px; color: var(--cream); opacity: .55; border-bottom: 1px solid transparent; }
+.footer__admin:hover { opacity: .9; border-color: currentColor; }

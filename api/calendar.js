@@ -63,7 +63,9 @@ module.exports = async (req, res) => {
   (feed.items || []).forEach(function (l) {
     const setMs = Sun.sunsetMs(l.day, PLACE.lat, PLACE.lon);
     const start = setMs - 2 * 3600000, end = setMs + 20 * 60000;
-    const p = PKG[l.package] || { name: l.package || "", price: 0 };
+    const base = PKG[l.package] || { name: l.package || "", price: 0 };
+    const over = l["price_" + l.package];
+    const p = { name: base.name, price: over != null ? over : base.price };
     const title = (l.status === "booked" ? "" : STATUS[l.status] + " · ") + l.names + " · " + p.name;
     const desc = [
       "סטטוס: " + (STATUS[l.status] || l.status),

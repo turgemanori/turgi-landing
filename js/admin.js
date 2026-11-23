@@ -61,6 +61,11 @@
   }
   $("refreshBtn").addEventListener("click", reload);
 
+  // חבילה עם המחיר של הזוג הזה (מחיר מיוחד גובר על המחיר הרגיל)
+  function lp(l, id) {
+    var p = B.pkg(id), o = l["price_" + id];
+    return { id: p.id, name: p.name, price: o != null ? o : p.price };
+  }
   function pageUrl(l) { return location.origin + "/for/" + l.token; }
   function sunset(day) { return B.sunset(day); }
   function meetTime(day) {
@@ -137,7 +142,7 @@
   // ----- הודעות מוכנות לוואטסאפ -----
   function first(l) { return l.names; }
   function messages(l) {
-    var p = l.package ? B.pkg(l.package) : null, url = pageUrl(l), out = [];
+    var p = l.package ? lp(l, l.package) : null, url = pageUrl(l), out = [];
     var d = l.day ? B.prettyDate(l.day) : "";
     if (l.status === "lead") {
       out.push(["הודעת היכרות", "היי " + first(l) + ", כאן אורי\nתודה שמילאתם את השאלון, כיף להכיר!" +
@@ -255,7 +260,7 @@
   }
 
   function card(l) {
-    var st = STATUS[l.status] || { t: l.status, c: "off" }, p = l.package ? B.pkg(l.package) : null;
+    var st = STATUS[l.status] || { t: l.status, c: "off" }, p = l.package ? lp(l, l.package) : null;
     var li = document.createElement("li"); li.className = "lcard" + (openCard === l.id ? " is-open" : "");
     var when = l.day ? B.shortDate(l.day) + " · שקיעה " + sunset(l.day) : "עוד לא בחרו ערב";
     li.innerHTML =
@@ -280,7 +285,7 @@
       ["הסיבה", esc(l.occasion || "—")],
       ["נוף", esc((l.landscape || "—").split(",").join(", "))],
       ["מתי", esc(l.timing || "—")],
-      ["המלצה", esc(B.pkg(l.recommended).name)]
+      ["המלצה", esc(lp(l, l.recommended).name)]
     ];
     if (p) rows.push(["מחיר / מקדמה", B.money(p.price) + " / " + B.money(B.deposit(p)) + (l.deposit_paid_at ? " ✓ " + esc(l.deposit_method || "") : "")]);
     if (l.hold_until && l.status === "awaiting_deposit") rows.push(["מוחזק עד", esc(B.holdText(l.hold_until))]);
@@ -294,7 +299,20 @@
           (C.packages || []).map(function (x) { return '<option value="' + x.id + '"' + (l.package === x.id ? " selected" : "") + ">" + esc(x.name) + "</option>"; }).join("") + "</select></label>" +
         '<label class="field"><span>מיקום (יופיע ביומן)</span><input type="text" data-k="location" maxlength="160" value="' + esc(l.location || "") + '" placeholder="למשל: חוף פלמחים" /></label>' +
         '<label class="field"><span>זמן נסיעה בדקות</span><input type="number" data-k="travel_minutes" min="0" max="600" inputmode="numeric" value="' + (l.travel_minutes == null ? "" : l.travel_minutes) + '" /></label>' +
-        '<label class="field field--wide"><span>הערות פרטיות</span><textarea data-k="admin_note" rows="2" maxlength="2000">' + esc(l.admin_note || "") + "</textarea></label>" +
+        '<label class="field field--wide"><span>הערות פרטיות (רק אתה רואה)</span><textarea data-k="admin_note" rows="2" maxlength="2000">' + esc(l.admin_note || "") + "</textarea></label>" +
+      "</div>" +
+      '<h3 class="lcard__sub">מה הזוג רואה בדף שלו</h3>' +
+      '<div class="fields lfields">' +
+        '<label class="field"><span>שמות</span><input type="text" data-k="names" maxlength="80" value="' + esc(l.names) + '" /></label>' +
+        '<label class="field"><span>טלפון</span><input type="tel" data-k="phone" maxlength="20" dir="ltr" value="' + esc(l.phone) + '" /></label>' +
+        '<label class="field field--wide"><span>כותרת אישית <em>(ריק = הכותרת הרגילה)</em></span><input type="text" data-k="page_title" maxlength="140" value="' + esc(l.page_title || "") + '" placeholder="' + esc(l.names) + ', הנה הערבים שפתוחים בשבילכם" /></label>' +
+        '<label class="field field--wide"><span>הודעה אישית ממך בראש הדף</span><textarea data-k="page_note" rows="3" maxlength="1500" placeholder="למשל: היה כיף לדבר איתכם! שמרתי לכם במיוחד את ערבי הסוף שבוע.">' + esc(l.page_note || "") + "</textarea></label>" +
+        '<label class="field"><span>החבילה שמומלצת להם</span><select data-k="recommended">' +
+          (C.packages || []).map(function (x) { return '<option value="' + x.id + '"' + (l.recommended === x.id ? " selected" : "") + ">" + esc(x.name) + "</option>"; }).join("") + "</select></label>" +
+        (C.packages || []).map(function (x) {
+          return '<label class="field"><span>מחיר מיוחד: ' + esc(x.name) + ' <em>(ריק = ' + B.money(x.price) + ")</em></span>" +
+            '<input type="number" min="0" max="100000" inputmode="numeric" data-k="price_' + x.id + '" value="' + (l["price_" + x.id] == null ? "" : l["price_" + x.id]) + '" /></label>';
+        }).join("") +
       "</div>" +
       '<div class="admin__actions" data-act></div>' +
       '<div class="lcard__wa"><p class="admin__hint">הודעות מוכנות בוואטסאפ</p><div class="admin__actions" data-wa></div></div>' +
@@ -302,7 +320,7 @@
 
     var act = el.querySelector("[data-act]");
     function btn(text, cls, fn) { var x = document.createElement("button"); x.type = "button"; x.className = "btn btn--sm " + cls; x.textContent = text; x.onclick = fn; act.appendChild(x); }
-    btn("שמירת פרטים", "btn--ghost", function () { save(el, l); });
+    btn("שמירת כל השינויים", "btn--primary", function () { save(el, l); });
     var s = l.status;
     if (s === "pending" || ((s === "declined" || s === "expired") && l.day)) btn("אישור (מחזיק עד מחר 10:00)", "btn--primary", function () { action(l, "approve"); });
     if (s === "awaiting_deposit") {

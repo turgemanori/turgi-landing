@@ -36,6 +36,8 @@
   font: inherit; font-size: 16px; color: var(--espresso); background: var(--ivory);
   border: 1px solid var(--sand); border-radius: 4px; padding: 11px 12px; width: 100%;
 }
+.lcard__sub { font-size: 18px; margin: 20px 0 4px; padding-top: 14px; border-top: 1px solid var(--beige); }
+.lfields .field em { font-style: normal; font-weight: 300; color: var(--espresso-soft); }
 .lcard__wa { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--beige); }
 .lcard__wa .admin__hint { margin-bottom: 0; }
 .lcard__wa .admin__actions { margin-top: 8px; }

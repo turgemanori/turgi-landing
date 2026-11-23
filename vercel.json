@@ -1,19 +1,40 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/for/:token", "destination": "/for" }
+    {
+      "source": "/for/:token",
+      "destination": "/for"
+    }
   ],
   "redirects": [
-    { "source": "/book", "destination": "/hello", "permanent": false }
+    {
+      "source": "/book",
+      "destination": "/hello",
+      "permanent": false
+    }
   ],
   "headers": [
     {
       "source": "/(css|js|images)/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
     },
     {
       "source": "/(admin|for/.*)",
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }, { "key": "Referrer-Policy", "value": "no-referrer" }]
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        }
+      ]
     }
   ]
 }

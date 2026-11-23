@@ -50,6 +50,9 @@
 .mine__hero { text-align: center; margin-bottom: 30px; }
 .mine__hero .eyebrow { justify-content: center; }
 .mine__hero .section__title { margin-bottom: 12px; }
+.mine__personal { margin: 22px auto 0; max-width: 560px; padding: 18px 22px; background: var(--cream); border-right: 2px solid var(--bronze); border-radius: 6px; text-align: start; }
+.mine__personal p { font-family: var(--font-display); font-size: 19px; line-height: 1.7; font-weight: 300; white-space: pre-line; }
+.mine__personal cite { display: block; margin-top: 8px; font-style: normal; font-size: 14px; color: var(--bronze); }
 .mine__missing { text-align: center; padding: 40px 0; }
 .mine__actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 24px; }
 .mine__actions .btn { flex: 1 1 200px; max-width: 320px; }

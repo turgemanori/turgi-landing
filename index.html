@@ -12,14 +12,14 @@
   <meta property="og:locale" content="he_IL" />
   <meta property="og:title" content="אורי תורג׳מן · בוק זוגי בשקיעה, רגעים אמיתיים באור רך" />
   <meta property="og:description" content="סשנים זוגיים אינטימיים, חמים ומלאי רגש. בדקו זמינות לשקיעה הקרובה." />
-  <meta property="og:image" content="images/og-image.jpg" />
+  <meta property="og:image" content="https://turgi-landing.vercel.app/images/og-image.jpg" />
 
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Assistant:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/logo.css" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/logo.css?v=4" />
+  <link rel="stylesheet" href="css/style.css?v=4" />
 </head>
 <body>
 
@@ -38,7 +38,7 @@
 
     <!-- ===== 1. Hero ===== -->
     <section class="hero" aria-labelledby="hero-title">
-      <div class="hero__media" id="heroMedia" role="img" aria-label="זוג מחובק באור שקיעה רך"></div>
+      <div class="hero__media" id="heroMedia" role="img" aria-label="כלה בשמלה לבנה והינומה ארוכה בין שורות כרם באור שקיעה"></div>
       <div class="hero__veil" aria-hidden="true"></div>
       <div class="hero__content">
         <p class="eyebrow reveal">בוקים זוגיים · אור שקיעה · Fine Art</p>
@@ -119,7 +119,7 @@
     <section class="section about" id="about" aria-labelledby="about-title">
       <div class="container about__grid">
         <figure class="about__media reveal">
-          <div class="ph ph--portrait" id="aboutMedia" role="img" aria-label="אורי בעבודה, באור שקיעה"></div>
+          <div class="ph ph--portrait" id="aboutMedia" role="img" aria-label="כלה מחייכת עם זר ורדרד באור טבעי רך"></div>
         </figure>
 
         <div class="about__text">
@@ -163,22 +163,6 @@
     </section>
 
 
-    <!-- ===== 5. החבילות (בלי מחירים) ===== -->
-    <section class="section packages" id="packages" aria-labelledby="pk-title">
-      <div class="container">
-        <header class="section__head reveal">
-          <p class="eyebrow">החבילות</p>
-          <h2 id="pk-title" class="section__title">שתי דרכים לספר את הסיפור שלכם</h2>
-          <p class="section__lead">כל סשן מתוזמן לשעה הזהובה ונערך בגוונים חמים וטבעיים. אחרי היכרות קצרה תקבלו דף אישי עם הערבים הפנויים, המחירים והחבילה שהכי מתאימה לכם.</p>
-        </header>
-        <!-- החבילות נטענות מתוך js/config.js -->
-        <div class="pk-grid" id="pkGrid"></div>
-        <div class="pk-cta reveal">
-          <a class="btn btn--primary btn--lg" href="/hello">בואו נכיר</a>
-          <p class="closing__hint">חמש שאלות קצרות, בערך דקה. בלי התחייבות.</p>
-        </div>
-      </div>
-    </section>
 
     <!-- ===== 6. המלצות ===== -->
     <section class="section voices" id="voices" aria-labelledby="vc-title" hidden>
@@ -224,6 +208,7 @@
         </a>
       </nav>
       <p class="footer__copy">© <span id="year"></span> <span data-bind="businessName">אורי תורג׳מן</span>. כל הזכויות שמורות.</p>
+      <a class="footer__admin" href="/admin">כניסת מנהל</a>
     </div>
   </footer>
 
@@ -238,7 +223,7 @@
     <symbol id="i-ig" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M7.5 2.75h9a4.75 4.75 0 0 1 4.75 4.75v9a4.75 4.75 0 0 1-4.75 4.75h-9A4.75 4.75 0 0 1 2.75 16.5v-9A4.75 4.75 0 0 1 7.5 2.75Z"/><circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor"/></symbol>
   </svg>
 
-  <script src="js/config.js"></script>
-  <script src="js/main.js"></script>
+  <script src="js/config.js?v=4"></script>
+  <script src="js/main.js?v=4"></script>
 </body>
 </html>
