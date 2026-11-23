@@ -17,7 +17,7 @@ window.SITE_CONFIG = {
   whatsappMessage: "היי אורי, אשמח לשמוע פרטים על בוק זוגי בשקיעה",
 
   // שם המשתמש באינסטגרם (בלי @)
-  instagramHandle: "turgi_photographer",
+  instagramHandle: "turgi__photographer",
 
   // אזור הצילום (מופיע בפוטר). אפשר להשאיר ריק.
   location: "",
