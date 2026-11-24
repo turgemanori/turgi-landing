@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="/css/logo.css?v=4" />
   <link rel="stylesheet" href="/css/style.css?v=8" />
   <link rel="stylesheet" href="/css/booking.css?v=4" />
-  <link rel="stylesheet" href="/css/journey.css?v=4" />
+  <link rel="stylesheet" href="/css/journey.css?v=5" />
 </head>
 <body class="page-journey">
 
@@ -144,13 +144,24 @@
 
   <!-- ברוכים הבאים, אחרי השאלון -->
   <dialog class="dlg" id="welcomeDlg" aria-labelledby="wTitle">
-    <form method="dialog" class="dlg__in">
+    <form method="dialog" class="dlg__in" id="wMain">
       <p class="eyebrow">נעים מאוד</p>
       <h2 class="dlg__title" id="wTitle"></h2>
       <p>אני אורי, צלם בוקים זוגיים באור שקיעה. קיבלתי את התשובות שלכם, וכך נשמע הערב שאתם חולמים עליו:</p>
       <blockquote class="dlg__story" id="wStory"></blockquote>
       <p>שלחו לי את הסיכום בוואטסאפ, ואחזור אליכם בהקדם. בינתיים אפשר כבר להציץ בערבים הפנויים.</p>
       <a class="btn btn--primary" id="wWa" href="#" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>שליחת הסיכום לאורי</a>
+      <button class="link dlg__skip" value="close">לראות את הערבים הפנויים</button>
+    </form>
+    <!-- תודה, אחרי ששלחו את הסיכום -->
+    <form method="dialog" class="dlg__in dlg__thanks" id="wThanks" hidden>
+      <svg class="closing__sun" viewBox="0 8 120 56" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"><path d="M34 62 A26 26 0 0 1 86 62"/><line x1="92.3" y1="55.1" x2="101.1" y2="53.3"/><line x1="86.7" y1="42.6" x2="94.0" y2="37.3"/><line x1="76.5" y1="33.4" x2="81.0" y2="25.6"/><line x1="60.0" y1="29.0" x2="60.0" y2="17.0"/><line x1="43.5" y1="33.4" x2="39.0" y2="25.6"/><line x1="33.3" y1="42.6" x2="26.0" y2="37.3"/><line x1="27.7" y1="55.1" x2="18.9" y2="53.3"/><line x1="0" y1="63" x2="120" y2="63"/></g></svg>
+      <p class="eyebrow">תודה</p>
+      <h2 class="dlg__title" id="tkTitle">איזה כיף שכתבתם לי</h2>
+      <p>הסיכום שלכם בדרך אליי, ואני כבר מחכה לקרוא. אחזור אליכם אישית בוואטסאפ בהקדם, כדי שנמצא יחד את הערב המושלם.</p>
+      <p>בינתיים, מוזמנים להציץ באינסטגרם שלי: עוד זוגות, עוד שקיעות, ועדכון ראשון על ערבים חדשים שנפתחים.</p>
+      <a class="btn btn--primary" id="tkIg" href="https://www.instagram.com/turgi__photographer" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-ig"/></svg>לעקוב באינסטגרם</a>
+      <a class="btn btn--ghost" id="tkShare" href="#" target="_blank" rel="noopener">מכירים זוג שיאהב את זה? שתפו</a>
       <button class="link dlg__skip" value="close">לראות את הערבים הפנויים</button>
     </form>
   </dialog>
@@ -182,7 +193,8 @@
   <script src="/js/config.js?v=8"></script>
   <script src="/js/sun.js?v=4"></script>
   <script src="/js/api.js?v=4"></script>
+  <script src="/js/track.js?v=1"></script>
   <script src="/js/calendar.js?v=4"></script>
-  <script src="/js/for.js?v=4"></script>
+  <script src="/js/for.js?v=5"></script>
 </body>
 </html>

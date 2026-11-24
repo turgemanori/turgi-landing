@@ -21,8 +21,18 @@
     declined: { t: "נדחה", c: "off" },
     expired: { t: "פג תוקף", c: "off" }
   };
+  // זוג חדש = עוד לא פתחת את הכרטיס שלו
+  var trackingSince = null, statDays = 30;
+  function isNew(l) { return "seen_at" in l && !l.seen_at; }
+  // מילאו את השאלון אבל לא לחצו "שליחת הסיכום לאורי" (רק מאז שהמעקב התחיל)
+  function noSend(l) {
+    return l.status === "lead" && "summary_sent_at" in l && !l.summary_sent_at &&
+      !!trackingSince && l.created_at >= trackingSince;
+  }
   var FILTERS = [
     ["active", "פעילים", function (l) { return ["lead", "pending", "awaiting_deposit", "booked", "shot"].indexOf(l.status) > -1; }],
+    ["new", "חדשים", isNew],
+    ["nosend", "לא שלחו סיכום", noSend],
     ["lead", "היכרות", function (l) { return l.status === "lead"; }],
     ["pending", "ממתינים לאישור", function (l) { return l.status === "pending"; }],
     ["awaiting_deposit", "ממתינים למקדמה", function (l) { return l.status === "awaiting_deposit"; }],
@@ -84,7 +94,7 @@
       });
     } else cal.render();
     refreshSave();
-    kpis(); upcoming(); filters(); list(); settings(); texts();
+    kpis(); upcoming(); filters(); list(); settings(); texts(); stats();
     $("shareWa").href = "https://wa.me/?text=" + encodeURIComponent("היי! כאן מכירים בדקה, ומקבלים דף אישי עם הערבים הפנויים לבוק זוגי בשקיעה\n" + helloUrl);
     if (location.hash === "#upcoming") setTimeout(function () { $("upcoming").scrollIntoView({ behavior: "smooth" }); }, 200);
   }
@@ -175,14 +185,15 @@
   function kpis() {
     var L = data.leads || [];
     var c = function (st) { return L.filter(function (l) { return l.status === st; }).length; };
+    var fresh = L.filter(isNew).length;
     var items = [
-      ["lead", c("lead"), "היכרויות חדשות"],
+      L.some(function (l) { return "seen_at" in l; }) ? ["new", fresh, "זוגות חדשים שעוד לא פתחת"] : ["lead", c("lead"), "היכרויות חדשות"],
       ["pending", c("pending"), "ממתינים לאישור שלך"],
       ["awaiting_deposit", c("awaiting_deposit"), "ממתינים למקדמה"],
       ["booked", c("booked"), "צילומים שמורים"]
     ];
     $("kpis").innerHTML = items.map(function (k) {
-      return '<button type="button" class="kpi' + (k[1] && k[0] === "pending" ? " kpi--hot" : "") + '" data-f="' + k[0] + '"><strong>' + k[1] + "</strong><span>" + k[2] + "</span></button>";
+      return '<button type="button" class="kpi' + (k[1] && (k[0] === "pending" || k[0] === "new") ? " kpi--hot" : "") + '" data-f="' + k[0] + '"><strong>' + k[1] + "</strong><span>" + k[2] + "</span></button>";
     }).join("");
     $("kpis").querySelectorAll("[data-f]").forEach(function (b) {
       b.addEventListener("click", function () { filter = b.getAttribute("data-f"); filters(); list(); $("leadList").scrollIntoView({ behavior: "smooth", block: "start" }); });
@@ -342,17 +353,26 @@
 
   function card(l) {
     var st = STATUS[l.status] || { t: l.status, c: "off" }, p = l.package ? lp(l, l.package) : null;
-    var li = document.createElement("li"); li.className = "lcard" + (openCard === l.id ? " is-open" : "");
+    var li = document.createElement("li"); li.className = "lcard" + (openCard === l.id ? " is-open" : "") + (isNew(l) ? " is-new" : "");
     var when = l.day ? B.shortDate(l.day) + " · שקיעה " + sunset(l.day) : "עוד לא בחרו ערב";
     li.innerHTML =
       '<button type="button" class="lcard__head" aria-expanded="' + (openCard === l.id) + '">' +
         '<span class="lcard__names">' + esc(l.names) + "</span>" +
-        '<span class="badge badge--' + st.c + '">' + st.t + "</span>" +
+        '<span class="lcard__badges">' +
+          (isNew(l) ? '<span class="badge badge--new">חדש</span>' : "") +
+          (noSend(l) ? '<span class="badge badge--nosend">לא שלחו סיכום</span>' : "") +
+          '<span class="badge badge--' + st.c + '">' + st.t + "</span></span>" +
         '<span class="lcard__when">' + esc(when) + (p ? " · " + esc(p.name) : "") + "</span>" +
       "</button>" +
       '<div class="lcard__body"></div>';
     li.querySelector(".lcard__head").addEventListener("click", function () {
-      openCard = openCard === l.id ? null : l.id; list();
+      openCard = openCard === l.id ? null : l.id;
+      if (openCard && isNew(l)) {
+        l.seen_at = new Date().toISOString();
+        B.rpc("admin_lead_seen", { p_pass: pass, p_id: l.id }).catch(function () {});
+        kpis(); filters();
+      }
+      list();
     });
     if (openCard === l.id) body(li.querySelector(".lcard__body"), l, p);
     return li;
@@ -370,6 +390,8 @@
     ];
     if (p) rows.push(["מחיר / מקדמה", B.money(p.price) + " / " + B.money(B.deposit(p)) + (l.deposit_paid_at ? " ✓ " + esc(l.deposit_method || "") : "")]);
     if (l.hold_until && l.status === "awaiting_deposit") rows.push(["מוחזק עד", esc(B.holdText(l.hold_until))]);
+    if (l.status === "lead" && "summary_sent_at" in l)
+      rows.push(["סיכום בוואטסאפ", l.summary_sent_at ? "שלחו לך ✓" : noSend(l) ? "עוד לא שלחו. כדאי לכתוב להם" : "—"]);
     rows.push(["נכנס", new Date(l.created_at).toLocaleString("he-IL", { dateStyle: "short", timeStyle: "short", timeZone: "Asia/Jerusalem" })]);
 
     el.innerHTML =
@@ -435,6 +457,85 @@
     B.rpc("admin_lead_action", { p_pass: pass, p_id: l.id, p_action: a })
       .then(function () { if (a === "delete") openCard = null; return reload(); })
       .catch(function (e) { err("dashError", e.message); window.scrollTo({ top: 0, behavior: "smooth" }); });
+  }
+
+  // ----- סטטיסטיקות -----
+  var SRC = { instagram: "אינסטגרם", whatsapp: "וואטסאפ", facebook: "פייסבוק", tiktok: "טיקטוק", google: "גוגל", direct: "ישירות", other: "אחר" };
+  document.querySelectorAll("#stRange [data-days]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      statDays = +b.getAttribute("data-days");
+      document.querySelectorAll("#stRange [data-days]").forEach(function (x) { x.classList.toggle("is-active", x === b); });
+      stats();
+    });
+  });
+  function pct(a, b) { return b ? Math.round(a / b * 100) + "%" : ""; }
+  function stats() {
+    var box = $("stBody");
+    B.rpc("admin_stats", { p_pass: pass, p_days: statDays }).then(function (r) {
+      var hadSince = !!trackingSince;
+      trackingSince = r.tracking_since || null;
+      if (!hadSince && trackingSince) { kpis(); filters(); list(); }
+      var f = r.funnel || {}, ld = r.leads || {}, src = r.sources || [], daily = r.daily || [];
+      var ig = (src.filter(function (x) { return x.source === "instagram"; })[0] || {}).n || 0;
+      var srcTotal = src.reduce(function (a, x) { return a + x.n; }, 0);
+
+      var kp = [
+        [f.visit || 0, "כניסות לדף"],
+        [ig, "הגיעו מאינסטגרם"],
+        [ld.total || 0, "מילאו את השאלון"],
+        [ld.summary || 0, "שלחו לך סיכום"]
+      ];
+      var steps = [
+        ["נכנסו לדף הנחיתה", f.visit || 0],
+        ["פתחו את השאלון", f.quiz_open || 0],
+        ["התחילו למלא", f.quiz_start || 0],
+        ["סיימו את השאלון", f.quiz_done || 0],
+        ["שלחו לך את הסיכום בוואטסאפ", f.summary_sent || 0],
+        ["ביקשו תאריך", ld.requested || 0, true],
+        ["שילמו מקדמה", ld.paid || 0, true]
+      ];
+      var max = Math.max.apply(null, steps.map(function (x) { return x[1]; }).concat([1]));
+      var html = '<div class="st-kpis">' + kp.map(function (k) {
+        return '<div class="st-kpi"><strong>' + k[0] + "</strong><span>" + k[1] + "</span></div>";
+      }).join("") + "</div>";
+
+      html += '<h3 class="st-sub">המסלול של הזוגות</h3><ol class="funnel">' + steps.map(function (x, i) {
+        var prev = i ? steps[i - 1][1] : 0;
+        return '<li' + (x[2] ? ' class="is-db"' : "") + "><span>" + esc(x[0]) + '</span><span class="funnel__n">' + x[1] +
+          (i && prev ? "<em>(" + pct(x[1], prev) + " מהשלב הקודם)</em>" : "") + "</span>" +
+          '<span class="funnel__bar"><i style="width:' + (x[1] / max * 100) + '%"></i></span></li>';
+      }).join("") + "</ol>";
+
+      html += '<h3 class="st-sub">מאיפה הגיעו</h3>' + (src.length
+        ? '<div class="st-src">' + src.map(function (x) {
+            return "<span>" + esc(SRC[x.source] || x.source) + " <b>" + x.n + "</b> · " + pct(x.n, srcTotal) + "</span>";
+          }).join("") + "</div>"
+        : '<p class="admin__hint">עוד אין כניסות בתקופה הזאת.</p>');
+
+      var dmax = Math.max.apply(null, daily.map(function (d) { return d.visits; }).concat([1]));
+      html += '<h3 class="st-sub">כניסות לפי יום</h3><div class="st-days" role="img" aria-label="כניסות לדף לפי יום">' +
+        daily.map(function (d) {
+          var t = B.shortDate(d.day) + ": " + d.visits + " כניסות" + (d.leads ? ", " + d.leads + " שאלונים" : "");
+          return '<i class="' + (d.leads ? "has-lead" : "") + '" style="height:' + (d.visits / dmax * 100) + '%" title="' + esc(t) + '"></i>';
+        }).join("") + "</div>" +
+        (daily.length ? '<div class="st-days-legend"><span>' + esc(B.shortDate(daily[0].day)) + "</span><span>היום</span></div>" : "") +
+        '<p class="st-note">עמודה כהה = יום שבו מילאו שאלון.</p>';
+
+      var ns = (data.leads || []).filter(noSend).length;
+      if (ns) html += '<div class="st-alert"><span>' + ns + (ns === 1 ? " זוג מילא" : " זוגות מילאו") +
+        ' את השאלון ולא שלחו לך את הסיכום. כדאי לכתוב להם בעצמך.</span><button type="button" class="btn btn--ghost btn--sm" data-nosend>להצגה</button></div>';
+
+      if (trackingSince && new Date(trackingSince) > new Date(Date.now() - statDays * 86400000))
+        html += '<p class="st-note">המעקב התחיל ב-' + esc(new Date(trackingSince).toLocaleDateString("he-IL", { timeZone: "Asia/Jerusalem" })) +
+          ", ולכן אין נתונים על כניסות לפני כן. ביקשו תאריך ושילמו מקדמה נספרים מכל השאלונים בתקופה.</p>";
+      else html += '<p class="st-note">ביקשו תאריך ושילמו מקדמה נספרים מהשאלונים שהתקבלו בתקופה.</p>';
+
+      box.innerHTML = html;
+      var nb = box.querySelector("[data-nosend]");
+      if (nb) nb.addEventListener("click", function () { filter = "nosend"; filters(); list(); $("leadList").scrollIntoView({ behavior: "smooth", block: "start" }); });
+    }).catch(function () {
+      box.innerHTML = '<p class="admin__hint">הסטטיסטיקות עוד לא זמינות. הן יופיעו אחרי שהעדכון יופעל במסד הנתונים.</p>';
+    });
   }
 
   // ----- הגדרות: יומן, התראות, הודעת פתיחה -----

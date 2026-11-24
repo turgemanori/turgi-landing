@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="/css/style.css?v=8" />
   <link rel="stylesheet" href="/css/booking.css?v=4" />
   <link rel="stylesheet" href="/css/journey.css?v=4" />
-  <link rel="stylesheet" href="/css/admin.css?v=5" />
+  <link rel="stylesheet" href="/css/admin.css?v=6" />
 </head>
 <body class="page-admin">
 
@@ -64,6 +64,19 @@
         <h2 id="bdTitle" class="bstep__title">כל הזוגות</h2>
         <div class="tabs" id="filters" role="tablist"></div>
         <ul class="blist" id="leadList"></ul>
+      </section>
+
+      <!-- סטטיסטיקות -->
+      <section class="bstep" id="stats" aria-labelledby="stTitle">
+        <div class="st-head">
+          <h2 id="stTitle" class="bstep__title">סטטיסטיקות</h2>
+          <div class="tabs" id="stRange" role="tablist">
+            <button type="button" class="tab" data-days="7">7 ימים</button>
+            <button type="button" class="tab is-active" data-days="30">30 ימים</button>
+          </div>
+        </div>
+        <p class="admin__hint">כמה נכנסו לדף, כמה התחילו את השאלון, כמה סיימו וכמה שלחו לך את הסיכום. בלי עוגיות ובלי מידע אישי, ולכן אין צורך בהודעת פרטיות לגולשים.</p>
+        <div id="stBody"><p class="admin__hint">טוען…</p></div>
       </section>
 
       <!-- טקסטים באתר -->
@@ -164,6 +177,6 @@
   <script src="/js/sun.js?v=4"></script>
   <script src="/js/api.js?v=4"></script>
   <script src="/js/calendar.js?v=4"></script>
-  <script src="/js/admin.js?v=5"></script>
+  <script src="/js/admin.js?v=6"></script>
 </body>
 </html>

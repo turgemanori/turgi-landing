@@ -177,3 +177,7 @@ button.link { font: inherit; background: none; padding: 0 0 1px; cursor: pointer
   .g-looks { grid-template-columns: repeat(3, 1fr); }
 }
 [hidden] { display: none !important; }
+
+/* מסך תודה אחרי שליחת הסיכום */
+.dlg__thanks .closing__sun { width: 76px; margin: 0 auto; }
+.dlg__thanks .btn .icon { width: 18px; height: 18px; }

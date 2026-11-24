@@ -81,6 +81,7 @@
   function next() {
     if (!valid()) return;
     if (cur === LAST) return submit();
+    if (cur === 0 && window.Track) window.Track("quiz_start");
     show(cur + 1);
   }
   document.querySelectorAll("[data-next]").forEach(function (b) { b.addEventListener("click", next); });
@@ -104,6 +105,7 @@
       p_timing: picked("timing")[0] || ""
     }).then(function (token) {
       try { sessionStorage.removeItem(DRAFT); localStorage.setItem("turgi_my_page", token); } catch (e) {}
+      if (window.Track) window.Track("quiz_done", token);
       location.href = "/for/" + encodeURIComponent(token) + "?welcome=1";
     }).catch(function (e) {
       $("e5").textContent = e.message; $("e5").hidden = false;
