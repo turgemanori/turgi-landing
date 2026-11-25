@@ -411,7 +411,7 @@ p { margin: 0; }
   text-align: center;
 }
 .closing__inner { max-width: 680px; }
-.closing__sun { width: 92px; color: var(--bronze); margin: 0 auto 20px; display: block; }
+.closing__sun { width: 64px; color: var(--bronze-light); opacity: .75; margin: 0 auto 20px; display: block; }
 .closing .eyebrow { justify-content: center; }
 .closing .section__lead { margin-bottom: 28px; }
 .closing .btn { width: 100%; max-width: 380px; }
