@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>בואו נכיר | אורי תורג׳מן</title>
-  <meta name="description" content="חמש שאלות קצרות לפני בוק זוגי בשקיעה. בסוף תקבלו דף אישי עם הערבים הפנויים והחבילות." />
+  <meta name="description" content="חמש שאלות קצרות לפני בוק זוגי בשקיעה. בסוף תקבלו דף הזמנה משלכם עם הערבים הפנויים והחבילות." />
   <meta name="theme-color" content="#F1EEE9" />
   <meta property="og:title" content="בואו נכיר · בוק זוגי בשקיעה עם אורי תורג׳מן" />
-  <meta property="og:description" content="דקה אחת, חמש שאלות, ודף אישי עם הערבים הפנויים בשבילכם." />
+  <meta property="og:description" content="דקה אחת, חמש שאלות, ודף הזמנה עם הערבים הפנויים בשבילכם." />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="/css/logo.css?v=4" />
   <link rel="stylesheet" href="/css/style.css?v=9" />
   <link rel="stylesheet" href="/css/booking.css?v=4" />
-  <link rel="stylesheet" href="/css/journey.css?v=8" />
+  <link rel="stylesheet" href="/css/journey.css?v=9" />
 </head>
 <body class="page-journey">
 
@@ -39,7 +39,7 @@
         <svg class="closing__sun" viewBox="0 8 120 56" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"><path d="M34 62 A26 26 0 0 1 86 62"/><line x1="92.3" y1="55.1" x2="101.1" y2="53.3"/><line x1="86.7" y1="42.6" x2="94.0" y2="37.3"/><line x1="76.5" y1="33.4" x2="81.0" y2="25.6"/><line x1="60.0" y1="29.0" x2="60.0" y2="17.0"/><line x1="43.5" y1="33.4" x2="39.0" y2="25.6"/><line x1="33.3" y1="42.6" x2="26.0" y2="37.3"/><line x1="27.7" y1="55.1" x2="18.9" y2="53.3"/><line x1="0" y1="63" x2="120" y2="63"/></g></svg>
         <p class="eyebrow">נעים להכיר</p>
         <h1 class="q__title">לפני שבוחרים ערב, ספרו לי קצת עליכם</h1>
-        <p class="q__lead">חמש שאלות קצרות, פחות מדקה. בסוף מחכה לכם דף אישי עם הערבים הפנויים, המחירים והחבילה שהכי מתאימה לכם.</p>
+        <p class="q__lead">חמש שאלות קצרות, פחות מדקה. בסוף מחכה לכם דף הזמנה משלכם, עם הערבים הפנויים, המחירים והחבילה שהכי מתאימה לכם.</p>
         <button type="button" class="btn btn--primary btn--lg" data-next>מתחילים</button>
       </section>
 
@@ -105,13 +105,11 @@
             <input id="fPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="050-0000000" dir="ltr" />
           </label>
           <label class="field field--wide">
-            <span>אינסטגרם <em>(לא חובה)</em></span>
-            <input id="fIg" type="text" maxlength="40" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="@username" dir="ltr" />
+            <span>אינסטגרם <em>(לא חובה, ככה אכיר אתכם קצת)</em></span>
+            <span class="ig-in" dir="ltr"><span class="ig-in__at" aria-hidden="true">@</span><input id="fIg" type="text" inputmode="email" maxlength="120" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="username" dir="ltr" aria-describedby="igHint" /></span>
+            <small class="ig-hint" id="igHint">אפשר להקליד את השם או להדביק קישור לפרופיל</small>
           </label>
         </div>
-        <a class="ig-wa" id="igWa" href="#" target="_blank" rel="noopener">
-          <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>לא בא לכם להקליד? שלחו לי את האינסטגרם בוואטסאפ
-        </a>
         <p class="q__err" id="e5" hidden></p>
       </section>
 
@@ -128,8 +126,8 @@
   </svg>
 
   <script src="/js/config.js?v=11"></script>
-  <script src="/js/api.js?v=7"></script>
+  <script src="/js/api.js?v=8"></script>
   <script src="/js/track.js?v=1" data-event="quiz_open"></script>
-  <script src="/js/hello.js?v=7"></script>
+  <script src="/js/hello.js?v=8"></script>
 </body>
 </html>

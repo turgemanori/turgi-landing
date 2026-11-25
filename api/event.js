@@ -1,5 +1,5 @@
 /* קובץ יומן לזוג (ICS) עם הערב שלהם: נפתח ישירות ביומן של אפל, אאוטלוק ואנדרואיד.
-   כתובת: /api/event?t=<הקוד של הדף האישי> */
+   כתובת: /api/event?t=<הקוד של הזוג> */
 "use strict";
 const Sun = require("../js/sun.js");
 
@@ -49,8 +49,8 @@ module.exports = async (req, res) => {
     l.pref_style ? "הסגנון שבחרנו: " + l.pref_style : "",
     where ? "המקום: " + where : "",
     "",
-    "הדף שלנו: " + page,
-    "מדריך ההכנה: " + guide
+    "הדף האישי שלנו (מדריך ההכנה): " + guide,
+    "דף ההזמנה: " + page
   ].filter(function (x, i) { return x !== "" || i === 4; }).join("\n");
 
   const L = [
@@ -61,7 +61,7 @@ module.exports = async (req, res) => {
     "DESCRIPTION:" + esc(desc), "URL:" + page
   ];
   if (where) L.push("LOCATION:" + esc(where));
-  L.push("BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:" + esc("מחר הבוק הזוגי שלנו! שווה להציץ שוב במדריך ההכנה"), "TRIGGER:-PT24H", "END:VALARM",
+  L.push("BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:" + esc("מחר הבוק הזוגי שלנו! שווה להציץ שוב בדף האישי שלנו"), "TRIGGER:-PT24H", "END:VALARM",
     "END:VEVENT", "END:VCALENDAR");
 
   res.setHeader("Content-Type", "text/calendar; charset=utf-8");

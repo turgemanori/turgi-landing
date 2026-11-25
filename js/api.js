@@ -82,10 +82,16 @@
   }
   function esc(t) { var d = document.createElement("div"); d.textContent = t == null ? "" : String(t); return d.innerHTML; }
   function logo() { if (C.logo) document.documentElement.style.setProperty("--logo-url", "url('" + C.logo + "')"); }
+  // קישורים לאינסטגרם של אורי: [data-ig] מקבל את הכתובת, [data-ig-at] את @השם
+  function igLinks() {
+    var h = String(C.instagramHandle || "").replace(/^@/, "");
+    document.querySelectorAll("[data-ig]").forEach(function (a) { if (h) a.href = "https://www.instagram.com/" + h + "/"; else a.hidden = true; });
+    document.querySelectorAll("[data-ig-at]").forEach(function (el) { el.textContent = h ? "@" + h : ""; });
+  }
 
   window.Booking = {
     rpc: rpc, iso: iso, parseIso: parseIso, prettyDate: prettyDate, shortDate: shortDate, waLink: waLink,
-    pkg: pkg, money: money, deposit: deposit, sunset: sunset, holdText: holdText, esc: esc, logo: logo,
+    pkg: pkg, money: money, deposit: deposit, sunset: sunset, holdText: holdText, esc: esc, logo: logo, igLinks: igLinks,
     MONTHS: MONTHS, DAYS: DAYS
   };
 })();

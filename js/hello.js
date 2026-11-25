@@ -8,11 +8,14 @@
 
   B.logo();
   document.querySelectorAll("[data-wa]").forEach(function (a) { a.href = B.waLink(C.whatsappNumber, C.whatsappMessage); });
-  // שליחת שם האינסטגרם בוואטסאפ, למי שלא בא לו להקליד כאן
-  function igWa() {
-    var n = $("fNames").value.trim();
-    $("igWa").href = B.waLink(C.whatsappNumber, "היי אורי" + (n ? ", כאן " + n : "") + ". זה האינסטגרם שלנו: @");
+  // ----- אינסטגרם: מקבלים שם, @שם או קישור לפרופיל, ושומרים רק את שם המשתמש -----
+  function igClean(v) {
+    v = String(v || "").trim();
+    var m = v.match(/instagram\.com\/([^/?#\s]+)/i) || v.match(/instagr\.am\/([^/?#\s]+)/i);
+    if (m) v = m[1];
+    return v.replace(/^@+/, "").replace(/\s+/g, "").replace(/\/+$/, "").toLowerCase();
   }
+  function igOk(h) { return !h || /^(?!.*\.\.)(?!\.)[a-z0-9._]{1,30}$/.test(h) && !/\.$/.test(h); }
 
   // ----- בחירה בצ'יפים -----
   document.querySelectorAll(".chips").forEach(function (g) {
@@ -61,7 +64,9 @@
     }
   } catch (e) {}
   ["fNames", "fPhone", "fIg"].forEach(function (id) { $(id).addEventListener("input", save); });
-  $("fNames").addEventListener("input", igWa); igWa();
+  // מדביקים קישור? מציגים מיד רק את שם המשתמש
+  $("fIg").addEventListener("blur", function () { var h = igClean($("fIg").value); if (h !== $("fIg").value) { $("fIg").value = h; save(); } });
+  $("fIg").addEventListener("input", function () { $("e5").hidden = true; });
 
   // ----- ניווט -----
   function show(i) {
@@ -80,7 +85,9 @@
     if (cur === 3) { var ok3 = picked("landscape").length > 0; $("e3").hidden = ok3; return ok3; }
     if (cur === 5) {
       var phone = $("fPhone").value.replace(/[^0-9+]/g, "");
-      var msg = phone.length < 9 ? "כתבו בבקשה מספר וואטסאפ תקין." : "";
+      var ig = igClean($("fIg").value); $("fIg").value = ig;
+      var msg = phone.length < 9 ? "כתבו בבקשה מספר וואטסאפ תקין."
+        : !igOk(ig) ? "שם המשתמש באינסטגרם נראה לא תקין. כותבים אותו באנגלית, כמו שמופיע בפרופיל, או משאירים ריק." : "";
       $("e5").textContent = msg; $("e5").hidden = !msg; return !msg;
     }
     return true;
@@ -106,12 +113,16 @@
       p_names: $("fNames").value.trim(),
       p_phone: $("fPhone").value.trim(),
       p_email: "",
-      p_instagram: $("fIg").value.trim().replace(/^@+/, "").replace(/\s+/g, ""),
+      p_instagram: igClean($("fIg").value),
       p_occasion: picked("occasion")[0] || "",
       p_landscape: picked("landscape").join(","),
       p_timing: picked("timing")[0] || ""
     }).then(function (token) {
-      try { sessionStorage.removeItem(DRAFT); localStorage.setItem("turgi_my_page", token); } catch (e) {}
+      try {
+        sessionStorage.removeItem(DRAFT); localStorage.setItem("turgi_my_page", token);
+        // כדי שהאינסטגרם ייכנס גם להודעת הסיכום לאורי בוואטסאפ
+        var ig = igClean($("fIg").value); if (ig) sessionStorage.setItem("turgi_ig_" + token, ig);
+      } catch (e) {}
       if (window.Track) window.Track("quiz_done", token);
       location.href = "/for/" + encodeURIComponent(token) + "?welcome=1";
     }).catch(function (e) {
