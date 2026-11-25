@@ -9,7 +9,7 @@ const SUPABASE_KEY = "sb_publishable_1Ao_qT8WnBrolvISQpC1KA_-RvU5qKU";
 const PLACE = { lat: 32.08, lon: 34.78 };
 const PKG = { basic: { name: "חבילת שקיעה", price: 1200 }, premium: { name: "חבילת פרימיום", price: 1500 } };
 const DEPOSIT = 0.1;
-const STATUS = { pending: "ממתין לאישור", awaiting_deposit: "מוחזק עד מקדמה", booked: "שמור", shot: "צולם", delivered: "נמסר" };
+const STATUS = { pending: "ממתין לאישור", awaiting_deposit: "מחכה למקדמה", booked: "שמור", shot: "צולם", delivered: "נמסר" };
 
 function esc(t) {
   return String(t == null ? "" : t).replace(/\\/g, "\\\\").replace(/;/g, "\;").replace(/,/g, "\\,").replace(/\r?\n/g, "\\n");
@@ -56,7 +56,7 @@ module.exports = async (req, res) => {
     const sunset = Sun.hhmm(Sun.sunsetMs(day, PLACE.lat, PLACE.lon));
     L.push("BEGIN:VEVENT", "UID:open-" + day + "@turgi", "DTSTAMP:" + now,
       "DTSTART;VALUE=DATE:" + dateOnly(day), "DTEND;VALUE=DATE:" + nextDay(day),
-      "SUMMARY:" + esc("פנוי · בוק זוגי"), "DESCRIPTION:" + esc("ערב פתוח באתר. שקיעה " + sunset),
+      "SUMMARY:" + esc("פנוי · בוק זוגי"), "DESCRIPTION:" + esc("ערב פנוי באתר · שקיעה " + sunset),
       "TRANSP:TRANSPARENT", "END:VEVENT");
   });
 

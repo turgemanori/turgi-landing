@@ -130,7 +130,7 @@
     } else cal.render();
     refreshSave();
     kpis(); reminders(); upcoming(); filters(); list(); settings(); texts(); stats();
-    $("shareWa").href = "https://wa.me/?text=" + encodeURIComponent("היי! כאן מכירים בדקה, ומקבלים דף אישי עם הערבים הפנויים לבוק זוגי בשקיעה\n" + helloUrl);
+    $("shareWa").href = "https://wa.me/?text=" + encodeURIComponent("היי! זה השאלון הקצר שלי: ממלאים בדקה, ומקבלים דף אישי עם הערבים הפנויים לבוק זוגי בשקיעה\n" + helloUrl);
     if (location.hash === "#upcoming" && !setup.done) go("upcoming");
     setup.done = true;
   }
@@ -242,13 +242,13 @@
     box.hidden = !L.length; box.innerHTML = "";
     if (!L.length) return;
     var h = document.createElement("p"); h.className = "reminders__title";
-    h.textContent = "תזכורת: " + (L.length === 1 ? "זוג אחד אישרת ועוד לא שילם מקדמה" : L.length + " זוגות אישרת ועוד לא שילמו מקדמה") + " (עברו יומיים)";
+    h.textContent = "תזכורת: " + (L.length === 1 ? "זוג אחד שאישרת עוד לא שילם מקדמה" : L.length + " זוגות שאישרת עוד לא שילמו מקדמה") + " (עברו יומיים)";
     box.appendChild(h);
     L.forEach(function (l) {
       var row = document.createElement("div"); row.className = "reminder";
       row.innerHTML = '<button type="button" class="link"></button><span></span>';
       row.querySelector("button").textContent = l.names;
-      row.querySelector("span").textContent = (l.day ? B.shortDate(l.day) + " · " : "") + (l.status === "expired" ? "ההחזקה פגה" : "מוחזק עד " + B.holdText(l.hold_until));
+      row.querySelector("span").textContent = (l.day ? B.shortDate(l.day) + " · " : "") + (l.status === "expired" ? "ההחזקה נגמרה" : "מוחזק עד " + B.holdText(l.hold_until));
       row.querySelector("button").addEventListener("click", function () {
         openCard = l.id; filter = "active"; filters(); list();
         setTimeout(function () { var c = document.querySelector(".lcard.is-open"); if (c) c.scrollIntoView({ behavior: "smooth", block: "start" }); }, 50);
@@ -294,45 +294,53 @@
   });
 
   // ----- הודעות מוכנות לוואטסאפ -----
+  // משפט פתיחה לפי הסיבה שבחרו בשאלון
+  var OCC_HI = {
+    "יום נישואין": "ראיתי שאתם חוגגים יום נישואין, מזל טוב!",
+    "לפני חתונה": "ראיתי שהחתונה מתקרבת, מזל טוב!",
+    "הריון": "ראיתי שאתם מחכים לתינוק, מזל טוב!",
+    "בלי סיבה מיוחדת": "ראיתי שבא לכם סתם ערב זוגי, איזה כיף.",
+    "במתנה": "ראיתי שזה במתנה, איזה כיף."
+  };
   function first(l) { return l.names; }
   function messages(l) {
     var p = l.package ? lp(l, l.package) : null, url = pageUrl(l), out = [];
     var d = l.day ? B.prettyDate(l.day) : "";
     if (l.status === "lead") {
       out.push(["הודעת היכרות", "היי " + first(l) + ", כאן אורי\nתודה שמילאתם את השאלון, כיף להכיר!" +
-        (l.occasion ? "\nראיתי שזה " + l.occasion + ", איזה יופי." : "") +
-        "\nבדף האישי שלכם מחכים הערבים הפנויים והחבילות:\n" + url + "\nאשמח לענות על כל שאלה."]);
+        (OCC_HI[l.occasion] ? "\n" + OCC_HI[l.occasion] : "") +
+        "\nבדף האישי שלכם מחכים הערבים הפנויים והחבילות:\n" + url + "\nואם יש שאלה, אני כאן."]);
     }
     if (l.status === "pending") {
-      out.push(["אישור + קישור למקדמה", "היי " + first(l) + "!\nאישרתי את " + d + ".\nהתאריך שמור לכם עד מחר ב-10:00 בבוקר. כדי לשמור אותו סופית, משלמים מקדמה של " +
+      out.push(["אישור + קישור למקדמה", "היי " + first(l) + "!\nאישרתי את " + d + ".\nהתאריך מחכה לכם עד מחר ב-10:00 בבוקר. כדי לסגור אותו סופית, נשאר רק לשלם מקדמה של " +
         B.money(B.deposit(p)) + " כאן:\n" + url]);
-      out.push(["הערב לא מתאפשר", "היי " + first(l) + ", תודה על הבקשה\nלצערי " + d + " לא מתאפשר הפעם. בדף שלכם אפשר לבחור ערב אחר:\n" + url]);
+      out.push(["הערב לא מסתדר", "היי " + first(l) + ", תודה על הבקשה\nלצערי " + d + " לא מסתדר לי הפעם. בדף שלכם אפשר לבחור ערב אחר:\n" + url]);
     }
     if (l.status === "awaiting_deposit") {
       out.push(["תזכורת מקדמה", "היי " + first(l) + ", רק מזכיר בעדינות\n" + d + " שמור לכם עד " + B.holdText(l.hold_until) +
-        ". אחרי זה הוא חוזר להיות פנוי לזוגות אחרים.\nלתשלום המקדמה:\n" + url]);
+        ". אחרי זה הוא נפתח שוב לזוגות אחרים.\nלתשלום המקדמה:\n" + url]);
     }
     if (l.status === "booked" && l.balance_open_at && !l.full_paid_at) {
-      out.push(["הזמנה להשלמת תשלום", "היי " + first(l) + "!\nלקראת " + d + ", פתחתי לכם בדף האישי אפשרות להשלים את התשלום (" +
-        B.money(p.price - B.deposit(p)) + "), אפשר עכשיו או ביום הצילום:\n" + url]);
+      out.push(["הזמנה להשלמת תשלום", "היי " + first(l) + "!\nלקראת " + d + " פתחתי לכם בדף האישי אפשרות לשלם את היתרה (" +
+        B.money(p.price - B.deposit(p)) + "). אפשר לשלם עכשיו, או ביום הצילום עצמו:\n" + url]);
     }
     if (l.status === "booked") {
       out.push(["פרטי מפגש", "היי " + first(l) + "! מתרגש לקראת " + d + "\n" +
         (l.location ? "נפגשים ב" + l.location + " " : "נפגשים ") + "בשעה " + meetTime(l.day) + " (השקיעה ב-" + sunset(l.day) + ").\n" +
         "המדריך עם כל מה שכדאי להכין: " + location.origin + "/guide?t=" + l.token]);
-      out.push(["מדריך הכנה", "היי " + first(l) + ", הכנתי לכם מדריך קטן לקראת הצילום: מה ללבוש, מה להביא ורשימת משימות\n" + location.origin + "/guide?t=" + l.token]);
+      out.push(["מדריך הכנה", "היי " + first(l) + ", הכנתי לכם מדריך קצר לקראת הצילום: מה ללבוש, מה להביא ומה לסגור מראש\n" + location.origin + "/guide?t=" + l.token]);
     }
     if (l.status === "shot" || l.status === "delivered") {
       out.push(["תודה + בקשת המלצה", "היי " + first(l) + ", תודה על ערב מקסים! היה לי כיף גדול לצלם אתכם 🧡\n" +
-        "אני כבר עובר על התמונות. בינתיים העליתי לכם כמה תמונות טעימה להורדה בדף האישי שלכם:\n" + url +
+        "אני כבר עובר על התמונות. בינתיים העליתי לכם לדף האישי כמה תמונות ראשונות, אפשר כבר להוריד אותן:\n" + url +
         "\nואם נהניתם, אשמח מאוד לכמה מילים על החוויה. אפשר לכתוב לי כאן בוואטסאפ, או ישירות בדף."]);
     }
     if (l.status === "delivered") {
-      out.push(["התמונות מוכנות", "היי " + first(l) + "! התמונות שלכם מוכנות\nשלחתי לכם את הגלריה למייל" + (l.email ? " (" + l.email + ")" : "") + ". מקווה שתאהבו כמו שאני אהבתי."]);
-      out.push(["בקשת המלצה", "היי " + first(l) + ", אם נהניתם, אשמח מאוד לכמה מילים על החוויה זה עוזר לזוגות אחרים להכיר אותי."]);
+      out.push(["התמונות מוכנות", "היי " + first(l) + "! התמונות שלכם מוכנות\nשלחתי לכם את הגלריה למייל" + (l.email ? " (" + l.email + ")" : "") + ". מקווה שתאהבו אותן כמו שאני אהבתי 🧡"]);
+      out.push(["בקשת המלצה", "היי " + first(l) + ", אם נהניתם, אשמח מאוד לכמה מילים על החוויה. זה עוזר לזוגות אחרים להכיר אותי. אפשר פשוט לכתוב לי כאן."]);
     }
     if (l.status === "declined" || l.status === "expired") {
-      out.push(["הזמנה לבחור שוב", "היי " + first(l) + ", עדיין יש ערבים פנויים, ואשמח לצלם אתכם\n" + url]);
+      out.push(["הזמנה לבחור שוב", "היי " + first(l) + ", יש עדיין ערבים פנויים, ואשמח מאוד לצלם אתכם. אפשר לבחור כאן:\n" + url]);
     }
     return out;
   }
@@ -352,7 +360,7 @@
         '<div class="wx" data-wx>בודק תחזית…</div><div class="admin__actions"></div>';
       ul.appendChild(li);
       weather(l).then(function (w) {
-        li.querySelector("[data-wx]").innerHTML = w ? w.html : "התחזית תופיע עד 16 יום לפני הצילום.";
+        li.querySelector("[data-wx]").innerHTML = w ? w.html : "התחזית תופיע 16 ימים לפני הצילום.";
         var a = document.createElement("a"); a.className = "btn btn--primary btn--sm"; a.target = "_blank"; a.rel = "noopener";
         a.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>הודעת תיאום ומזג אוויר';
         a.href = B.waLink(l.phone, "היי " + first(l) + "! מתרגש לקראת " + B.prettyDate(l.day) + "\n" +
@@ -415,16 +423,60 @@
     var f = FILTERS.filter(function (x) { return x[0] === filter; })[0] || FILTERS[0];
     var L = (data.leads || []).filter(f[2]);
     var ul = $("leadList"); ul.innerHTML = "";
+    ul.classList.toggle("is-picking", picking);
+    shown = L;
+    bulkCount();
     if (!L.length) { ul.innerHTML = '<li class="empty">אין כאן זוגות כרגע.</li>'; return; }
     L.forEach(function (l) { ul.appendChild(card(l)); });
   }
 
+  // ----- מחיקה של כמה זוגות בבת אחת -----
+  var picking = false, picked = {}, shown = [];
+  function pickedIds() { return Object.keys(picked).filter(function (id) { return picked[id]; }); }
+  function bulkCount() {
+    var n = pickedIds().length;
+    $("bulkCount").textContent = n ? (n === 1 ? "נבחר זוג אחד" : "נבחרו " + n + " זוגות") : "לא נבחרו זוגות";
+    $("bulkDel").disabled = !n;
+    $("bulkDel").textContent = n ? "מחיקה (" + n + ")" : "מחיקה";
+  }
+  function setPicking(on) {
+    picking = on; picked = {};
+    $("bulkOn").hidden = on; $("bulkTools").hidden = !on;
+    if (on) openCard = null;
+    list();
+  }
+  $("bulkOn").addEventListener("click", function () { setPicking(true); });
+  $("bulkOff").addEventListener("click", function () { setPicking(false); });
+  $("bulkAll").addEventListener("click", function () {
+    var all = shown.length && shown.every(function (l) { return picked[l.id]; });
+    shown.forEach(function (l) { picked[l.id] = !all; });
+    list();
+  });
+  $("bulkDel").addEventListener("click", function () {
+    var ids = pickedIds(), btn = $("bulkDel");
+    if (!ids.length) return;
+    var names = (data.leads || []).filter(function (l) { return picked[l.id]; }).map(function (l) { return l.names; });
+    var msg = ids.length === 1 ? "למחוק את " + names[0] + " לגמרי?" :
+      "למחוק " + ids.length + " זוגות לגמרי?\n" + names.slice(0, 8).join(", ") + (names.length > 8 ? " ועוד " + (names.length - 8) : "");
+    if (!window.confirm(msg + "\nאי אפשר לבטל את זה.")) return;
+    btn.disabled = true; var done = 0;
+    ids.reduce(function (pr, id) {
+      return pr.then(function () {
+        btn.textContent = "מוחק " + (done + 1) + " מתוך " + ids.length + "…";
+        return B.rpc("admin_lead_action", { p_pass: pass, p_id: id, p_action: "delete" }).then(function () { done++; });
+      });
+    }, Promise.resolve())
+      .catch(function (e) { err("dashError", e.message); window.scrollTo({ top: 0, behavior: "smooth" }); })
+      .then(function () { picking = false; picked = {}; $("bulkOn").hidden = false; $("bulkTools").hidden = true; return reload(); });
+  });
+
   function card(l) {
     var st = status(l), p = l.package ? lp(l, l.package) : null;
-    var li = document.createElement("li"); li.className = "lcard" + (openCard === l.id ? " is-open" : "") + (isNew(l) ? " is-new" : "");
+    var li = document.createElement("li"); li.className = "lcard" + (openCard === l.id ? " is-open" : "") + (isNew(l) ? " is-new" : "") + (picking && picked[l.id] ? " is-picked" : "");
     var when = l.day ? B.shortDate(l.day) + " · שקיעה " + sunset(l.day) : "עוד לא בחרו ערב";
     li.innerHTML =
-      '<button type="button" class="lcard__head" aria-expanded="' + (openCard === l.id) + '">' +
+      '<button type="button" class="lcard__head"' + (picking ? ' aria-pressed="' + !!picked[l.id] + '"' : ' aria-expanded="' + (openCard === l.id) + '"') + ">" +
+        (picking ? '<input type="checkbox" class="lcard__pick" tabindex="-1" aria-hidden="true"' + (picked[l.id] ? " checked" : "") + " />" : "") +
         '<span class="lcard__names">' + esc(l.names) + "</span>" +
         '<span class="lcard__badges">' +
           (isNew(l) ? '<span class="badge badge--new">חדש</span>' : "") +
@@ -435,6 +487,7 @@
       "</button>" +
       '<div class="lcard__body"></div>';
     li.querySelector(".lcard__head").addEventListener("click", function () {
+      if (picking) { picked[l.id] = !picked[l.id]; list(); return; }
       openCard = openCard === l.id ? null : l.id;
       if (openCard && isNew(l)) {
         l.seen_at = new Date().toISOString();
@@ -455,11 +508,11 @@
       ["הסיבה", esc(l.occasion || "—")],
       ["נוף", esc((l.landscape || "—").split(",").join(", "))],
       ["מתי", esc(l.timing || "—")],
-      ["המלצה", esc(lp(l, l.recommended).name)]
+      ["חבילה מומלצת", esc(lp(l, l.recommended).name)]
     ];
     if (l.pref_style || l.pref_location) {
       rows.push(["הסגנון שבחרו", esc(l.pref_style || "—")]);
-      rows.push(["מקום שביקשו", l.pref_location ? esc(l.pref_location) + (l.location ? "" : " <em>(נכנס ליומן עד שתקבע מיקום)</em>") : "—"]);
+      rows.push(["מקום שביקשו", l.pref_location ? esc(l.pref_location) + (l.location ? "" : " <em>(מופיע ביומן עד שתקבע מיקום)</em>") : "—"]);
     }
     if (l.status === "pending" && "approval_sent_at" in l)
       rows.push(["בקשת אישור בוואטסאפ", l.approval_sent_at ? "שלחו לך ✓" : "עוד לא שלחו"]);
@@ -469,7 +522,7 @@
     if (l.review) rows.push(["ההמלצה שלהם", esc(l.review)]);
     if (l.status === "lead" && "summary_sent_at" in l)
       rows.push(["סיכום בוואטסאפ", l.summary_sent_at ? "שלחו לך ✓" : noSend(l) ? "עוד לא שלחו. כדאי לכתוב להם" : "—"]);
-    rows.push(["נכנס", new Date(l.created_at).toLocaleString("he-IL", { dateStyle: "short", timeStyle: "short", timeZone: "Asia/Jerusalem" })]);
+    rows.push(["נרשמו", new Date(l.created_at).toLocaleString("he-IL", { dateStyle: "short", timeStyle: "short", timeZone: "Asia/Jerusalem" })]);
 
     el.innerHTML =
       '<dl class="sum sum--tight">' + rows.map(function (r) { return "<div><dt>" + r[0] + "</dt><dd>" + r[1] + "</dd></div>"; }).join("") + "</dl>" +
@@ -504,7 +557,7 @@
     function btn(text, cls, fn) { var x = document.createElement("button"); x.type = "button"; x.className = "btn btn--sm " + cls; x.textContent = text; x.onclick = fn; act.appendChild(x); }
     btn("שמירת כל השינויים", "btn--primary", function () { save(el, l); });
     var s = l.status;
-    if (s === "pending" || ((s === "declined" || s === "expired") && l.day)) btn("אישור (מחזיק עד מחר 10:00)", "btn--primary", function () { action(l, "approve"); });
+    if (s === "pending" || ((s === "declined" || s === "expired") && l.day)) btn("אישור (שמור להם עד מחר 10:00)", "btn--primary", function () { action(l, "approve"); });
     if (s === "awaiting_deposit") {
       btn("סימון מקדמה כשולמה", "btn--primary", function () { action(l, "mark_paid"); });
       btn("הארכה עד מחר 10:00", "btn--ghost", function () { action(l, "extend"); });
@@ -514,7 +567,7 @@
     if (s === "booked") btn("סימון כצולמו", "btn--primary", function () { action(l, "shot"); });
     if (s === "shot") btn("סימון כנמסר", "btn--primary", function () { action(l, "delivered"); });
     if (s === "pending" || s === "awaiting_deposit") btn("דחייה", "btn--ghost", function () { action(l, "decline"); });
-    if (s === "booked") btn("ביטול השריון", "btn--ghost", function () { if (window.confirm("לבטל את השריון של " + l.names + "?")) action(l, "decline"); });
+    if (s === "booked") btn("ביטול ההזמנה", "btn--ghost", function () { if (window.confirm("לבטל את ההזמנה של " + l.names + "?")) action(l, "decline"); });
     if (s === "declined" || s === "expired") btn("החזרה להמתנה", "btn--ghost", function () { action(l, "restore"); });
     btn("מחיקה", "btn--ghost btn--danger", function () { if (window.confirm("למחוק את " + l.names + " לגמרי?")) action(l, "delete"); });
 
@@ -525,7 +578,7 @@
       a.href = B.waLink(l.phone, m[1]); wa.appendChild(a);
     });
     var free = document.createElement("a"); free.className = "btn btn--ghost btn--sm"; free.target = "_blank"; free.rel = "noopener";
-    free.textContent = "שיחה ריקה"; free.href = B.waLink(l.phone, ""); wa.appendChild(free);
+    free.textContent = "הודעה חופשית"; free.href = B.waLink(l.phone, ""); wa.appendChild(free);
     el.querySelector("[data-copy]").addEventListener("click", function (e) { copy(pageUrl(l), e.target, "העתקה"); });
     var ph = el.querySelector("[data-photos]");
     if (ph) photos(ph, l);
@@ -657,8 +710,8 @@
 
       if (trackingSince && new Date(trackingSince) > new Date(Date.now() - statDays * 86400000))
         html += '<p class="st-note">המעקב התחיל ב-' + esc(new Date(trackingSince).toLocaleDateString("he-IL", { timeZone: "Asia/Jerusalem" })) +
-          ", ולכן אין נתונים על כניסות לפני כן. ביקשו תאריך ושילמו מקדמה נספרים מכל השאלונים בתקופה.</p>";
-      else html += '<p class="st-note">ביקשו תאריך ושילמו מקדמה נספרים מהשאלונים שהתקבלו בתקופה.</p>';
+          ", ולכן אין נתונים על כניסות לפני כן. \"ביקשו תאריך\" ו\"שילמו מקדמה\" נספרים מכל השאלונים שהגיעו בתקופה.</p>";
+      else html += '<p class="st-note">"ביקשו תאריך" ו"שילמו מקדמה" נספרים מהשאלונים שהגיעו בתקופה.</p>';
 
       box.innerHTML = html;
       var nb = box.querySelector("[data-nosend]");
@@ -677,14 +730,14 @@
     $("ntTopic").textContent = st.ntfy_topic || "";
     $("greetText").value =
       "היי, כאן אורי\n" +
-      "תודה שכתבתם לי! אני צלם בוקים זוגיים באור שקיעה, ואני כבר שמח להכיר.\n" +
-      "קיבלתי את הפרטים שלכם, ואחזור אליכם אישית בהקדם.\n" +
-      "בינתיים, אם עוד לא מילאתם, כאן מכירים בדקה ומקבלים דף אישי עם הערבים הפנויים:\n" + helloUrl;
+      "תודה שכתבתם! אני צלם בוקים זוגיים בשקיעה, וכיף להכיר.\n" +
+      "אחזור אליכם אישית בהקדם.\n" +
+      "ואם עוד לא מילאתם את השאלון, זה לוקח דקה, ובסוף מקבלים דף אישי עם הערבים הפנויים:\n" + helloUrl;
   }
   $("calCopy").addEventListener("click", function () { copy("webcal://" + calUrl(), $("calCopy"), "העתקת הקישור"); });
   $("calRotate").addEventListener("click", function () {
     if (!window.confirm("להחליף את מפתח היומן? הקישור הישן יפסיק לעבוד, ותצטרך להירשם מחדש.")) return;
-    saveSettings(data.settings.ntfy_topic, true).then(function () { $("calNote").textContent = "המפתח הוחלף. הוסיפו את היומן מחדש."; });
+    saveSettings(data.settings.ntfy_topic, true).then(function () { $("calNote").textContent = "המפתח הוחלף. צריך להוסיף את היומן מחדש."; });
   });
   function saveSettings(topic, rotate) {
     return B.rpc("admin_settings_save", { p_pass: pass, p_ntfy_topic: topic || "", p_rotate_cal: !!rotate })
@@ -699,7 +752,7 @@
   $("ntOffBtn").addEventListener("click", function () { if (window.confirm("לכבות את ההתראות?")) saveSettings("", false); });
   $("ntCopy").addEventListener("click", function () { copy(data.settings.ntfy_topic, $("ntCopy"), "העתקת שם הערוץ"); });
   $("ntTest").addEventListener("click", function () {
-    B.rpc("admin_test_notify", { p_pass: pass }).then(function () { $("ntNote").textContent = "נשלחה התראת בדיקה. אמורה להגיע תוך כמה שניות."; })
+    B.rpc("admin_test_notify", { p_pass: pass }).then(function () { $("ntNote").textContent = "שלחתי התראת בדיקה. היא אמורה להגיע תוך כמה שניות."; })
       .catch(function (e) { $("ntNote").textContent = e.message; });
   });
   $("greetCopy").addEventListener("click", function () { copy($("greetText").value, $("greetCopy"), "העתקת הנוסח"); });

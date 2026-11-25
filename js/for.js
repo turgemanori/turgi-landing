@@ -52,7 +52,7 @@
       rows.push(["מחיר", B.money(p.price)]);
       rows.push(["מקדמה", B.money(B.deposit(p)) + (L.deposit_paid_at ? " · שולמה ✓" : "")]);
       if (L.full_paid_at) rows.push(["תשלום מלא", "שולם ✓"]);
-      else if (L.deposit_paid_at) rows.push(["יתרה ביום הצילום", B.money(p.price - B.deposit(p))]);
+      else if (L.deposit_paid_at) rows.push(["יתרה לתשלום", B.money(p.price - B.deposit(p))]);
     }
     el.innerHTML = rows.map(function (r) { return "<div><dt>" + B.esc(r[0]) + "</dt><dd>" + B.esc(r[1]) + "</dd></div>"; }).join("");
   }
@@ -73,21 +73,21 @@
     var s = L.status;
     if (s === "lead" || s === "declined" || s === "expired") {
       $("hello").textContent = L.names + ", הנה הערבים שפתוחים בשבילכם";
-      $("lead").textContent = "בחרו חבילה וערב, ושלחו לי בקשה. אחזור אליכם אישית לאישור.";
+      $("lead").textContent = "בחרו חבילה וערב ושלחו לי, ואני אחזור אליכם לאישור.";
       track(1); view("vChoose"); choose();
-      var note = s === "declined" ? "הערב שבחרתם קודם לא התאפשר הפעם. אשמח שתבחרו ערב אחר, או שנמצא אחד יחד בוואטסאפ."
-        : s === "expired" ? "זמן ההחזקה של התאריך הקודם הסתיים, והוא שוחרר. אפשר לבחור שוב ערב פנוי." : "";
+      var note = s === "declined" ? "הערב שבחרתם לא מסתדר לי הפעם. בחרו ערב אחר, או שנמצא אחד יחד בוואטסאפ."
+        : s === "expired" ? "התאריך שבחרתם כבר לא שמור לכם, כי המקדמה לא שולמה בזמן. אפשר לבחור שוב ערב פנוי." : "";
       $("chooseNote").textContent = note; $("chooseNote").hidden = !note;
     } else if (s === "pending" && (!L.prefs_at || editPrefs)) {
       $("hello").textContent = L.names + ", בחרתם ערב";
       $("lead").textContent = B.prettyDate(L.day) + " · שקיעה " + B.sunset(L.day);
       track(1); view("vPrefs"); prefs();
     } else if (s === "pending") {
-      $("hello").textContent = L.names + ", כמעט שם";
+      $("hello").textContent = L.names + ", כמעט סיימנו";
       $("lead").textContent = "";
       track(2); view("vPending"); pending();
     } else if (s === "awaiting_deposit") {
-      $("hello").textContent = L.names + ", התאריך מוחזק עבורכם";
+      $("hello").textContent = L.names + ", התאריך שמור לכם";
       $("lead").textContent = "נשאר רק צעד אחד: מקדמה קטנה, והערב שלכם.";
       track(3); view("vDeposit"); deposit();
     } else if (s === "booked") {
@@ -99,8 +99,8 @@
       $("lead").textContent = "";
       $("afterTitle").textContent = s === "delivered" ? "התמונות שלכם אצלכם" : "עכשיו אני עורך את התמונות שלכם";
       $("afterText").textContent = s === "delivered"
-        ? "היה לי כיף גדול לצלם אתכם. אם תרצו לשתף כמה מילים על החוויה, זה עוזר לי מאוד ואשמח לשמוע."
-        : "אני עובר על כל פריים בשקט ובקפידה. ברגע שהגלריה תהיה מוכנה, אשלח לכם אותה בוואטסאפ ובמייל.";
+        ? "היה לי כיף גדול לצלם אתכם. אם בא לכם לכתוב כמה מילים על החוויה, אשמח מאוד."
+        : "אני עובר על כל תמונה בקפידה. ברגע שהגלריה מוכנה, אשלח לכם אותה בוואטסאפ ובמייל.";
       track(5); view("vAfter"); after();
     }
 
@@ -118,22 +118,21 @@
   var OCCASION = {
     "יום נישואין": "אנחנו רוצים לחגוג את יום הנישואין שלנו בערב אחד שכולו שלנו",
     "לפני חתונה": "החתונה שלנו מתקרבת, ולפני כל ההמולה אנחנו רוצים לעצור לערב אחד רק של שנינו",
-    "הריון": "אנחנו מחכים לתינוק, ורוצים לשמור את התקופה הקסומה הזאת לתמיד",
-    "חוויה זוגית": "אנחנו חולמים על ערב זוגי אחד שכולו שלנו",
-    "סתם כי מתחשק": "בלי סיבה מיוחדת, פשוט בא לנו לעצור את הזמן לערב יפה אחד ביחד",
-    "מתנה": "הכול מתחיל ממתנה, ואנחנו רוצים להפוך אותה לערב שלא נשכח"
+    "הריון": "אנחנו מחכים לתינוק, ורוצים לשמור את התקופה הזאת לתמיד",
+    "בלי סיבה מיוחדת": "בלי סיבה מיוחדת, פשוט בא לנו ערב זוגי אחד שכולו שלנו",
+    "במתנה": "זה מתחיל במתנה, ואנחנו רוצים שזה יהיה ערב שלא נשכח"
   };
-  var PLACE = { "ים": "מול הים", "שדות": "בשדות פתוחים", "מדבר": "במרחבי המדבר", "עיר": "בסמטאות העיר", "בבית": "בבית שלנו" };
+  var PLACE = { "ים": "מול הים", "שדות": "בשדות פתוחים", "מדבר": "במדבר", "עיר": "ברחובות העיר", "אצלנו בבית": "אצלנו בבית" };
   var TIMING = {
     "בחודש הקרוב": "נשמח שזה יקרה כבר בחודש הקרוב.",
-    "תוך שלושה חודשים": "נשמח שזה יקרה בחודשים הקרובים.",
-    "גמישים": "בתאריכים אנחנו גמישים, העיקר שיהיה מושלם."
+    "בחודשים הקרובים": "נשמח שזה יקרה בחודשים הקרובים.",
+    "אנחנו גמישים": "מבחינת תאריכים אנחנו גמישים."
   };
   function story() {
     var places = (L.landscape || "").split(",").map(function (x) { return PLACE[x.trim()]; }).filter(Boolean);
     var where = places.length === 0 ? ", ואת המקום עוד לא בחרנו, אז נשמח שתציע לנו פינה עם אור יפה."
       : ", " + (places.length > 1 ? places.slice(0, -1).join(", ") + " או " + places[places.length - 1] : places[0]) +
-        ", כשהשמש שוקעת והאור נהיה רך וחם סביבנו.";
+        ", כשהשמש שוקעת והאור נהיה רך וחם.";
     var t = (OCCASION[L.occasion] || "אנחנו חולמים על בוק זוגי בשקיעה") + where;
     if (TIMING[L.timing]) t += " " + TIMING[L.timing];
     return t;
@@ -249,13 +248,13 @@
   function pending() {
     var p = B.pkg(L.package), sent = !!L.approval_sent_at;
     var t = "היי אורי, כאן " + L.names + ".\nבחרנו את " + B.prettyDate(L.day) + " ב" + p.name + "." +
-      (L.pref_style ? "\nהסגנון שלנו: " + L.pref_style + "." : "") +
+      (L.pref_style ? "\nהסגנון שבחרנו: " + L.pref_style + "." : "") +
       (L.pref_location ? "\nמקום שנשמח לצלם בו: " + L.pref_location + "." : "") +
       "\nנשמח שתאשר לנו את התאריך 🙏";
     $("approvalWa").href = B.waLink(C.whatsappNumber, t);
     $("pendTitle").textContent = sent ? "הבקשה אצלי" : "שלחו לי את הבקשה לאישור";
     $("pendText").textContent = sent
-      ? "אני עובר על הבקשה וחוזר אליכם בהקדם. ברגע שאאשר, תקבלו ממני קישור למקדמה ששומרת את התאריך."
+      ? "אני עובר על הבקשה ואחזור אליכם בהקדם. אחרי שאאשר, אשלח לכם קישור למקדמה ששומרת את התאריך."
       : "לחיצה אחת, והבקשה אצלי בוואטסאפ. ברגע שאאשר, אשלח לכם קישור למקדמה ששומרת את התאריך.";
     $("approvalWa").lastChild.textContent = sent ? "שליחה שוב לאורי" : "שליחה לאורי לאישור";
     $("approvalWa").className = "btn " + (sent ? "btn--ghost" : "btn--primary");
@@ -281,12 +280,12 @@
       var left = until - Date.now();
       if (left <= 0) { clearInterval(timer); load(); return; }
       var h = Math.floor(left / 3600000), m = Math.floor(left % 3600000 / 60000);
-      $("hold").innerHTML = "<strong>שמור עבורכם עד " + B.esc(B.holdText(L.hold_until)) + "</strong>" +
+      $("hold").innerHTML = "<strong>שמור לכם עד " + B.esc(B.holdText(L.hold_until)) + "</strong>" +
         "<span>נשארו " + h + " שעות ו-" + m + " דקות. אחרי זה התאריך חוזר להיות פנוי לזוגות אחרים.</span>";
     }
     tick(); timer = setInterval(tick, 30000);
-    $("hText").textContent = "אישרתי את הבקשה שלכם ל" + B.prettyDate(L.day) + ". התאריך שמור עבורכם עד " +
-      B.holdText(L.hold_until) + " וממתין להשלמת התהליך, כלומר לתשלום המקדמה.";
+    $("hText").textContent = "אישרתי את הבקשה שלכם ל" + B.prettyDate(L.day) + ". התאריך שמור לכם עד " +
+      B.holdText(L.hold_until) + ", וכדי לסגור אותו סופית נשאר רק לשלם את המקדמה.";
     var seen = "turgi_hold_seen_" + token + "_" + L.hold_until;
     var was = false; try { was = !!sessionStorage.getItem(seen); sessionStorage.setItem(seen, "1"); } catch (e) {}
     if (!was) openDlg($("holdDlg"));
@@ -296,7 +295,7 @@
     b.addEventListener("click", function () {
       var em = $("fEmail").value.trim();
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) {
-        $("payErr").textContent = "כתבו בבקשה מייל, אליו אשלח את הקבלה ואת התמונות."; $("payErr").hidden = false;
+        $("payErr").textContent = "כתבו בבקשה מייל, כדי שאוכל לשלוח לכם את הקבלה ואת התמונות."; $("payErr").hidden = false;
         $("fEmail").focus(); return;
       }
       $("payErr").hidden = true;
@@ -305,7 +304,7 @@
           .catch(function (er) { $("payErr").textContent = er.message; $("payErr").hidden = false; $("payDemo").hidden = true; });
       }
       method = b.getAttribute("data-pay");
-      $("payName").textContent = method === "bit" ? "Bit" : "סליקת האשראי";
+      $("payName").textContent = method === "bit" ? "Bit" : "אשראי";
       $("payDemo").hidden = false;
     });
   });
@@ -344,7 +343,7 @@
     // אפל ואאוטלוק: קובץ יומן מהשרת (נפתח ישירות ביומן באייפון)
     $("calApple").href = "/api/event?t=" + encodeURIComponent(token);
     $("guideLink").href = guideUrl;
-    $("finishWa").href = B.waLink(C.whatsappNumber, "היי אורי, כאן " + L.names + ".\nשילמנו את המקדמה וסיימנו את ההרשמה ל" + B.prettyDate(L.day) + " 🎉\nמחכים לערב!");
+    $("finishWa").href = B.waLink(C.whatsappNumber, "היי אורי, כאן " + L.names + ".\nשילמנו את המקדמה, אז " + B.prettyDate(L.day) + " סגור 🎉\nמחכים לערב!");
     var done = !!L.finished_sent_at;
     $("finishWa").className = "btn " + (done ? "btn--ghost" : "btn--primary");
     $("guideLink").className = "btn " + (done ? "btn--primary" : "btn--ghost");
@@ -358,7 +357,7 @@
     var paid = !!L.full_paid_at;
     $("balTitle").innerHTML = paid ? "התשלום הושלם ✓ <strong></strong>" : 'השלמת התשלום: <strong id="balAmt"></strong>';
     if (!paid) $("balAmt").textContent = B.money(p.price - B.deposit(p));
-    $("balHint").textContent = paid ? "תודה! הכול מסודר, רק נשאר ליהנות מהערב." : "אפשר לשלם עכשיו, או ביום הצילום עצמו.";
+    $("balHint").textContent = paid ? "תודה! הכול מסודר, נשאר רק ליהנות מהערב." : "אפשר לשלם עכשיו, או ביום הצילום עצמו.";
     $("balBtns").hidden = paid; $("balDemo").hidden = true;
   }
   document.querySelectorAll("[data-bal]").forEach(function (b) {
