@@ -299,8 +299,8 @@
     "יום נישואין": "ראיתי שאתם חוגגים יום נישואין, מזל טוב!",
     "לפני חתונה": "ראיתי שהחתונה מתקרבת, מזל טוב!",
     "הריון": "ראיתי שאתם מחכים לתינוק, מזל טוב!",
-    "חוויה זוגית": "ראיתי שבא לכם ערב זוגי, איזה כיף.",
-    "מתנה": "ראיתי שזה במתנה, איזה כיף."
+    "בלי סיבה מיוחדת": "ראיתי שבא לכם סתם ערב זוגי, איזה כיף.",
+    "במתנה": "ראיתי שזה במתנה, איזה כיף."
   };
   function first(l) { return l.names; }
   function messages(l) {
@@ -423,16 +423,60 @@
     var f = FILTERS.filter(function (x) { return x[0] === filter; })[0] || FILTERS[0];
     var L = (data.leads || []).filter(f[2]);
     var ul = $("leadList"); ul.innerHTML = "";
+    ul.classList.toggle("is-picking", picking);
+    shown = L;
+    bulkCount();
     if (!L.length) { ul.innerHTML = '<li class="empty">אין כאן זוגות כרגע.</li>'; return; }
     L.forEach(function (l) { ul.appendChild(card(l)); });
   }
 
+  // ----- מחיקה של כמה זוגות בבת אחת -----
+  var picking = false, picked = {}, shown = [];
+  function pickedIds() { return Object.keys(picked).filter(function (id) { return picked[id]; }); }
+  function bulkCount() {
+    var n = pickedIds().length;
+    $("bulkCount").textContent = n ? (n === 1 ? "נבחר זוג אחד" : "נבחרו " + n + " זוגות") : "לא נבחרו זוגות";
+    $("bulkDel").disabled = !n;
+    $("bulkDel").textContent = n ? "מחיקה (" + n + ")" : "מחיקה";
+  }
+  function setPicking(on) {
+    picking = on; picked = {};
+    $("bulkOn").hidden = on; $("bulkTools").hidden = !on;
+    if (on) openCard = null;
+    list();
+  }
+  $("bulkOn").addEventListener("click", function () { setPicking(true); });
+  $("bulkOff").addEventListener("click", function () { setPicking(false); });
+  $("bulkAll").addEventListener("click", function () {
+    var all = shown.length && shown.every(function (l) { return picked[l.id]; });
+    shown.forEach(function (l) { picked[l.id] = !all; });
+    list();
+  });
+  $("bulkDel").addEventListener("click", function () {
+    var ids = pickedIds(), btn = $("bulkDel");
+    if (!ids.length) return;
+    var names = (data.leads || []).filter(function (l) { return picked[l.id]; }).map(function (l) { return l.names; });
+    var msg = ids.length === 1 ? "למחוק את " + names[0] + " לגמרי?" :
+      "למחוק " + ids.length + " זוגות לגמרי?\n" + names.slice(0, 8).join(", ") + (names.length > 8 ? " ועוד " + (names.length - 8) : "");
+    if (!window.confirm(msg + "\nאי אפשר לבטל את זה.")) return;
+    btn.disabled = true; var done = 0;
+    ids.reduce(function (pr, id) {
+      return pr.then(function () {
+        btn.textContent = "מוחק " + (done + 1) + " מתוך " + ids.length + "…";
+        return B.rpc("admin_lead_action", { p_pass: pass, p_id: id, p_action: "delete" }).then(function () { done++; });
+      });
+    }, Promise.resolve())
+      .catch(function (e) { err("dashError", e.message); window.scrollTo({ top: 0, behavior: "smooth" }); })
+      .then(function () { picking = false; picked = {}; $("bulkOn").hidden = false; $("bulkTools").hidden = true; return reload(); });
+  });
+
   function card(l) {
     var st = status(l), p = l.package ? lp(l, l.package) : null;
-    var li = document.createElement("li"); li.className = "lcard" + (openCard === l.id ? " is-open" : "") + (isNew(l) ? " is-new" : "");
+    var li = document.createElement("li"); li.className = "lcard" + (openCard === l.id ? " is-open" : "") + (isNew(l) ? " is-new" : "") + (picking && picked[l.id] ? " is-picked" : "");
     var when = l.day ? B.shortDate(l.day) + " · שקיעה " + sunset(l.day) : "עוד לא בחרו ערב";
     li.innerHTML =
-      '<button type="button" class="lcard__head" aria-expanded="' + (openCard === l.id) + '">' +
+      '<button type="button" class="lcard__head"' + (picking ? ' aria-pressed="' + !!picked[l.id] + '"' : ' aria-expanded="' + (openCard === l.id) + '"') + ">" +
+        (picking ? '<input type="checkbox" class="lcard__pick" tabindex="-1" aria-hidden="true"' + (picked[l.id] ? " checked" : "") + " />" : "") +
         '<span class="lcard__names">' + esc(l.names) + "</span>" +
         '<span class="lcard__badges">' +
           (isNew(l) ? '<span class="badge badge--new">חדש</span>' : "") +
@@ -443,6 +487,7 @@
       "</button>" +
       '<div class="lcard__body"></div>';
     li.querySelector(".lcard__head").addEventListener("click", function () {
+      if (picking) { picked[l.id] = !picked[l.id]; list(); return; }
       openCard = openCard === l.id ? null : l.id;
       if (openCard && isNew(l)) {
         l.seen_at = new Date().toISOString();
