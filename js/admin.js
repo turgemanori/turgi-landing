@@ -253,8 +253,8 @@
     if (l.status === "booked") {
       out.push(["פרטי מפגש", "היי " + first(l) + "! מתרגש לקראת " + d + "\n" +
         (l.location ? "נפגשים ב" + l.location + " " : "נפגשים ") + "בשעה " + meetTime(l.day) + " (השקיעה ב-" + sunset(l.day) + ").\n" +
-        "המדריך עם כל מה שכדאי להכין: " + location.origin + "/guide"]);
-      out.push(["מדריך הכנה", "היי " + first(l) + ", הכנתי לכם מדריך קטן לקראת הצילום: מה ללבוש, מה להביא ורשימת משימות\n" + location.origin + "/guide"]);
+        "המדריך עם כל מה שכדאי להכין: " + location.origin + "/guide?t=" + l.token]);
+      out.push(["מדריך הכנה", "היי " + first(l) + ", הכנתי לכם מדריך קטן לקראת הצילום: מה ללבוש, מה להביא ורשימת משימות\n" + location.origin + "/guide?t=" + l.token]);
     }
     if (l.status === "shot") {
       out.push(["תודה על הערב", "היי " + first(l) + ", תודה על ערב מקסים\nאני כבר עובר על התמונות, ואעדכן כשהגלריה מוכנה."]);
@@ -290,7 +290,7 @@
         a.href = B.waLink(l.phone, "היי " + first(l) + "! מתרגש לקראת " + B.prettyDate(l.day) + "\n" +
           (w ? "התחזית לשעת הצילום: " + w.text + ".\n" : "") +
           (l.location ? "נפגשים ב" + l.location + " " : "נפגשים ") + "בשעה " + meetTime(l.day) + ", והשקיעה ב-" + sunset(l.day) + ".\n" +
-          "כל מה שכדאי להכין: " + location.origin + "/guide");
+          "כל מה שכדאי להכין: " + location.origin + "/guide?t=" + l.token);
         li.querySelector(".admin__actions").appendChild(a);
       });
     });

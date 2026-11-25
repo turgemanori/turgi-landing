@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="/css/logo.css?v=4" />
   <link rel="stylesheet" href="/css/style.css?v=9" />
   <link rel="stylesheet" href="/css/booking.css?v=4" />
-  <link rel="stylesheet" href="/css/journey.css?v=4" />
+  <link rel="stylesheet" href="/css/journey.css?v=7" />
 </head>
 <body class="page-guide">
 
@@ -35,8 +35,20 @@
       <div class="g-hero__media ph" data-img="cover" role="img" aria-label="שדה זהוב בשעת השקיעה"></div>
       <div class="container g-hero__text">
         <p class="eyebrow">מדריך ההכנה שלכם</p>
-        <h1 class="section__title">כל מה שצריך לערב מושלם בשקיעה</h1>
+        <h1 class="section__title" id="gTitle">כל מה שצריך לערב מושלם בשקיעה</h1>
         <p class="section__lead">כמה דקות קריאה, ותגיעו רגועים, מוכנים ומרגישים הכי אתם. שמרו את הדף הזה, הוא שלכם עד יום הצילום.</p>
+        <!-- פרטי הערב (רק במדריך אישי) -->
+        <div class="g-mine" id="gMine" hidden>
+          <p class="g-mine__title">הערב שלכם</p>
+          <dl class="sum" id="gSum"></dl>
+          <a class="link g-mine__page" id="gPage" href="#">לדף האישי שלכם</a>
+        </div>
+        <!-- מילה מאורי -->
+        <figure class="g-ori">
+          <blockquote id="gOriText">אני כאן בשבילכם בכל שלב. לא בטוחים מה ללבוש? מתלבטים בין שני לוקים? רוצים להפתיע? פשוט כתבו לי, ונחליט יחד.</blockquote>
+          <figcaption>אורי</figcaption>
+          <a class="btn btn--ghost btn--sm" data-wa href="#" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>להתייעץ איתי בוואטסאפ</a>
+        </figure>
         <nav class="g-toc" aria-label="תוכן המדריך">
           <a href="#evening">איך נראה הערב</a><a href="#wear">מה ללבוש</a><a href="#bring">מה להביא</a><a href="#todo">רשימת משימות</a><a href="#weather">מזג אוויר</a>
         </nav>
@@ -56,7 +68,7 @@
           <li><span class="g-time__t">השקיעה עצמה</span><h3>הרגעים החזקים</h3><p>האור הכי רך וחם של היום. כאן נולדות התמונות שתתלו על הקיר.</p></li>
           <li><span class="g-time__t">אחרי שהשמש יורדת</span><h3>האור הכחול</h3><p>עוד כמה דקות של אור רך וקריר, לתמונות שקטות ואינטימיות לסיום.</p></li>
         </ol>
-        <p class="g-note">את שעת המפגש המדויקת ואת המיקום אשלח לכם בוואטסאפ כמה ימים לפני, לפי שעת השקיעה באותו ערב.</p>
+        <p class="g-note" id="gEveNote">את שעת המפגש המדויקת ואת המיקום אשלח לכם בוואטסאפ כמה ימים לפני, לפי שעת השקיעה באותו ערב.</p>
       </div>
     </section>
 
@@ -68,20 +80,25 @@
           <h2 class="section__title">צבעים שמתאהבים באור השקיעה</h2>
           <p class="section__lead">הכלל הכי חשוב: לבחור יחד, בגוונים שמשלימים ולא זהים. בדים טבעיים וזורמים נראים מדהים ברוח ובתנועה.</p>
         </header>
+        <div class="g-pick" id="gPick" hidden>
+          <p class="g-pick__title" id="gPickTitle"></p>
+          <p id="gPickText"></p>
+          <p id="gPlaceText"></p>
+        </div>
         <div class="g-looks">
-          <article class="g-look">
+          <article class="g-look" data-look="1">
             <div class="ph r-portrait" data-img="outfit1" role="img" aria-label="השראה ללבוש בגווני קרם ובז׳"></div>
             <h3>קרם ופשתן</h3>
             <div class="swatches" aria-hidden="true"><i style="--c:#F4EBDD"></i><i style="--c:#E2D2BC"></i><i style="--c:#C9AE8C"></i><i style="--c:#8C6B4F"></i></div>
             <p>שמלה בהירה זורמת, חולצת פשתן, מכנסיים בגוון חול. קלאסי, רך ועל-זמני.</p>
           </article>
-          <article class="g-look">
+          <article class="g-look" data-look="2">
             <div class="ph r-portrait" data-img="outfit2" role="img" aria-label="השראה ללבוש בגווני אדמה וטרקוטה"></div>
             <h3>אדמה וטרקוטה</h3>
             <div class="swatches" aria-hidden="true"><i style="--c:#D9A47E"></i><i style="--c:#B86F4B"></i><i style="--c:#F1E6D6"></i><i style="--c:#5C4033"></i></div>
             <p>צבע חם אחד שמוביל, ולצידו לבן שבור או בז׳. נראה מושלם בשדות ובמדבר.</p>
           </article>
-          <article class="g-look">
+          <article class="g-look" data-look="3">
             <div class="ph r-portrait" data-img="outfit3" role="img" aria-label="השראה ללבוש בגוונים רכים של מרווה ותכלת"></div>
             <h3>רך ושקט</h3>
             <div class="swatches" aria-hidden="true"><i style="--c:#B9C1A6"></i><i style="--c:#DCE3E3"></i><i style="--c:#F7F2EA"></i><i style="--c:#9A8F80"></i></div>
@@ -166,29 +183,7 @@
 
   <script src="/js/config.js?v=9"></script>
   <script src="/js/api.js?v=5"></script>
-  <script>
-    (function () {
-      var C = window.SITE_CONFIG || {}, B = window.Booking;
-      B.logo();
-      document.querySelectorAll("[data-wa]").forEach(function (a) { a.href = B.waLink(C.whatsappNumber, "היי אורי, יש לי שאלה לגבי ההכנה לצילום"); });
-      var imgs = C.guideImages || {};
-      document.querySelectorAll("[data-img]").forEach(function (el) {
-        var src = imgs[el.getAttribute("data-img")];
-        if (src) { el.style.backgroundImage = "url('" + src + "')"; el.classList.add("has-img"); }
-      });
-      var KEY = "turgi_guide_todo", st = {};
-      try { st = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
-      var boxes = document.querySelectorAll("#todoList input");
-      function prog() {
-        var n = 0; boxes.forEach(function (b) { if (b.checked) n++; });
-        document.getElementById("todoProgress").textContent = n === boxes.length ? "הכול מוכן. נתראה בשקיעה" : n + " מתוך " + boxes.length + " משימות";
-      }
-      boxes.forEach(function (b) {
-        b.checked = !!st[b.getAttribute("data-k")];
-        b.addEventListener("change", function () { st[b.getAttribute("data-k")] = b.checked; try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} prog(); });
-      });
-      prog();
-    })();
-  </script>
+  <script src="/js/sun.js?v=4"></script>
+  <script src="/js/guide.js?v=1"></script>
 </body>
 </html>
