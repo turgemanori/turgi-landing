@@ -61,7 +61,7 @@ module.exports = async (req, res) => {
     "DESCRIPTION:" + esc(desc), "URL:" + page
   ];
   if (where) L.push("LOCATION:" + esc(where));
-  L.push("BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:" + esc("מחר הבוק הזוגי שלכם. הצצה אחרונה במדריך?"), "TRIGGER:-PT24H", "END:VALARM",
+  L.push("BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:" + esc("מחר הבוק הזוגי שלנו! שווה להציץ שוב במדריך ההכנה"), "TRIGGER:-PT24H", "END:VALARM",
     "END:VEVENT", "END:VCALENDAR");
 
   res.setHeader("Content-Type", "text/calendar; charset=utf-8");
