@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="/css/logo.css?v=4" />
   <link rel="stylesheet" href="/css/style.css?v=9" />
   <link rel="stylesheet" href="/css/booking.css?v=4" />
-  <link rel="stylesheet" href="/css/journey.css?v=8" />
+  <link rel="stylesheet" href="/css/journey.css?v=9" />
 </head>
 <body class="page-guide">
 
@@ -34,14 +34,14 @@
     <section class="g-hero">
       <div class="g-hero__media ph" data-img="cover" role="img" aria-label="שדה זהוב בשעת השקיעה"></div>
       <div class="container g-hero__text">
-        <p class="eyebrow">מדריך ההכנה שלכם</p>
+        <p class="eyebrow" id="gEyebrow">מדריך ההכנה שלכם</p>
         <h1 class="section__title" id="gTitle">כל מה שצריך לערב מושלם בשקיעה</h1>
         <p class="section__lead">כמה דקות קריאה, ותגיעו רגועים ומוכנים. שמרו את הדף, הוא פה בשבילכם עד יום הצילום.</p>
         <!-- פרטי הערב (רק במדריך אישי) -->
         <div class="g-mine" id="gMine" hidden>
           <p class="g-mine__title">הערב שלכם</p>
           <dl class="sum" id="gSum"></dl>
-          <a class="link g-mine__page" id="gPage" href="#">לדף האישי שלכם</a>
+          <a class="link g-mine__page" id="gPage" href="#">לדף ההזמנה (תשלומים ופרטי ההזמנה)</a>
         </div>
         <!-- מילה מאורי -->
         <figure class="g-ori">
@@ -50,7 +50,7 @@
           <a class="btn btn--ghost btn--sm" data-wa href="#" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>להתייעץ איתי בוואטסאפ</a>
         </figure>
         <nav class="g-toc" aria-label="תוכן המדריך">
-          <a href="#evening">איך נראה הערב</a><a href="#wear">מה ללבוש</a><a href="#bring">מה להביא</a><a href="#todo">רשימת משימות</a><a href="#weather">מזג אוויר</a>
+          <a href="#evening">איך נראה הערב</a><a href="#wear">מה ללבוש</a><a href="#bring">מה להביא</a><a href="#todo">רשימת משימות</a><a href="#weather">מזג אוויר</a><a href="#follow">השראה</a>
         </nav>
       </div>
     </section>
@@ -156,6 +156,19 @@
       </div>
     </section>
 
+    <!-- השראה באינסטגרם -->
+    <section class="section g-follow" id="follow">
+      <div class="container">
+        <div class="follow">
+          <svg class="icon follow__icon" aria-hidden="true"><use href="#i-ig"/></svg>
+          <p class="follow__title">עוד השראה לפני הערב שלכם</p>
+          <p class="follow__text">באינסטגרם אני מעלה זוגות מהשקיעות האחרונות, לוקים שעבדו יפה ורגעים מאחורי הקלעים. עקבו, ותגיעו לצילום עם ראש מלא רעיונות. אחרי הערב, אולי גם אתם תופיעו שם 🧡</p>
+          <a class="btn btn--primary" data-ig href="#" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-ig"/></svg>לעקוב באינסטגרם</a>
+          <bdi class="follow__at" dir="ltr" data-ig-at></bdi>
+        </div>
+      </div>
+    </section>
+
     <!-- מזג אוויר -->
     <section class="section g-weather" id="weather">
       <div class="container closing__inner">
@@ -182,8 +195,8 @@
   </svg>
 
   <script src="/js/config.js?v=11"></script>
-  <script src="/js/api.js?v=7"></script>
+  <script src="/js/api.js?v=8"></script>
   <script src="/js/sun.js?v=4"></script>
-  <script src="/js/guide.js?v=3"></script>
+  <script src="/js/guide.js?v=4"></script>
 </body>
 </html>

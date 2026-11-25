@@ -130,7 +130,7 @@
     } else cal.render();
     refreshSave();
     kpis(); reminders(); upcoming(); filters(); list(); settings(); texts(); stats(); reviews(); rvLeads();
-    $("shareWa").href = "https://wa.me/?text=" + encodeURIComponent("היי! זה השאלון הקצר שלי: ממלאים בדקה, ומקבלים דף אישי עם הערבים הפנויים לבוק זוגי בשקיעה\n" + helloUrl);
+    $("shareWa").href = "https://wa.me/?text=" + encodeURIComponent("היי! זה השאלון הקצר שלי: ממלאים בדקה, ומקבלים דף הזמנה עם הערבים הפנויים לבוק זוגי בשקיעה\n" + helloUrl);
     if (location.hash === "#upcoming" && !setup.done) go("upcoming");
     if (location.hash === "#reviews" && !setup.done) go("reviews");
     setup.done = true;
@@ -310,7 +310,7 @@
     if (l.status === "lead") {
       out.push(["הודעת היכרות", "היי " + first(l) + ", כאן אורי\nתודה שמילאתם את השאלון, כיף להכיר!" +
         (OCC_HI[l.occasion] ? "\n" + OCC_HI[l.occasion] : "") +
-        "\nבדף האישי שלכם מחכים הערבים הפנויים והחבילות:\n" + url + "\nואם יש שאלה, אני כאן."]);
+        "\nבדף ההזמנה שלכם מחכים הערבים הפנויים והחבילות:\n" + url + "\nואם יש שאלה, אני כאן."]);
     }
     if (l.status === "pending") {
       out.push(["אישור + קישור למקדמה", "היי " + first(l) + "!\nאישרתי את " + d + ".\nהתאריך מחכה לכם עד מחר ב-10:00 בבוקר. כדי לסגור אותו סופית, נשאר רק לשלם מקדמה של " +
@@ -322,19 +322,19 @@
         ". אחרי זה הוא נפתח שוב לזוגות אחרים.\nלתשלום המקדמה:\n" + url]);
     }
     if (l.status === "booked" && l.balance_open_at && !l.full_paid_at) {
-      out.push(["הזמנה להשלמת תשלום", "היי " + first(l) + "!\nלקראת " + d + " פתחתי לכם בדף האישי אפשרות לשלם את היתרה (" +
+      out.push(["הזמנה להשלמת תשלום", "היי " + first(l) + "!\nלקראת " + d + " פתחתי לכם בדף ההזמנה אפשרות לשלם את היתרה (" +
         B.money(p.price - B.deposit(p)) + "). אפשר לשלם עכשיו, או ביום הצילום עצמו:\n" + url]);
     }
     if (l.status === "booked") {
       out.push(["פרטי מפגש", "היי " + first(l) + "! מתרגש לקראת " + d + "\n" +
         (l.location ? "נפגשים ב" + l.location + " " : "נפגשים ") + "בשעה " + meetTime(l.day) + " (השקיעה ב-" + sunset(l.day) + ").\n" +
-        "המדריך עם כל מה שכדאי להכין: " + location.origin + "/guide?t=" + l.token]);
-      out.push(["מדריך הכנה", "היי " + first(l) + ", הכנתי לכם מדריך קצר לקראת הצילום: מה ללבוש, מה להביא ומה לסגור מראש\n" + location.origin + "/guide?t=" + l.token]);
+        "בדף האישי שלכם יש את כל מה שכדאי להכין: " + location.origin + "/guide?t=" + l.token]);
+      out.push(["הדף האישי", "היי " + first(l) + ", הכנתי לכם דף אישי לקראת הצילום: מה ללבוש, מה להביא ומה לסגור מראש\n" + location.origin + "/guide?t=" + l.token]);
     }
     if (l.status === "shot" || l.status === "delivered") {
       out.push(["תודה + בקשת המלצה", "היי " + first(l) + ", תודה על ערב מקסים! היה לי כיף גדול לצלם אתכם 🧡\n" +
-        "אני כבר עובר על התמונות. בינתיים העליתי לכם לדף האישי כמה תמונות ראשונות, אפשר כבר להוריד אותן:\n" + url +
-        "\nואם נהניתם, אשמח מאוד לכמה מילים על החוויה. אפשר לכתוב לי כאן בוואטסאפ, או ישירות בדף."]);
+        "אני כבר עובר על התמונות. בינתיים העליתי לכם לדף ההזמנה כמה תמונות ראשונות, אפשר כבר להוריד אותן:\n" + url +
+        "\nואם נהניתם, אשמח מאוד לכמה מילים על החוויה. אפשר לכתוב לי כאן בוואטסאפ, או ישירות שם בדף."]);
     }
     if (l.status === "delivered") {
       out.push(["התמונות מוכנות", "היי " + first(l) + "! התמונות שלכם מוכנות\nשלחתי לכם את הגלריה למייל" + (l.email ? " (" + l.email + ")" : "") + ". מקווה שתאהבו אותן כמו שאני אהבתי 🧡"]);
@@ -367,7 +367,7 @@
         a.href = B.waLink(l.phone, "היי " + first(l) + "! מתרגש לקראת " + B.prettyDate(l.day) + "\n" +
           (w ? "התחזית לשעת הצילום: " + w.text + ".\n" : "") +
           (l.location ? "נפגשים ב" + l.location + " " : "נפגשים ") + "בשעה " + meetTime(l.day) + ", והשקיעה ב-" + sunset(l.day) + ".\n" +
-          "כל מה שכדאי להכין: " + location.origin + "/guide?t=" + l.token);
+          "הדף האישי שלכם, עם כל מה שכדאי להכין: " + location.origin + "/guide?t=" + l.token);
         li.querySelector(".admin__actions").appendChild(a);
       });
     });
@@ -552,7 +552,8 @@
       (["shot", "delivered"].indexOf(l.status) > -1 ? '<div class="photos" data-photos><p class="admin__hint">תמונות טעימה בדף של הזוג (הם יכולים להוריד אותן)</p><div class="photos__grid"></div>' +
         '<label class="btn btn--ghost btn--sm photos__add">העלאת תמונות<input type="file" accept="image/*" multiple hidden /></label><span class="saved-note" data-pnote></span></div>' : "") +
       '<div class="lcard__wa"><p class="admin__hint">הודעות מוכנות בוואטסאפ</p><div class="admin__actions" data-wa></div></div>' +
-      '<p class="lcard__link">הדף של הזוג: <a class="link" target="_blank" rel="noopener" href="' + pageUrl(l) + '">פתיחה</a> · <button type="button" class="link" data-copy>העתקה</button></p>';
+      '<p class="lcard__link">דף ההזמנה של הזוג: <a class="link" target="_blank" rel="noopener" href="' + pageUrl(l) + '">פתיחה</a> · <button type="button" class="link" data-copy>העתקה</button>' +
+        ' · הדף האישי: <a class="link" target="_blank" rel="noopener" href="/guide?t=' + encodeURIComponent(l.token) + '">פתיחה</a></p>';
 
     var act = el.querySelector("[data-act]");
     function btn(text, cls, fn) { var x = document.createElement("button"); x.type = "button"; x.className = "btn btn--sm " + cls; x.textContent = text; x.onclick = fn; act.appendChild(x); }
@@ -865,7 +866,7 @@
       "היי, כאן אורי\n" +
       "תודה שכתבתם! אני צלם בוקים זוגיים בשקיעה, וכיף להכיר.\n" +
       "אחזור אליכם אישית בהקדם.\n" +
-      "ואם עוד לא מילאתם את השאלון, זה לוקח דקה, ובסוף מקבלים דף אישי עם הערבים הפנויים:\n" + helloUrl;
+      "ואם עוד לא מילאתם את השאלון, זה לוקח דקה, ובסוף מקבלים דף הזמנה עם הערבים הפנויים:\n" + helloUrl;
   }
   $("calCopy").addEventListener("click", function () { copy("webcal://" + calUrl(), $("calCopy"), "העתקת הקישור"); });
   $("calRotate").addEventListener("click", function () {
