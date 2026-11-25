@@ -137,8 +137,28 @@
     $("wStory").textContent = text;
     $("wWa").href = B.waLink(C.whatsappNumber,
       "היי אורי, כאן " + L.names + ". " + text + " מחכים לשמוע ממך.\n\nהדף שלנו: " + pageUrl);
+    $("wMain").hidden = false; $("wThanks").hidden = true;
     openDlg($("welcomeDlg"));
   }
+
+  // אחרי ששלחו את הסיכום: מסך תודה עם אינסטגרם ושיתוף
+  var IG = "https://www.instagram.com/" + (C.instagramHandle || "turgi__photographer");
+  var shareUrl = location.origin + "/?src=share";
+  var shareText = "מצאתי צלם מהמם לבוק זוגי בשקיעה, חשבתי שתאהבו";
+  $("tkIg").href = IG;
+  $("tkShare").href = "https://wa.me/?text=" + encodeURIComponent(shareText + "\n" + shareUrl);
+  $("tkShare").addEventListener("click", function (e) {
+    if (!navigator.share) return; // בלי שיתוף מובנה: נפתח וואטסאפ
+    e.preventDefault();
+    navigator.share({ title: document.title, text: shareText, url: shareUrl }).catch(function () {});
+  });
+  $("wWa").addEventListener("click", function () {
+    if (window.Track) window.Track("summary_sent", token);
+    setTimeout(function () {
+      $("tkTitle").textContent = (L && L.names ? L.names + ", " : "") + "איזה כיף שכתבתם לי";
+      $("wMain").hidden = true; $("wThanks").hidden = false;
+    }, 400);
+  });
 
   // ----- בחירת חבילה וערב -----
   function choose() {
