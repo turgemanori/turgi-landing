@@ -43,7 +43,7 @@
 
   function summary(el) {
     var p = L.package ? B.pkg(L.package) : null, rows = [];
-    if (L.day) rows.push(["הערב", B.prettyDate(L.day) + " · שקיעה " + B.sunset(L.day)]);
+    if (L.day) rows.push(["הערב", B.prettyDate(L.day) + " · מפגש משוער " + meetTime(L.day)]);
     if (L.day && (L.status === "booked" || L.status === "awaiting_deposit")) rows.push(["מפגש משוער", meetTime(L.day)]);
     if (L.location || L.pref_location) rows.push(["המקום", L.location || L.pref_location + " (ביקשתם)"]);
     if (L.pref_style) rows.push(["הסגנון", L.pref_style]);
@@ -80,7 +80,7 @@
       $("chooseNote").textContent = note; $("chooseNote").hidden = !note;
     } else if (s === "pending" && (!L.prefs_at || editPrefs)) {
       $("hello").textContent = L.names + ", בחרתם ערב";
-      $("lead").textContent = B.prettyDate(L.day) + " · שקיעה " + B.sunset(L.day);
+      $("lead").textContent = B.prettyDate(L.day);
       track(1); view("vPrefs"); prefs();
     } else if (s === "pending") {
       $("hello").textContent = L.names + ", כמעט סיימנו";
@@ -91,7 +91,7 @@
       $("lead").textContent = "נשאר רק צעד אחד: מקדמה קטנה, והערב שלכם.";
       track(3); view("vDeposit"); deposit();
     } else if (s === "booked") {
-      $("hello").textContent = L.names + ", נתראה בשקיעה";
+      $("hello").textContent = L.names + ", נתראה בצילום";
       $("lead").textContent = "";
       track(5); view("vBooked"); booked();
     } else {
@@ -132,8 +132,8 @@
     var places = (L.landscape || "").split(",").map(function (x) { return PLACE[x.trim()]; }).filter(Boolean);
     var where = places.length === 0 ? ", ואת המקום עוד לא בחרנו, אז נשמח שתציע לנו פינה עם אור יפה."
       : ", " + (places.length > 1 ? places.slice(0, -1).join(", ") + " או " + places[places.length - 1] : places[0]) +
-        ", כשהשמש שוקעת והאור נהיה רך וחם.";
-    var t = (OCCASION[L.occasion] || "אנחנו חולמים על בוק זוגי בשקיעה") + where;
+        ", באור רך של ערב.";
+    var t = (OCCASION[L.occasion] || "אנחנו חולמים על בוק זוגי") + where;
     if (TIMING[L.timing]) t += " " + TIMING[L.timing];
     return t;
   }
@@ -188,7 +188,7 @@
         month: firstDay ? B.parseIso(firstDay) : new Date(), minMonth: new Date(),
         dayState: function (iso) {
           var ok = !!avail[iso];
-          return { disabled: !ok, cls: (ok ? "is-open" : "is-closed") + (iso === sel.day ? " is-selected" : ""), label: ok ? "פנוי, שקיעה " + B.sunset(iso) : "לא פנוי" };
+          return { disabled: !ok, cls: (ok ? "is-open" : "is-closed") + (iso === sel.day ? " is-selected" : ""), label: ok ? "פנוי" : "לא פנוי" };
         },
         onPick: function (iso) { sel.day = iso; cal.render(); sum(); }
       });
@@ -199,7 +199,7 @@
   function sum() {
     var p = B.pkg(sel.pkg), rows = [];
     $("picked").hidden = !sel.day;
-    if (sel.day) $("picked").textContent = B.prettyDate(sel.day) + " · שקיעה " + B.sunset(sel.day);
+    if (sel.day) $("picked").textContent = B.prettyDate(sel.day) + " · מפגש משוער " + meetTime(sel.day);
     rows.push(["הערב", sel.day ? B.prettyDate(sel.day) : "עוד לא נבחר"]);
     rows.push(["החבילה", p.name + " · " + B.money(p.price)]);
     rows.push(["מקדמה לשמירת התאריך", B.money(B.deposit(p)) + " (" + (C.depositPercent || 10) + "%)"]);
@@ -331,14 +331,14 @@
     var Lc = C.sunLocation || window.Sun.DEFAULT, set = window.Sun.sunsetMs(L.day, Lc.lat, Lc.lon);
     var where = L.location || L.pref_location || "";
     var details = [
-      "הבוק הזוגי שלנו בשקיעה, עם " + (C.businessName || "אורי") + ".",
-      "שקיעה: " + B.sunset(L.day) + ". את שעת המפגש המדויקת אורי יאשר איתנו בוואטסאפ כמה ימים לפני.",
+      "הבוק הזוגי שלנו, עם " + (C.businessName || "אורי") + ".",
+      "מפגש משוער: " + meetTime(L.day) + ". את שעת המפגש המדויקת אורי יאשר איתנו בוואטסאפ כמה ימים לפני.",
       L.pref_style ? "הסגנון שבחרנו: " + L.pref_style : "",
       where ? "המקום: " + where : "",
       "", "הדף האישי שלנו (מדריך ההכנה): " + guideUrl, "דף ההזמנה: " + pageUrl
     ].filter(function (x, i) { return x !== "" || i === 4; }).join("\n");
     $("calGoogle").href = "https://calendar.google.com/calendar/render?action=TEMPLATE" +
-      "&text=" + encodeURIComponent("הבוק הזוגי שלנו בשקיעה 📷") +
+      "&text=" + encodeURIComponent("הבוק הזוגי שלנו 📷") +
       "&dates=" + utc(set - 2 * 3600000) + "/" + utc(set + 20 * 60000) +
       "&ctz=Asia/Jerusalem" +
       "&details=" + encodeURIComponent(details) +
