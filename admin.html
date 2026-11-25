@@ -12,8 +12,8 @@
   <link rel="stylesheet" href="/css/logo.css?v=4" />
   <link rel="stylesheet" href="/css/style.css?v=9" />
   <link rel="stylesheet" href="/css/booking.css?v=4" />
-  <link rel="stylesheet" href="/css/journey.css?v=7" />
-  <link rel="stylesheet" href="/css/admin.css?v=6" />
+  <link rel="stylesheet" href="/css/journey.css?v=8" />
+  <link rel="stylesheet" href="/css/admin.css?v=7" />
 </head>
 <body class="page-admin">
 
@@ -21,8 +21,21 @@
     <a href="/" class="brand" aria-label="לדף הבית">
       <span class="logo brand__logo" role="img" aria-label="Turgeman Ori, Fine Art Photography"></span>
     </a>
-    <button type="button" class="topbar__cta" id="logoutBtn" hidden>יציאה</button>
+    <button type="button" class="menu-btn" id="menuBtn" aria-label="תפריט" aria-expanded="false" aria-controls="menu" hidden><span></span><span></span><span></span></button>
   </header>
+
+  <nav class="menu" id="menu" hidden aria-label="תפריט המנהל">
+    <button type="button" data-go="main">הזוגות שלך</button>
+    <button type="button" data-go="upcoming">הצילומים הקרובים</button>
+    <button type="button" data-go="dates">פתיחת ערבים</button>
+    <button type="button" data-go="stats">סטטיסטיקות</button>
+    <button type="button" data-go="texts">טקסטים בדף הנחיתה</button>
+    <button type="button" data-go="ical">יומן אפל</button>
+    <button type="button" data-go="notify">התראות לטלפון</button>
+    <button type="button" data-go="greet">הודעת פתיחה אוטומטית</button>
+    <button type="button" data-go="password">שינוי סיסמה</button>
+    <button type="button" id="logoutBtn" class="menu__out">יציאה</button>
+  </nav>
 
   <main class="admin container">
 
@@ -39,33 +52,43 @@
     </form>
 
     <div id="dash" hidden>
-      <div class="admin__bar">
-        <h1>הזוגות שלך</h1>
-        <div class="admin__actions" style="margin:0">
-          <button type="button" class="btn btn--ghost btn--sm" id="copyLink">העתקת קישור לשאלון</button>
-          <a class="btn btn--ghost btn--sm" id="shareWa" href="#" target="_blank" rel="noopener">שליחת השאלון בוואטסאפ</a>
-          <button type="button" class="btn btn--ghost btn--sm" id="refreshBtn">רענון</button>
+      <!-- המסך הראשי: מה דורש טיפול והזוגות -->
+      <div id="vMain">
+        <div class="admin__bar">
+          <h1>הזוגות שלך</h1>
+          <div class="qa-row" role="group" aria-label="פעולות מהירות">
+            <button type="button" class="qa-btn" id="copyLink" title="העתקת קישור לשאלון"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>העתקת שאלון</span></button>
+            <a class="qa-btn" id="shareWa" href="#" target="_blank" rel="noopener" title="שליחת השאלון בוואטסאפ"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg><span>שאלון בוואטסאפ</span></a>
+            <button type="button" class="qa-btn" id="refreshBtn" title="רענון"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>רענון</span></button>
+          </div>
         </div>
+        <p class="form-error" id="dashError" role="alert" hidden></p>
+
+        <!-- מה דורש טיפול -->
+        <div class="kpis" id="kpis"></div>
+
+        <!-- תזכורות: מקדמה שלא שולמה אחרי יומיים -->
+        <div class="reminders" id="reminders" hidden></div>
+
+        <!-- לוח הזוגות -->
+      <section class="bstep" aria-labelledby="bdTitle">
+        <h2 id="bdTitle" class="bstep__title">כל הזוגות</h2>
+        <div class="tabs" id="filters" role="tablist"></div>
+        <ul class="blist" id="leadList"></ul>
+      </section>
       </div>
-      <p class="form-error" id="dashError" role="alert" hidden></p>
 
-      <!-- מה דורש טיפול -->
-      <div class="kpis" id="kpis"></div>
-
+      <!-- כל השאר, מתוך התפריט -->
+      <div class="panel__back" id="panelBack" hidden><button type="button" class="link" id="backBtn">→ חזרה לזוגות</button></div>
+      <div class="panel" data-panel="upcoming" hidden>
       <!-- צילומים קרובים -->
       <section class="bstep" id="upcoming" aria-labelledby="upTitle">
         <h2 id="upTitle" class="bstep__title">הצילומים הקרובים</h2>
         <p class="admin__hint">צילומים שמורים ב-10 הימים הקרובים, עם שעת השקיעה ותחזית לשעה שלפניה. משם שולחים לזוג הודעת תיאום בלחיצה.</p>
         <ul class="blist" id="upList"></ul>
       </section>
-
-      <!-- לוח הזוגות -->
-      <section class="bstep" aria-labelledby="bdTitle">
-        <h2 id="bdTitle" class="bstep__title">כל הזוגות</h2>
-        <div class="tabs" id="filters" role="tablist"></div>
-        <ul class="blist" id="leadList"></ul>
-      </section>
-
+      </div>
+      <div class="panel" data-panel="stats" hidden>
       <!-- סטטיסטיקות -->
       <section class="bstep" id="stats" aria-labelledby="stTitle">
         <div class="st-head">
@@ -78,7 +101,8 @@
         <p class="admin__hint">כמה נכנסו לדף, כמה התחילו את השאלון, כמה סיימו וכמה שלחו לך את הסיכום. בלי עוגיות ובלי מידע אישי, ולכן אין צורך בהודעת פרטיות לגולשים.</p>
         <div id="stBody"><p class="admin__hint">טוען…</p></div>
       </section>
-
+      </div>
+      <div class="panel" data-panel="texts" hidden>
       <!-- טקסטים באתר -->
       <section class="bstep" id="textsBox" aria-labelledby="txTitle">
         <h2 id="txTitle" class="bstep__title">טקסטים בדף הנחיתה</h2>
@@ -90,8 +114,8 @@
           <span class="saved-note" id="txNote" aria-live="polite"></span>
         </div>
       </section>
-
-      <div class="admin__grid">
+      </div>
+      <div class="panel" data-panel="dates" hidden>
         <!-- תאריכים פתוחים -->
         <section class="bstep" aria-labelledby="calTitle">
           <h2 id="calTitle" class="bstep__title">פתיחת ערבים</h2>
@@ -108,9 +132,8 @@
             <span class="saved-note" id="savedNote" aria-live="polite"></span>
           </div>
         </section>
-
-        <!-- הגדרות -->
-        <div class="admin__side">
+      </div>
+      <div class="panel" data-panel="ical" hidden>
           <section class="bstep" aria-labelledby="icTitle">
             <h2 id="icTitle" class="bstep__title">יומן אפל</h2>
             <p class="admin__hint">פותחים את הקישור באייפון או במק, ומאשרים "הרשמה". ההזמנות מופיעות שעתיים לפני השקיעה עם המיקום וזמן הנסיעה, והערבים הפנויים כאירוע של יום שלם.</p>
@@ -121,7 +144,8 @@
             </div>
             <p class="saved-note" id="calNote" aria-live="polite"></p>
           </section>
-
+      </div>
+      <div class="panel" data-panel="notify" hidden>
           <section class="bstep" aria-labelledby="ntTitle">
             <h2 id="ntTitle" class="bstep__title">התראות לטלפון</h2>
             <div id="ntOff">
@@ -142,14 +166,16 @@
               <p class="saved-note" id="ntNote" aria-live="polite"></p>
             </div>
           </section>
-
+      </div>
+      <div class="panel" data-panel="greet" hidden>
           <section class="bstep" aria-labelledby="gwTitle">
             <h2 id="gwTitle" class="bstep__title">הודעת פתיחה אוטומטית</h2>
             <p class="admin__hint">ב-WhatsApp Business: הגדרות ← כלים לעסקים ← הודעת פתיחה. מדביקים את הנוסח, וכל זוג ששולח לך את הסיכום מהאתר מקבל ממך מענה מיידי.</p>
             <textarea class="greet" id="greetText" rows="7" readonly></textarea>
             <div class="admin__actions"><button type="button" class="btn btn--ghost btn--sm" id="greetCopy">העתקת הנוסח</button></div>
           </section>
-
+      </div>
+      <div class="panel" data-panel="password" hidden>
           <section class="bstep" aria-labelledby="pwTitle">
             <h2 id="pwTitle" class="bstep__title">שינוי סיסמה</h2>
             <form id="pwForm" class="fields">
@@ -163,7 +189,6 @@
               </div>
             </form>
           </section>
-        </div>
       </div>
     </div>
   </main>
@@ -175,8 +200,8 @@
 
   <script src="/js/config.js?v=9"></script>
   <script src="/js/sun.js?v=4"></script>
-  <script src="/js/api.js?v=5"></script>
+  <script src="/js/api.js?v=6"></script>
   <script src="/js/calendar.js?v=4"></script>
-  <script src="/js/admin.js?v=8"></script>
+  <script src="/js/admin.js?v=9"></script>
 </body>
 </html>

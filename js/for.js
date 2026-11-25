@@ -51,7 +51,8 @@
       rows.push(["החבילה", p.name]);
       rows.push(["מחיר", B.money(p.price)]);
       rows.push(["מקדמה", B.money(B.deposit(p)) + (L.deposit_paid_at ? " · שולמה ✓" : "")]);
-      if (L.deposit_paid_at) rows.push(["יתרה ביום הצילום", B.money(p.price - B.deposit(p))]);
+      if (L.full_paid_at) rows.push(["תשלום מלא", "שולם ✓"]);
+      else if (L.deposit_paid_at) rows.push(["יתרה ביום הצילום", B.money(p.price - B.deposit(p))]);
     }
     el.innerHTML = rows.map(function (r) { return "<div><dt>" + B.esc(r[0]) + "</dt><dd>" + B.esc(r[1]) + "</dd></div>"; }).join("");
   }
@@ -100,7 +101,7 @@
       $("afterText").textContent = s === "delivered"
         ? "היה לי כיף גדול לצלם אתכם. אם תרצו לשתף כמה מילים על החוויה, זה עוזר לי מאוד ואשמח לשמוע."
         : "אני עובר על כל פריים בשקט ובקפידה. ברגע שהגלריה תהיה מוכנה, אשלח לכם אותה בוואטסאפ ובמייל.";
-      track(5); view("vAfter");
+      track(5); view("vAfter"); after();
     }
 
     if (L.page_title) $("hello").textContent = L.page_title;
@@ -347,7 +348,59 @@
     var done = !!L.finished_sent_at;
     $("finishWa").className = "btn " + (done ? "btn--ghost" : "btn--primary");
     $("guideLink").className = "btn " + (done ? "btn--primary" : "btn--ghost");
+    balance();
   }
+  // ----- השלמת תשלום -----
+  var balMethod = null;
+  function balance() {
+    var p = B.pkg(L.package), open = !!L.balance_open_at && !!L.package;
+    $("balance").hidden = !open; if (!open) return;
+    var paid = !!L.full_paid_at;
+    $("balTitle").innerHTML = paid ? "התשלום הושלם ✓ <strong></strong>" : 'השלמת התשלום: <strong id="balAmt"></strong>';
+    if (!paid) $("balAmt").textContent = B.money(p.price - B.deposit(p));
+    $("balHint").textContent = paid ? "תודה! הכול מסודר, רק נשאר ליהנות מהערב." : "אפשר לשלם עכשיו, או ביום הצילום עצמו.";
+    $("balBtns").hidden = paid; $("balDemo").hidden = true;
+  }
+  document.querySelectorAll("[data-bal]").forEach(function (b) {
+    b.addEventListener("click", function () { balMethod = b.getAttribute("data-bal"); $("balDemo").hidden = false; });
+  });
+  $("balCancel").addEventListener("click", function () { $("balDemo").hidden = true; });
+  $("balConfirm").addEventListener("click", function () {
+    var b = $("balConfirm"); b.disabled = true;
+    B.rpc("lead_pay_balance_demo", { p_token: token, p_method: balMethod })
+      .then(load)
+      .catch(function (e) { $("balErr").textContent = e.message; $("balErr").hidden = false; })
+      .then(function () { b.disabled = false; });
+  });
+
+  // ----- אחרי הצילום: תמונות טעימה והמלצה -----
+  var shown = {};
+  function after() {
+    var ph = L.photos || [];
+    $("teasers").hidden = !ph.length;
+    ph.forEach(function (x, i) {
+      if (shown[x.id]) return; shown[x.id] = true;
+      var f = document.createElement("figure"); f.className = "teaser";
+      f.innerHTML = '<img alt="" /><a class="teaser__dl" download>הורדה</a>';
+      $("teaserGrid").appendChild(f);
+      B.rpc("lead_photo", { p_token: token, p_id: x.id }).then(function (d) {
+        f.querySelector("img").src = d; f.querySelector("img").alt = "תמונה " + (i + 1) + " מהערב שלכם";
+        var a = f.querySelector("a"); a.href = d; a.setAttribute("download", x.name || "photo.jpg");
+      }).catch(function () { f.remove(); });
+    });
+    var done = !!L.review;
+    $("reviewBox").hidden = done; $("reviewThanks").hidden = !done;
+    $("reviewWa").href = B.waLink(C.whatsappNumber, "היי אורי, כאן " + L.names + ". רצינו לספר לך על הערב: ");
+  }
+  $("reviewBtn").addEventListener("click", function () {
+    var t = $("reviewText").value.trim(), e = $("reviewErr");
+    if (t.length < 3) { e.textContent = "כתבו בבקשה כמה מילים."; e.hidden = false; return; }
+    $("reviewBtn").disabled = true;
+    B.rpc("lead_review", { p_token: token, p_text: t }).then(load)
+      .catch(function (er) { e.textContent = er.message; e.hidden = false; })
+      .then(function () { $("reviewBtn").disabled = false; });
+  });
+
   $("finishWa").addEventListener("click", function () {
     B.rpc("lead_mark", { p_token: token, p_what: "finished_sent" }).catch(function () {});
     setTimeout(function () { L.finished_sent_at = L.finished_sent_at || new Date().toISOString(); booked(); }, 600);

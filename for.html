@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="/css/logo.css?v=4" />
   <link rel="stylesheet" href="/css/style.css?v=9" />
   <link rel="stylesheet" href="/css/booking.css?v=4" />
-  <link rel="stylesheet" href="/css/journey.css?v=7" />
+  <link rel="stylesheet" href="/css/journey.css?v=8" />
 </head>
 <body class="page-journey">
 
@@ -145,6 +145,21 @@
         <h2 class="section__title">הערב שלכם שמור</h2>
         <p class="section__lead">המקדמה התקבלה, והערב שלכם שמור. את שעת המפגש המדויקת אאשר איתכם בוואטסאפ כמה ימים לפני, לפי השקיעה באותו ערב.</p>
         <dl class="sum" data-sum></dl>
+        <!-- השלמת תשלום (נפתח מדף המנהל) -->
+        <div class="pay pay--balance" id="balance" hidden>
+          <p class="pay__title" id="balTitle">השלמת התשלום: <strong id="balAmt"></strong></p>
+          <p class="addcal__hint" id="balHint">אפשר לשלם עכשיו, או ביום הצילום עצמו.</p>
+          <div class="pay__btns" id="balBtns">
+            <button type="button" class="btn btn--primary" data-bal="bit">תשלום ב-Bit</button>
+            <button type="button" class="btn btn--ghost" data-bal="card">תשלום באשראי</button>
+          </div>
+          <div class="pay__demo" id="balDemo" hidden>
+            <p><strong>מצב דמו.</strong> כאן ייפתח עמוד התשלום המאובטח. בינתיים אפשר לאשר תשלום לדוגמה.</p>
+            <button type="button" class="btn btn--primary btn--sm" id="balConfirm">אישור תשלום לדוגמה</button>
+            <button type="button" class="btn btn--ghost btn--sm" id="balCancel">ביטול</button>
+          </div>
+          <p class="form-error" id="balErr" role="alert" hidden></p>
+        </div>
         <div class="addcal">
           <p class="addcal__title">שמרו את הערב ביומן</p>
           <div class="addcal__btns">
@@ -163,9 +178,23 @@
       <section id="vAfter" class="state" hidden>
         <h2 class="section__title" id="afterTitle"></h2>
         <p class="section__lead" id="afterText"></p>
-        <div class="mine__actions">
-          <a class="btn btn--primary" data-wa-ctx href="#" target="_blank" rel="noopener">וואטסאפ</a>
+        <!-- תמונות טעימה -->
+        <div class="teasers" id="teasers" hidden>
+          <p class="addcal__title">טעימה ראשונה מהערב שלכם</p>
+          <div class="teasers__grid" id="teaserGrid"></div>
         </div>
+        <!-- המלצה -->
+        <div class="review" id="reviewBox">
+          <p class="addcal__title">כמה מילים על החוויה?</p>
+          <p class="addcal__hint">זה עוזר לי מאוד, ולזוגות אחרים להכיר אותי. אפשר לכתוב כאן, או פשוט לשלוח לי בוואטסאפ.</p>
+          <label class="field"><span class="sr-only">ההמלצה שלכם</span><textarea id="reviewText" rows="4" maxlength="2000" placeholder="איך היה לכם?"></textarea></label>
+          <p class="form-error" id="reviewErr" role="alert" hidden></p>
+          <div class="mine__actions">
+            <button type="button" class="btn btn--primary" id="reviewBtn">שליחת ההמלצה</button>
+            <a class="btn btn--ghost" id="reviewWa" href="#" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>לכתוב לאורי בוואטסאפ</a>
+          </div>
+        </div>
+        <p class="review__thanks" id="reviewThanks" hidden>תודה מכל הלב על ההמלצה 🧡</p>
       </section>
     </div>
   </main>
@@ -208,9 +237,9 @@
 
   <script src="/js/config.js?v=9"></script>
   <script src="/js/sun.js?v=4"></script>
-  <script src="/js/api.js?v=5"></script>
+  <script src="/js/api.js?v=6"></script>
   <script src="/js/track.js?v=1"></script>
   <script src="/js/calendar.js?v=4"></script>
-  <script src="/js/for.js?v=6"></script>
+  <script src="/js/for.js?v=7"></script>
 </body>
 </html>
