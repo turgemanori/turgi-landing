@@ -144,6 +144,7 @@
     $("wStory").textContent = text;
     $("wWa").href = B.waLink(C.whatsappNumber,
       "היי אורי, כאן " + L.names + ". " + text + " מחכים לשמוע ממך.\n\nהדף שלנו: " + pageUrl);
+    $("wMain").hidden = false; $("wThanks").hidden = true;
     openDlg($("welcomeDlg"));
   }
 
