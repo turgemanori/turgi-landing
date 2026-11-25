@@ -32,7 +32,7 @@
     return B.waLink(C.whatsappNumber, t);
   }
 
-  var VIEWS = ["vChoose", "vPending", "vDeposit", "vBooked", "vAfter"];
+  var VIEWS = ["vChoose", "vPrefs", "vPending", "vDeposit", "vBooked", "vAfter"];
   function view(id) { VIEWS.forEach(function (v) { $(v).hidden = v !== id; }); }
 
   function track(stage) {
@@ -44,6 +44,9 @@
   function summary(el) {
     var p = L.package ? B.pkg(L.package) : null, rows = [];
     if (L.day) rows.push(["הערב", B.prettyDate(L.day) + " · שקיעה " + B.sunset(L.day)]);
+    if (L.day && (L.status === "booked" || L.status === "awaiting_deposit")) rows.push(["מפגש משוער", meetTime(L.day)]);
+    if (L.location || L.pref_location) rows.push(["המקום", L.location || L.pref_location + " (ביקשתם)"]);
+    if (L.pref_style) rows.push(["הסגנון", L.pref_style]);
     if (p) {
       rows.push(["החבילה", p.name]);
       rows.push(["מחיר", B.money(p.price)]);
@@ -74,10 +77,14 @@
       var note = s === "declined" ? "הערב שבחרתם קודם לא התאפשר הפעם. אשמח שתבחרו ערב אחר, או שנמצא אחד יחד בוואטסאפ."
         : s === "expired" ? "זמן ההחזקה של התאריך הקודם הסתיים, והוא שוחרר. אפשר לבחור שוב ערב פנוי." : "";
       $("chooseNote").textContent = note; $("chooseNote").hidden = !note;
+    } else if (s === "pending" && (!L.prefs_at || editPrefs)) {
+      $("hello").textContent = L.names + ", בחרתם ערב";
+      $("lead").textContent = B.prettyDate(L.day) + " · שקיעה " + B.sunset(L.day);
+      track(1); view("vPrefs"); prefs();
     } else if (s === "pending") {
-      $("hello").textContent = L.names + ", הבקשה שלכם בדרך אליי";
+      $("hello").textContent = L.names + ", כמעט שם";
       $("lead").textContent = "";
-      track(2); view("vPending");
+      track(2); view("vPending"); pending();
     } else if (s === "awaiting_deposit") {
       $("hello").textContent = L.names + ", התאריך מוחזק עבורכם";
       $("lead").textContent = "נשאר רק צעד אחד: מקדמה קטנה, והערב שלכם.";
@@ -85,7 +92,7 @@
     } else if (s === "booked") {
       $("hello").textContent = L.names + ", נתראה בשקיעה";
       $("lead").textContent = "";
-      track(5); view("vBooked");
+      track(5); view("vBooked"); booked();
     } else {
       $("hello").textContent = L.names + ", תודה על ערב מקסים";
       $("lead").textContent = "";
@@ -137,27 +144,14 @@
     $("wStory").textContent = text;
     $("wWa").href = B.waLink(C.whatsappNumber,
       "היי אורי, כאן " + L.names + ". " + text + " מחכים לשמוע ממך.\n\nהדף שלנו: " + pageUrl);
-    $("wMain").hidden = false; $("wThanks").hidden = true;
     openDlg($("welcomeDlg"));
   }
 
-  // אחרי ששלחו את הסיכום: מסך תודה עם אינסטגרם ושיתוף
-  var IG = "https://www.instagram.com/" + (C.instagramHandle || "turgi__photographer");
-  var shareUrl = location.origin + "/?src=share";
-  var shareText = "מצאתי צלם מהמם לבוק זוגי בשקיעה, חשבתי שתאהבו";
-  $("tkIg").href = IG;
-  $("tkShare").href = "https://wa.me/?text=" + encodeURIComponent(shareText + "\n" + shareUrl);
-  $("tkShare").addEventListener("click", function (e) {
-    if (!navigator.share) return; // בלי שיתוף מובנה: נפתח וואטסאפ
-    e.preventDefault();
-    navigator.share({ title: document.title, text: shareText, url: shareUrl }).catch(function () {});
-  });
+  // אחרי ששלחו את הסיכום החלון נסגר, ומחכה להם בחירת הערב
+  $("welcomeDlg").addEventListener("cancel", function (e) { e.preventDefault(); });
   $("wWa").addEventListener("click", function () {
     if (window.Track) window.Track("summary_sent", token);
-    setTimeout(function () {
-      $("tkTitle").textContent = (L && L.names ? L.names + ", " : "") + "איזה כיף שכתבתם לי";
-      $("wMain").hidden = true; $("wThanks").hidden = false;
-    }, 400);
+    setTimeout(function () { $("welcomeDlg").close(); window.scrollTo({ top: 0 }); }, 500);
   });
 
   // ----- בחירת חבילה וערב -----
@@ -218,7 +212,56 @@
       .then(load)
       .then(function () { window.scrollTo({ top: 0, behavior: "smooth" }); })
       .catch(function (er) { e.textContent = er.message; e.hidden = false; if (er.code === "DATE_NOT_AVAILABLE") { sel.day = null; load(); } })
-      .then(function () { btn.disabled = false; btn.textContent = "שליחת בקשה לשריון"; });
+      .then(function () { btn.disabled = false; btn.textContent = "בחרנו, ממשיכים"; });
+  });
+
+  // ----- העדפות: סגנון ומקום -----
+  var editPrefs = false, style = null;
+  function prefs() {
+    style = style || L.pref_style || null;
+    var box = $("styles"); box.innerHTML = "";
+    (C.photoStyles || []).forEach(function (st) {
+      var lab = document.createElement("label");
+      lab.className = "pkg style";
+      lab.innerHTML = '<input type="radio" name="style" /><span class="pkg__name"></span><span class="style__desc"></span>';
+      lab.querySelector(".pkg__name").textContent = st.name;
+      lab.querySelector(".style__desc").textContent = st.desc;
+      var inp = lab.querySelector("input"); inp.value = st.name; inp.checked = style === st.name;
+      inp.addEventListener("change", function () { style = st.name; $("prefsErr").hidden = true; });
+      box.appendChild(lab);
+    });
+    if (!$("prefLoc").value) $("prefLoc").value = L.pref_location || "";
+  }
+  $("prefsBtn").addEventListener("click", function () {
+    var e = $("prefsErr"), btn = $("prefsBtn");
+    if (!style) { e.textContent = "בחרו בבקשה את הסגנון שהכי מתאים לכם."; e.hidden = false; return; }
+    btn.disabled = true; btn.textContent = "שומר…";
+    B.rpc("lead_prefs", { p_token: token, p_style: style, p_location: $("prefLoc").value.trim() })
+      .then(function () { editPrefs = false; return load(); })
+      .then(function () { window.scrollTo({ top: 0, behavior: "smooth" }); })
+      .catch(function (er) { e.textContent = er.message; e.hidden = false; })
+      .then(function () { btn.disabled = false; btn.textContent = "שמירה והמשך"; });
+  });
+  $("prefsEdit").addEventListener("click", function () { editPrefs = true; render(); });
+
+  // ----- שליחה לאורי לאישור (בלי קישור לדף) -----
+  function pending() {
+    var p = B.pkg(L.package), sent = !!L.approval_sent_at;
+    var t = "היי אורי, כאן " + L.names + ".\nבחרנו את " + B.prettyDate(L.day) + " ב" + p.name + "." +
+      (L.pref_style ? "\nהסגנון שלנו: " + L.pref_style + "." : "") +
+      (L.pref_location ? "\nמקום שנשמח לצלם בו: " + L.pref_location + "." : "") +
+      "\nנשמח שתאשר לנו את התאריך 🙏";
+    $("approvalWa").href = B.waLink(C.whatsappNumber, t);
+    $("pendTitle").textContent = sent ? "הבקשה אצלי" : "שלחו לי את הבקשה לאישור";
+    $("pendText").textContent = sent
+      ? "אני עובר על הבקשה וחוזר אליכם בהקדם. ברגע שאאשר, תקבלו ממני קישור למקדמה ששומרת את התאריך."
+      : "לחיצה אחת, והבקשה אצלי בוואטסאפ. ברגע שאאשר, אשלח לכם קישור למקדמה ששומרת את התאריך.";
+    $("approvalWa").lastChild.textContent = sent ? "שליחה שוב לאורי" : "שליחה לאורי לאישור";
+    $("approvalWa").className = "btn " + (sent ? "btn--ghost" : "btn--primary");
+  }
+  $("approvalWa").addEventListener("click", function () {
+    B.rpc("lead_mark", { p_token: token, p_what: "approval_sent" }).catch(function () {});
+    setTimeout(function () { L.approval_sent_at = L.approval_sent_at || new Date().toISOString(); pending(); }, 600);
   });
 
   $("changeBtn").addEventListener("click", function () {
@@ -231,6 +274,7 @@
   function deposit() {
     var p = B.pkg(L.package);
     $("depAmt").textContent = B.money(B.deposit(p));
+    if (!$("fEmail").value) $("fEmail").value = L.email || "";
     var until = new Date(L.hold_until).getTime();
     function tick() {
       var left = until - Date.now();
@@ -249,6 +293,16 @@
   var method = null;
   document.querySelectorAll("[data-pay]").forEach(function (b) {
     b.addEventListener("click", function () {
+      var em = $("fEmail").value.trim();
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) {
+        $("payErr").textContent = "כתבו בבקשה מייל, אליו אשלח את הקבלה ואת התמונות."; $("payErr").hidden = false;
+        $("fEmail").focus(); return;
+      }
+      $("payErr").hidden = true;
+      if (em.toLowerCase() !== (L.email || "")) {
+        B.rpc("lead_email", { p_token: token, p_email: em }).then(function () { L.email = em.toLowerCase(); })
+          .catch(function (er) { $("payErr").textContent = er.message; $("payErr").hidden = false; $("payDemo").hidden = true; });
+      }
       method = b.getAttribute("data-pay");
       $("payName").textContent = method === "bit" ? "Bit" : "סליקת האשראי";
       $("payDemo").hidden = false;
@@ -263,19 +317,40 @@
       .then(function () { b.disabled = false; });
   });
 
-  // ----- הוספה ליומן של הזוג (תאריך בלבד, בלי שעה) -----
-  $("icsBtn").addEventListener("click", function () {
-    var d = L.day.replace(/-/g, ""), n = B.parseIso(L.day); n.setDate(n.getDate() + 1);
-    var e = B.iso(n).replace(/-/g, "");
-    var ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Turgeman Ori//Booking//HE", "CALSCALE:GREGORIAN", "BEGIN:VEVENT",
-      "UID:" + token + "@turgi", "DTSTAMP:" + new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z",
-      "DTSTART;VALUE=DATE:" + d, "DTEND;VALUE=DATE:" + e,
-      "SUMMARY:בוק זוגי בשקיעה עם " + (C.businessName || "אורי"),
-      "DESCRIPTION:את שעת המפגש והמיקום אשלח בוואטסאפ כמה ימים לפני. הדף שלכם: " + pageUrl,
-      "END:VEVENT", "END:VCALENDAR"].join("\r\n");
-    var a = document.createElement("a");
-    a.href = URL.createObjectURL(new Blob([ics], { type: "text/calendar;charset=utf-8" }));
-    a.download = "boq-zugi.ics"; document.body.appendChild(a); a.click(); a.remove();
+  // ----- אחרי המקדמה: יומן, הודעה לאורי, מדריך -----
+  function meetTime(day) {
+    var Lc = C.sunLocation || (window.Sun && window.Sun.DEFAULT) || { lat: 32.08, lon: 34.78 };
+    return window.Sun.hhmm(window.Sun.sunsetMs(day, Lc.lat, Lc.lon) - 2 * 3600000);
+  }
+  function utc(ms) { return new Date(ms).toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, ""); }
+  var guideUrl = location.origin + "/guide?t=" + encodeURIComponent(token);
+  function booked() {
+    var Lc = C.sunLocation || window.Sun.DEFAULT, set = window.Sun.sunsetMs(L.day, Lc.lat, Lc.lon);
+    var where = L.location || L.pref_location || "";
+    var details = [
+      "הבוק הזוגי שלנו בשקיעה, עם " + (C.businessName || "אורי") + ".",
+      "שקיעה: " + B.sunset(L.day) + ". את שעת המפגש המדויקת אורי יאשר איתנו בוואטסאפ כמה ימים לפני.",
+      L.pref_style ? "הסגנון שבחרנו: " + L.pref_style : "",
+      where ? "המקום: " + where : "",
+      "", "הדף שלנו: " + pageUrl, "מדריך ההכנה: " + guideUrl
+    ].filter(function (x, i) { return x !== "" || i === 4; }).join("\n");
+    $("calGoogle").href = "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+      "&text=" + encodeURIComponent("הבוק הזוגי שלנו בשקיעה 📷") +
+      "&dates=" + utc(set - 2 * 3600000) + "/" + utc(set + 20 * 60000) +
+      "&ctz=Asia/Jerusalem" +
+      "&details=" + encodeURIComponent(details) +
+      (where ? "&location=" + encodeURIComponent(where) : "");
+    // אפל ואאוטלוק: קובץ יומן מהשרת (נפתח ישירות ביומן באייפון)
+    $("calApple").href = "/api/event?t=" + encodeURIComponent(token);
+    $("guideLink").href = guideUrl;
+    $("finishWa").href = B.waLink(C.whatsappNumber, "היי אורי, כאן " + L.names + ".\nשילמנו את המקדמה וסיימנו את ההרשמה ל" + B.prettyDate(L.day) + " 🎉\nמחכים לערב!");
+    var done = !!L.finished_sent_at;
+    $("finishWa").className = "btn " + (done ? "btn--ghost" : "btn--primary");
+    $("guideLink").className = "btn " + (done ? "btn--primary" : "btn--ghost");
+  }
+  $("finishWa").addEventListener("click", function () {
+    B.rpc("lead_mark", { p_token: token, p_what: "finished_sent" }).catch(function () {});
+    setTimeout(function () { L.finished_sent_at = L.finished_sent_at || new Date().toISOString(); booked(); }, 600);
   });
 
   load();

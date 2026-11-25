@@ -82,6 +82,8 @@ module.exports = async (req, res) => {
       l.occasion ? "הסיבה: " + l.occasion : "",
       l.landscape ? "נוף: " + l.landscape.split(",").join(", ") : "",
       l.timing ? "מתי: " + l.timing : "",
+      l.pref_style ? "סגנון שבחרו: " + l.pref_style : "",
+      l.pref_location ? "מקום שביקשו: " + l.pref_location : "",
       l.admin_note ? "הערות: " + l.admin_note : "",
       "",
       "וואטסאפ: https://wa.me/" + String(l.phone).replace(/\D/g, "").replace(/^0/, "972"),
@@ -92,7 +94,7 @@ module.exports = async (req, res) => {
       "LAST-MODIFIED:" + utc(new Date(l.updated_at).getTime()),
       "DTSTART:" + utc(start), "DTEND:" + utc(end),
       "SUMMARY:" + esc(title), "DESCRIPTION:" + esc(desc), "URL:" + site + "/admin");
-    if (l.location) L.push("LOCATION:" + esc(l.location));
+    if (l.location || l.pref_location) L.push("LOCATION:" + esc(l.location || l.pref_location));
     if (l.travel_minutes) L.push("X-APPLE-TRAVEL-DURATION;VALUE=DURATION:PT" + l.travel_minutes + "M",
       "X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC");
     L.push("STATUS:" + (l.status === "pending" ? "TENTATIVE" : "CONFIRMED"), "END:VEVENT");

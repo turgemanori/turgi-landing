@@ -13,9 +13,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bellefair&family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/css/logo.css?v=4" />
-  <link rel="stylesheet" href="/css/style.css?v=8" />
+  <link rel="stylesheet" href="/css/style.css?v=9" />
   <link rel="stylesheet" href="/css/booking.css?v=4" />
-  <link rel="stylesheet" href="/css/journey.css?v=5" />
+  <link rel="stylesheet" href="/css/journey.css?v=6" />
 </head>
 <body class="page-journey">
 
@@ -78,20 +78,37 @@
             <span>קראתי ואני מאשר/ת את <button type="button" class="link" data-open="termsDlg">התקנון</button></span>
           </label>
           <p class="form-error" id="chooseErr" role="alert" hidden></p>
-          <button type="button" class="btn btn--primary btn--lg" id="sendBtn">שליחת בקשה לשריון</button>
-          <p class="closing__hint">אין תשלום בשלב הזה. אחרי שאאשר, התאריך יישמר עבורכם לזמן קצוב לתשלום המקדמה.</p>
+          <button type="button" class="btn btn--primary btn--lg" id="sendBtn">בחרנו, ממשיכים</button>
+          <p class="closing__hint">אין תשלום בשלב הזה. עוד שאלה קטנה על הסגנון, ואז שולחים לי לאישור.</p>
         </div>
+      </section>
+
+      <!-- ===== העדפות (אחרי בחירת הערב) ===== -->
+      <section id="vPrefs" class="state prefs" hidden>
+        <p class="eyebrow">עוד רגע קטן</p>
+        <h2 class="section__title">איך תרצו שהתמונות ירגישו?</h2>
+        <p class="section__lead">כך אדע איך לתכנן את הערב, ואתאים לכם המלצות לבוש וצבעים במדריך ההכנה.</p>
+        <div class="styles" id="styles" role="radiogroup" aria-label="סגנון הצילום"></div>
+        <label class="field prefs__loc">
+          <span>יש לכם מקום מיוחד בראש? <em>(לא חובה)</em></span>
+          <input id="prefLoc" type="text" maxlength="160" autocomplete="off" placeholder="למשל: החוף בפלמחים, או הכרם ליד הבית" />
+        </label>
+        <p class="form-error" id="prefsErr" role="alert" hidden></p>
+        <button type="button" class="btn btn--primary btn--lg" id="prefsBtn">שמירה והמשך</button>
       </section>
 
       <!-- ===== ממתין לאישור ===== -->
       <section id="vPending" class="state" hidden>
         <svg class="closing__sun" viewBox="0 8 120 56" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"><path d="M34 62 A26 26 0 0 1 86 62"/><line x1="92.3" y1="55.1" x2="101.1" y2="53.3"/><line x1="86.7" y1="42.6" x2="94.0" y2="37.3"/><line x1="76.5" y1="33.4" x2="81.0" y2="25.6"/><line x1="60.0" y1="29.0" x2="60.0" y2="17.0"/><line x1="43.5" y1="33.4" x2="39.0" y2="25.6"/><line x1="33.3" y1="42.6" x2="26.0" y2="37.3"/><line x1="27.7" y1="55.1" x2="18.9" y2="53.3"/><line x1="0" y1="63" x2="120" y2="63"/></g></svg>
-        <h2 class="section__title">הבקשה אצלי</h2>
-        <p class="section__lead">אני עובר על הבקשה וחוזר אליכם בהקדם. ברגע שאאשר, הדף הזה יתעדכן ותוכלו לשמור את התאריך במקדמה.</p>
+        <h2 class="section__title" id="pendTitle">שלחו לי את הבקשה לאישור</h2>
+        <p class="section__lead" id="pendText">לחיצה אחת, והבקשה אצלי בוואטסאפ. ברגע שאאשר, אשלח לכם קישור למקדמה ששומרת את התאריך.</p>
         <dl class="sum" data-sum></dl>
         <div class="mine__actions">
-          <a class="btn btn--primary" data-wa-ctx href="#" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>הודעה לאורי</a>
-          <button type="button" class="btn btn--ghost" id="changeBtn">שינוי הבקשה</button>
+          <a class="btn btn--primary" id="approvalWa" href="#" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>שליחה לאורי לאישור</a>
+        </div>
+        <div class="mine__actions mine__actions--soft">
+          <button type="button" class="link" id="changeBtn">שינוי הערב או החבילה</button>
+          <button type="button" class="link" id="prefsEdit">שינוי הסגנון</button>
         </div>
       </section>
 
@@ -103,6 +120,10 @@
         <dl class="sum" data-sum></dl>
         <div class="pay">
           <p class="pay__title">תשלום מקדמה של <strong id="depAmt"></strong></p>
+          <label class="field pay__email">
+            <span>מייל <em>(לקבלה ולשליחת התמונות)</em></span>
+            <input id="fEmail" type="email" inputmode="email" autocomplete="email" maxlength="120" placeholder="name@example.com" dir="ltr" />
+          </label>
           <div class="pay__btns">
             <button type="button" class="btn btn--primary" data-pay="bit">תשלום ב-Bit</button>
             <button type="button" class="btn btn--ghost" data-pay="card">תשלום באשראי</button>
@@ -122,12 +143,19 @@
         <svg class="closing__sun" viewBox="0 8 120 56" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"><path d="M34 62 A26 26 0 0 1 86 62"/><line x1="92.3" y1="55.1" x2="101.1" y2="53.3"/><line x1="86.7" y1="42.6" x2="94.0" y2="37.3"/><line x1="76.5" y1="33.4" x2="81.0" y2="25.6"/><line x1="60.0" y1="29.0" x2="60.0" y2="17.0"/><line x1="43.5" y1="33.4" x2="39.0" y2="25.6"/><line x1="33.3" y1="42.6" x2="26.0" y2="37.3"/><line x1="27.7" y1="55.1" x2="18.9" y2="53.3"/><line x1="0" y1="63" x2="120" y2="63"/></g></svg>
         <p class="eyebrow">זה רשמי</p>
         <h2 class="section__title">הערב שלכם שמור</h2>
-        <p class="section__lead">את שעת המפגש המדויקת ואת המיקום אשלח לכם בוואטסאפ כמה ימים לפני, לפי שעת השקיעה באותו ערב. בינתיים, הכנתי לכם מדריך קטן.</p>
+        <p class="section__lead">המקדמה התקבלה, והערב שלכם שמור. את שעת המפגש המדויקת אאשר איתכם בוואטסאפ כמה ימים לפני, לפי השקיעה באותו ערב.</p>
         <dl class="sum" data-sum></dl>
+        <div class="addcal">
+          <p class="addcal__title">שמרו את הערב ביומן</p>
+          <div class="addcal__btns">
+            <a class="btn btn--ghost" id="calApple" href="#">יומן אפל / אאוטלוק</a>
+            <a class="btn btn--ghost" id="calGoogle" href="#" target="_blank" rel="noopener">יומן גוגל</a>
+          </div>
+          <p class="addcal__hint">ביומן תמצאו את השעה, המיקום, הסגנון שבחרתם, ואת הקישורים לדף שלכם ולמדריך ההכנה.</p>
+        </div>
         <div class="mine__actions">
-          <a class="btn btn--primary" href="/guide" id="guideLink">למדריך ההכנה שלכם</a>
-          <button type="button" class="btn btn--ghost" id="icsBtn">הוספה ליומן</button>
-          <a class="btn btn--ghost" data-wa-ctx href="#" target="_blank" rel="noopener">וואטסאפ</a>
+          <a class="btn btn--primary" id="finishWa" href="#" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>לעדכן את אורי שסיימנו</a>
+          <a class="btn btn--ghost" href="/guide" id="guideLink">למדריך ההכנה שלכם</a>
         </div>
       </section>
 
@@ -149,20 +177,8 @@
       <h2 class="dlg__title" id="wTitle"></h2>
       <p>אני אורי, צלם בוקים זוגיים באור שקיעה. קיבלתי את התשובות שלכם, וכך נשמע הערב שאתם חולמים עליו:</p>
       <blockquote class="dlg__story" id="wStory"></blockquote>
-      <p>שלחו לי את הסיכום בוואטסאפ, ואחזור אליכם בהקדם. בינתיים אפשר כבר להציץ בערבים הפנויים.</p>
+      <p>שלחו לי את הסיכום בוואטסאפ, ומיד אחרי זה תוכלו לבחור את הערב שלכם.</p>
       <a class="btn btn--primary" id="wWa" href="#" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>שליחת הסיכום לאורי</a>
-      <button class="link dlg__skip" value="close">לראות את הערבים הפנויים</button>
-    </form>
-    <!-- תודה, אחרי ששלחו את הסיכום -->
-    <form method="dialog" class="dlg__in dlg__thanks" id="wThanks" hidden>
-      <svg class="closing__sun" viewBox="0 8 120 56" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"><path d="M34 62 A26 26 0 0 1 86 62"/><line x1="92.3" y1="55.1" x2="101.1" y2="53.3"/><line x1="86.7" y1="42.6" x2="94.0" y2="37.3"/><line x1="76.5" y1="33.4" x2="81.0" y2="25.6"/><line x1="60.0" y1="29.0" x2="60.0" y2="17.0"/><line x1="43.5" y1="33.4" x2="39.0" y2="25.6"/><line x1="33.3" y1="42.6" x2="26.0" y2="37.3"/><line x1="27.7" y1="55.1" x2="18.9" y2="53.3"/><line x1="0" y1="63" x2="120" y2="63"/></g></svg>
-      <p class="eyebrow">תודה</p>
-      <h2 class="dlg__title" id="tkTitle">איזה כיף שכתבתם לי</h2>
-      <p>הסיכום שלכם בדרך אליי, ואני כבר מחכה לקרוא. אחזור אליכם אישית בוואטסאפ בהקדם, כדי שנמצא יחד את הערב המושלם.</p>
-      <p>בינתיים, מוזמנים להציץ באינסטגרם שלי: עוד זוגות, עוד שקיעות, ועדכון ראשון על ערבים חדשים שנפתחים.</p>
-      <a class="btn btn--primary" id="tkIg" href="https://www.instagram.com/turgi__photographer" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-ig"/></svg>לעקוב באינסטגרם</a>
-      <a class="btn btn--ghost" id="tkShare" href="#" target="_blank" rel="noopener">מכירים זוג שיאהב את זה? שתפו</a>
-      <button class="link dlg__skip" value="close">לראות את הערבים הפנויים</button>
     </form>
   </dialog>
 
@@ -190,11 +206,11 @@
     <symbol id="i-ig" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M7.5 2.75h9a4.75 4.75 0 0 1 4.75 4.75v9a4.75 4.75 0 0 1-4.75 4.75h-9A4.75 4.75 0 0 1 2.75 16.5v-9A4.75 4.75 0 0 1 7.5 2.75Z"/><circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor"/></symbol>
   </svg>
 
-  <script src="/js/config.js?v=8"></script>
+  <script src="/js/config.js?v=9"></script>
   <script src="/js/sun.js?v=4"></script>
-  <script src="/js/api.js?v=4"></script>
+  <script src="/js/api.js?v=5"></script>
   <script src="/js/track.js?v=1"></script>
   <script src="/js/calendar.js?v=4"></script>
-  <script src="/js/for.js?v=5"></script>
+  <script src="/js/for.js?v=6"></script>
 </body>
 </html>

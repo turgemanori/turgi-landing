@@ -155,14 +155,19 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  // ----- אנימציית חשיפה עדינה -----
+  // ----- אנימציית חשיפה בגלילה -----
+  // פריטים שנכנסים למסך יחד נחשפים אחד אחרי השני (בהפרש קטן)
   var items = document.querySelectorAll(".reveal");
   if ("IntersectionObserver" in window) {
     var io = new IntersectionObserver(function (entries) {
+      var k = 0;
       entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+        if (e.isIntersecting) {
+          e.target.style.setProperty("--rd", Math.min(k++, 5) * 0.12 + "s");
+          e.target.classList.add("is-in"); io.unobserve(e.target);
+        }
       });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    }, { rootMargin: "0px 0px -10% 0px", threshold: 0.12 });
     items.forEach(function (el) { io.observe(el); });
   } else {
     items.forEach(function (el) { el.classList.add("is-in"); });
