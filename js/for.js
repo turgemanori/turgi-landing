@@ -1,4 +1,4 @@
-/* הדף האישי של הזוג (/for/<קוד>). אין צורך לערוך כאן. */
+/* דף ההזמנה של הזוג (/for/<קוד>): בחירת ערב, אישור ומקדמה. "הדף האישי" הוא /guide?t=<קוד>. אין צורך לערוך כאן. */
 (function () {
   "use strict";
   var C = window.SITE_CONFIG || {}, B = window.Booking;
@@ -7,7 +7,7 @@
   var pageUrl = location.origin + "/for/" + token;
   var L = null, sel = { day: null, pkg: null }, cal = null, avail = {}, timer = null;
 
-  B.logo();
+  B.logo(); B.igLinks();
   var waGeneral = B.waLink(C.whatsappNumber, C.whatsappMessage);
   document.querySelectorAll("[data-wa]").forEach(function (a) { a.href = waGeneral; });
   $("topWa").href = waGeneral;
@@ -28,7 +28,7 @@
   function missing() { $("loading").hidden = true; $("missing").hidden = false; }
 
   function ctxWa(extra) {
-    var t = "היי אורי, כאן " + L.names + "" + (extra ? "\n" + extra : "") + "\nהדף שלנו: " + pageUrl;
+    var t = "היי אורי, כאן " + L.names + "" + (extra ? "\n" + extra : "") + "\nדף ההזמנה שלנו: " + pageUrl;
     return B.waLink(C.whatsappNumber, t);
   }
 
@@ -64,7 +64,7 @@
     (C.packages || []).forEach(function (p, i) { var o = L["price_" + p.id]; p.price = o != null ? o : BASE[i]; });
     $("personal").hidden = !L.page_note;
     $("personalText").textContent = L.page_note || "";
-    document.title = L.names + " | הדף האישי שלכם";
+    document.title = L.names + " | דף ההזמנה שלכם";
     document.querySelectorAll("[data-wa-ctx]").forEach(function (a) { a.href = ctxWa(""); });
     $("topWa").href = ctxWa("");
     document.querySelectorAll("[data-sum]").forEach(summary);
@@ -140,10 +140,13 @@
 
   function welcome() {
     $("wTitle").textContent = L.names;
-    var text = story();
+    var text = story(), ig = L.instagram || "";
+    try { ig = ig || sessionStorage.getItem("turgi_ig_" + token) || ""; } catch (e) {}
     $("wStory").textContent = text;
     $("wWa").href = B.waLink(C.whatsappNumber,
-      "היי אורי, כאן " + L.names + ". " + text + " מחכים לשמוע ממך.\n\nהדף שלנו: " + pageUrl);
+      "היי אורי, כאן " + L.names + ". " + text + " מחכים לשמוע ממך." +
+      (ig ? "\nהאינסטגרם שלנו: instagram.com/" + ig : "") +
+      "\n\nדף ההזמנה שלנו: " + pageUrl);
     openDlg($("welcomeDlg"));
   }
 
@@ -317,7 +320,7 @@
       .then(function () { b.disabled = false; });
   });
 
-  // ----- אחרי המקדמה: יומן, הודעה לאורי, מדריך -----
+  // ----- אחרי המקדמה: יומן, הודעה לאורי, והדף האישי (/guide) -----
   function meetTime(day) {
     var Lc = C.sunLocation || (window.Sun && window.Sun.DEFAULT) || { lat: 32.08, lon: 34.78 };
     return window.Sun.hhmm(window.Sun.sunsetMs(day, Lc.lat, Lc.lon) - 2 * 3600000);
@@ -332,7 +335,7 @@
       "שקיעה: " + B.sunset(L.day) + ". את שעת המפגש המדויקת אורי יאשר איתנו בוואטסאפ כמה ימים לפני.",
       L.pref_style ? "הסגנון שבחרנו: " + L.pref_style : "",
       where ? "המקום: " + where : "",
-      "", "הדף שלנו: " + pageUrl, "מדריך ההכנה: " + guideUrl
+      "", "הדף האישי שלנו (מדריך ההכנה): " + guideUrl, "דף ההזמנה: " + pageUrl
     ].filter(function (x, i) { return x !== "" || i === 4; }).join("\n");
     $("calGoogle").href = "https://calendar.google.com/calendar/render?action=TEMPLATE" +
       "&text=" + encodeURIComponent("הבוק הזוגי שלנו בשקיעה 📷") +

@@ -4,9 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="robots" content="noindex, nofollow" />
-  <title>הדף האישי שלכם | אורי תורג׳מן</title>
+  <title>דף ההזמנה שלכם | אורי תורג׳מן</title>
   <meta name="theme-color" content="#F1EEE9" />
-  <meta property="og:title" content="הדף האישי שלכם · בוק זוגי עם אורי תורג׳מן" />
+  <meta property="og:title" content="דף ההזמנה שלכם · בוק זוגי עם אורי תורג׳מן" />
   <meta property="og:description" content="הערבים הפנויים, החבילות והסטטוס של ההזמנה שלכם, במקום אחד." />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="/css/logo.css?v=4" />
   <link rel="stylesheet" href="/css/style.css?v=9" />
   <link rel="stylesheet" href="/css/booking.css?v=4" />
-  <link rel="stylesheet" href="/css/journey.css?v=8" />
+  <link rel="stylesheet" href="/css/journey.css?v=9" />
 </head>
 <body class="page-journey">
 
@@ -43,7 +43,7 @@
 
     <div id="page" hidden>
       <header class="mine__hero">
-        <p class="eyebrow">הדף האישי שלכם</p>
+        <p class="eyebrow">דף ההזמנה שלכם</p>
         <h1 class="section__title" id="hello"></h1>
         <p class="section__lead" id="lead"></p>
         <blockquote class="mine__personal" id="personal" hidden><p id="personalText"></p><cite>אורי</cite></blockquote>
@@ -110,6 +110,13 @@
           <button type="button" class="link" id="changeBtn">שינוי הערב או החבילה</button>
           <button type="button" class="link" id="prefsEdit">שינוי הסגנון</button>
         </div>
+        <!-- בזמן שמחכים לאישור: הזמנה לעקוב באינסטגרם -->
+        <div class="follow">
+          <p class="follow__title">בינתיים, בואו להציץ</p>
+          <p class="follow__text">באינסטגרם אני מעלה זוגות מהשקיעות האחרונות ומאחורי הקלעים. מקום טוב לאסוף השראה לערב שלכם.</p>
+          <a class="btn btn--ghost" data-ig href="#" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-ig"/></svg>לעקוב באינסטגרם</a>
+          <bdi class="follow__at" dir="ltr" data-ig-at></bdi>
+        </div>
       </section>
 
       <!-- ===== ממתין למקדמה ===== -->
@@ -166,11 +173,11 @@
             <a class="btn btn--ghost" id="calApple" href="#">יומן אפל / אאוטלוק</a>
             <a class="btn btn--ghost" id="calGoogle" href="#" target="_blank" rel="noopener">יומן גוגל</a>
           </div>
-          <p class="addcal__hint">ביומן תמצאו את השעה, המיקום, הסגנון שבחרתם, ואת הקישורים לדף שלכם ולמדריך ההכנה.</p>
+          <p class="addcal__hint">ביומן תמצאו את השעה, המיקום, הסגנון שבחרתם, ואת הקישורים לדף ההזמנה ולדף האישי שלכם.</p>
         </div>
         <div class="mine__actions">
           <a class="btn btn--primary" id="finishWa" href="#" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>לעדכן את אורי שסיימנו</a>
-          <a class="btn btn--ghost" href="/guide" id="guideLink">למדריך ההכנה שלכם</a>
+          <a class="btn btn--ghost" href="/guide" id="guideLink">לדף האישי שלכם</a>
         </div>
       </section>
 
@@ -237,9 +244,9 @@
 
   <script src="/js/config.js?v=11"></script>
   <script src="/js/sun.js?v=4"></script>
-  <script src="/js/api.js?v=7"></script>
+  <script src="/js/api.js?v=8"></script>
   <script src="/js/track.js?v=1"></script>
   <script src="/js/calendar.js?v=4"></script>
-  <script src="/js/for.js?v=9"></script>
+  <script src="/js/for.js?v=10"></script>
 </body>
 </html>

@@ -1,9 +1,9 @@
-/* מדריך ההכנה (/guide). עם ?t=<קוד הזוג> הוא הופך לאישי: שמות, פרטי הערב והמלצת לבוש לפי הסגנון. */
+/* "הדף האישי" של הזוג (/guide?t=<קוד>): מדריך ההכנה, פרטי הערב, משימות והמלצת לבוש לפי הסגנון. בלי קוד זה מדריך כללי. */
 (function () {
   "use strict";
   var C = window.SITE_CONFIG || {}, B = window.Booking;
   var $ = function (id) { return document.getElementById(id); };
-  B.logo();
+  B.logo(); B.igLinks();
 
   function setWa(text) {
     document.querySelectorAll("[data-wa]").forEach(function (a) { a.href = B.waLink(C.whatsappNumber, text); });
@@ -46,7 +46,8 @@
 
   B.rpc("lead_get", { p_token: token }).then(function (L) {
     if (!L || !L.names) return;
-    document.title = L.names + " | מדריך ההכנה שלכם";
+    document.title = L.names + " | הדף האישי שלכם";
+    $("gEyebrow").textContent = "הדף האישי שלכם";
     $("gTitle").textContent = L.names + ", ככה מתכוננים לערב שלכם";
     $("gPage").href = "/for/" + encodeURIComponent(token);
     setWa("היי אורי, כאן " + L.names + ". יש לנו שאלה על ההכנה לצילום");
