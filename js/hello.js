@@ -8,6 +8,11 @@
 
   B.logo();
   document.querySelectorAll("[data-wa]").forEach(function (a) { a.href = B.waLink(C.whatsappNumber, C.whatsappMessage); });
+  // שליחת שם האינסטגרם בוואטסאפ, למי שלא בא לו להקליד כאן
+  function igWa() {
+    var n = $("fNames").value.trim();
+    $("igWa").href = B.waLink(C.whatsappNumber, "היי אורי" + (n ? ", כאן " + n : "") + ". זה האינסטגרם שלנו: @");
+  }
 
   // ----- בחירה בצ'יפים -----
   document.querySelectorAll(".chips").forEach(function (g) {
@@ -23,6 +28,7 @@
         }
         c.setAttribute("aria-pressed", on ? "true" : "false");
         save();
+        if (g.getAttribute("data-group") === "occasion") $("e2").hidden = true;
         if (single && on) setTimeout(next, 260);
       });
     });
@@ -42,7 +48,7 @@
   function save() {
     try {
       sessionStorage.setItem(DRAFT, JSON.stringify({
-        names: $("fNames").value, phone: $("fPhone").value, email: $("fEmail").value, ig: $("fIg").value,
+        names: $("fNames").value, phone: $("fPhone").value, ig: $("fIg").value,
         occasion: picked("occasion"), landscape: picked("landscape"), timing: picked("timing")
       }));
     } catch (e) {}
@@ -50,18 +56,19 @@
   try {
     var d = JSON.parse(sessionStorage.getItem(DRAFT) || "null");
     if (d) {
-      $("fNames").value = d.names || ""; $("fPhone").value = d.phone || ""; $("fEmail").value = d.email || ""; $("fIg").value = d.ig || "";
+      $("fNames").value = d.names || ""; $("fPhone").value = d.phone || ""; $("fIg").value = d.ig || "";
       setPicked("occasion", d.occasion || []); setPicked("landscape", d.landscape || []); setPicked("timing", d.timing || []);
     }
   } catch (e) {}
-  ["fNames", "fPhone", "fEmail", "fIg"].forEach(function (id) { $(id).addEventListener("input", save); });
+  ["fNames", "fPhone", "fIg"].forEach(function (id) { $(id).addEventListener("input", save); });
+  $("fNames").addEventListener("input", igWa); igWa();
 
   // ----- ניווט -----
   function show(i) {
     cur = Math.max(0, Math.min(LAST, i));
     steps.forEach(function (s, k) { s.classList.toggle("is-active", k === cur); });
     $("nav").hidden = cur === 0;
-    $("nextBtn").textContent = cur === LAST ? "לדף האישי שלנו" : "המשך";
+    $("nextBtn").textContent = cur === LAST ? "סיימנו למלא" : "המשך";
     $("bar").style.width = (cur / LAST * 100) + "%";
     var f = steps[cur].querySelector("input");
     if (f && window.matchMedia("(min-width: 640px)").matches) setTimeout(function () { f.focus(); }, 320);
@@ -69,11 +76,11 @@
   }
   function valid() {
     if (cur === 1) { var ok = $("fNames").value.trim().length >= 2; $("e1").hidden = ok; return ok; }
+    if (cur === 2) { var ok2 = picked("occasion").length > 0; $("e2").hidden = ok2; return ok2; }
     if (cur === 3) { var ok3 = picked("landscape").length > 0; $("e3").hidden = ok3; return ok3; }
     if (cur === 5) {
-      var phone = $("fPhone").value.replace(/[^0-9+]/g, ""), email = $("fEmail").value.trim();
-      var msg = phone.length < 9 ? "כתבו בבקשה מספר וואטסאפ תקין."
-        : !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) ? "כתבו בבקשה כתובת מייל תקינה, אליה אשלח קבלות ותמונות." : "";
+      var phone = $("fPhone").value.replace(/[^0-9+]/g, "");
+      var msg = phone.length < 9 ? "כתבו בבקשה מספר וואטסאפ תקין." : "";
       $("e5").textContent = msg; $("e5").hidden = !msg; return !msg;
     }
     return true;
@@ -98,8 +105,8 @@
     B.rpc("lead_create", {
       p_names: $("fNames").value.trim(),
       p_phone: $("fPhone").value.trim(),
-      p_email: $("fEmail").value.trim(),
-      p_instagram: $("fIg").value.trim(),
+      p_email: "",
+      p_instagram: $("fIg").value.trim().replace(/^@+/, "").replace(/\s+/g, ""),
       p_occasion: picked("occasion")[0] || "",
       p_landscape: picked("landscape").join(","),
       p_timing: picked("timing")[0] || ""
@@ -109,7 +116,7 @@
       location.href = "/for/" + encodeURIComponent(token) + "?welcome=1";
     }).catch(function (e) {
       $("e5").textContent = e.message; $("e5").hidden = false;
-      btn.disabled = false; btn.textContent = "לדף האישי שלנו";
+      btn.disabled = false; btn.textContent = "סיימנו למלא";
     });
   }
 

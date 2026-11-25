@@ -104,6 +104,29 @@ button.link { font: inherit; background: none; padding: 0 0 1px; cursor: pointer
 .pay__btns { display: grid; gap: 10px; }
 .pay__demo { margin-top: 16px; background: var(--ivory); border: 1px dashed var(--sand-deep); border-radius: 6px; padding: 16px; display: grid; gap: 10px; font-size: 15px; }
 
+/* שליחת האינסטגרם בוואטסאפ (שאלה 5) */
+.ig-wa { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; color: var(--espresso-soft); border-bottom: 1px solid var(--bronze-light); padding-bottom: 2px; }
+.ig-wa .icon { width: 18px; height: 18px; color: var(--bronze); }
+
+/* העדפות אחרי בחירת הערב */
+.prefs { display: grid; gap: 16px; justify-items: center; }
+.prefs .section__lead { max-width: 520px; }
+.styles { display: grid; gap: 10px; width: 100%; max-width: 520px; text-align: start; }
+.style { display: grid; gap: 4px; padding: 16px 18px; }
+.style__desc { font-size: 15px; color: var(--espresso-soft); font-weight: 300; }
+.prefs__loc { width: 100%; max-width: 520px; text-align: start; }
+.prefs .btn { width: 100%; max-width: 380px; }
+.mine__actions--soft { margin-top: 14px; gap: 22px; font-size: 15px; color: var(--espresso-soft); }
+
+/* מייל בשלב המקדמה */
+.pay__email { text-align: start; margin-bottom: 14px; }
+
+/* הוספה ליומן */
+.addcal { max-width: 460px; margin: 26px auto 0; padding: 18px; background: var(--cream); border-radius: 6px; display: grid; gap: 10px; }
+.addcal__title { font-family: var(--font-display); font-size: 20px; }
+.addcal__btns { display: grid; gap: 10px; }
+.addcal__hint { font-size: 14px; color: var(--espresso-soft); font-weight: 300; }
+
 /* ----- חלונות קופצים ----- */
 .dlg { border: 0; padding: 0; border-radius: 8px; max-width: min(480px, calc(100vw - 32px)); width: 100%; background: var(--white); color: var(--espresso); box-shadow: 0 40px 80px -30px rgba(46, 33, 26, .5); }
 .dlg--wide { max-width: min(620px, calc(100vw - 32px)); }
@@ -167,7 +190,7 @@ button.link { font: inherit; background: none; padding: 0 0 1px; cursor: pointer
 
 @media (min-width: 640px) {
   .q .fields { grid-template-columns: 1fr 1fr; }
-  .pay__btns { grid-template-columns: 1fr 1fr; }
+  .pay__btns, .addcal__btns { grid-template-columns: 1fr 1fr; }
   .state { padding: 46px 40px; }
   .track li { font-size: 14px; }
   .g-items { grid-template-columns: repeat(3, 1fr); }

@@ -13,9 +13,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bellefair&family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/css/logo.css?v=4" />
-  <link rel="stylesheet" href="/css/style.css?v=8" />
+  <link rel="stylesheet" href="/css/style.css?v=9" />
   <link rel="stylesheet" href="/css/booking.css?v=4" />
-  <link rel="stylesheet" href="/css/journey.css?v=5" />
+  <link rel="stylesheet" href="/css/journey.css?v=6" />
 </head>
 <body class="page-journey">
 
@@ -63,9 +63,9 @@
           <button type="button" class="chip">לפני חתונה</button>
           <button type="button" class="chip">הריון</button>
           <button type="button" class="chip">חוויה זוגית</button>
-          <button type="button" class="chip">סתם כי מתחשק</button>
           <button type="button" class="chip">מתנה</button>
         </div>
+        <p class="q__err" id="e2" hidden>בחרו בבקשה אחת מהאפשרויות.</p>
       </section>
 
       <!-- 3 -->
@@ -100,19 +100,18 @@
         <p class="q__count">5 מתוך 5</p>
         <h2 class="q__title" id="q5">איך נשארים בקשר?</h2>
         <div class="fields">
-          <label class="field">
+          <label class="field field--wide">
             <span>וואטסאפ</span>
             <input id="fPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="050-0000000" dir="ltr" />
           </label>
-          <label class="field">
-            <span>מייל <em>(לקבלות ולשליחת התמונות)</em></span>
-            <input id="fEmail" type="email" inputmode="email" autocomplete="email" maxlength="120" placeholder="name@example.com" dir="ltr" />
-          </label>
           <label class="field field--wide">
             <span>אינסטגרם <em>(לא חובה)</em></span>
-            <input id="fIg" type="text" maxlength="40" autocomplete="off" placeholder="@" dir="ltr" />
+            <input id="fIg" type="text" maxlength="40" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="@username" dir="ltr" />
           </label>
         </div>
+        <a class="ig-wa" id="igWa" href="#" target="_blank" rel="noopener">
+          <svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>מעדיפים? שלחו לי את האינסטגרם בוואטסאפ
+        </a>
         <p class="q__err" id="e5" hidden></p>
       </section>
 
@@ -128,9 +127,9 @@
     <symbol id="i-ig" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M7.5 2.75h9a4.75 4.75 0 0 1 4.75 4.75v9a4.75 4.75 0 0 1-4.75 4.75h-9A4.75 4.75 0 0 1 2.75 16.5v-9A4.75 4.75 0 0 1 7.5 2.75Z"/><circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor"/></symbol>
   </svg>
 
-  <script src="/js/config.js?v=8"></script>
-  <script src="/js/api.js?v=4"></script>
+  <script src="/js/config.js?v=9"></script>
+  <script src="/js/api.js?v=5"></script>
   <script src="/js/track.js?v=1" data-event="quiz_open"></script>
-  <script src="/js/hello.js?v=5"></script>
+  <script src="/js/hello.js?v=6"></script>
 </body>
 </html>

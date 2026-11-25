@@ -388,6 +388,12 @@
       ["מתי", esc(l.timing || "—")],
       ["המלצה", esc(lp(l, l.recommended).name)]
     ];
+    if (l.pref_style || l.pref_location) {
+      rows.push(["הסגנון שבחרו", esc(l.pref_style || "—")]);
+      rows.push(["מקום שביקשו", l.pref_location ? esc(l.pref_location) + (l.location ? "" : " <em>(נכנס ליומן עד שתקבע מיקום)</em>") : "—"]);
+    }
+    if (l.status === "pending" && "approval_sent_at" in l)
+      rows.push(["בקשת אישור בוואטסאפ", l.approval_sent_at ? "שלחו לך ✓" : "עוד לא שלחו"]);
     if (p) rows.push(["מחיר / מקדמה", B.money(p.price) + " / " + B.money(B.deposit(p)) + (l.deposit_paid_at ? " ✓ " + esc(l.deposit_method || "") : "")]);
     if (l.hold_until && l.status === "awaiting_deposit") rows.push(["מוחזק עד", esc(B.holdText(l.hold_until))]);
     if (l.status === "lead" && "summary_sent_at" in l)
@@ -400,7 +406,7 @@
         '<label class="field"><span>ערב</span><input type="date" data-k="day" value="' + (l.day || "") + '" /></label>' +
         '<label class="field"><span>חבילה</span><select data-k="package"><option value="">—</option>' +
           (C.packages || []).map(function (x) { return '<option value="' + x.id + '"' + (l.package === x.id ? " selected" : "") + ">" + esc(x.name) + "</option>"; }).join("") + "</select></label>" +
-        '<label class="field"><span>מיקום (יופיע ביומן)</span><input type="text" data-k="location" maxlength="160" value="' + esc(l.location || "") + '" placeholder="למשל: חוף פלמחים" /></label>' +
+        '<label class="field"><span>מיקום (יופיע ביומן)</span><input type="text" data-k="location" maxlength="160" value="' + esc(l.location || "") + '" placeholder="' + esc(l.pref_location || "למשל: חוף פלמחים") + '" /></label>' +
         '<label class="field"><span>זמן נסיעה בדקות</span><input type="number" data-k="travel_minutes" min="0" max="600" inputmode="numeric" value="' + (l.travel_minutes == null ? "" : l.travel_minutes) + '" /></label>' +
         '<label class="field field--wide"><span>הערות פרטיות (רק אתה רואה)</span><textarea data-k="admin_note" rows="2" maxlength="2000">' + esc(l.admin_note || "") + "</textarea></label>" +
       "</div>" +

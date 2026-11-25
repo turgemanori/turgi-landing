@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bellefair&family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/logo.css?v=4" />
-  <link rel="stylesheet" href="css/style.css?v=8" />
+  <link rel="stylesheet" href="css/style.css?v=9" />
 </head>
 <body>
 
@@ -48,12 +48,11 @@
         <div class="hero__bottom">
           <p class="hero__sub reveal" data-t="hero.4">בלי פוזות מביכות ובלי לחץ. אתם נהנים, אני דואג לשאר.</p>
           <div class="hero__actions reveal">
-            <a class="btn btn--primary" href="/hello" data-t="hero.5">בואו נכיר</a>
-            <a class="btn btn--ghost" href="#gallery" data-t="hero.6">הצצה לעבודות</a>
+            <a class="btn btn--primary btn--hero" href="/hello" data-t="hero.5">בואו נכיר</a>
+            <a href="#experience" class="hero__down" aria-label="גלילה למטה"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9.5l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           </div>
         </div>
       </div>
-      <a href="#experience" class="hero__scroll" aria-label="גלילה לסעיף הבא"><span></span></a>
     </section>
 
     <!-- ===== 2. החוויה הזוגית ===== -->
@@ -191,35 +190,6 @@
       </div>
     </section>
 
-    <!-- ===== 6. מה מקבלים ===== -->
-    <!-- המספרים כאן כתובים ידנית לפי החבילות ב-js/config.js. משנים חבילה? מעדכנים גם כאן. -->
-    <section class="section included" id="included" aria-labelledby="inc-title">
-      <div class="container">
-        <header class="section__head reveal">
-          <p class="eyebrow" data-t="included.1">מה מקבלים</p>
-          <h2 id="inc-title" class="section__title" data-t="included.2">הכול על השולחן</h2>
-        </header>
-        <dl class="facts">
-          <div class="fact reveal">
-            <dt data-t="included.3">שעה ומעלה</dt>
-            <dd data-t="included.4">שעה מלאה בחבילת השקיעה. בפרימיום אין שעון, יש כמה לוקיישנים ואלבום מודפס.</dd>
-          </div>
-          <div class="fact reveal">
-            <dt data-t="included.9">100 עד 150</dt>
-            <dd data-t="included.5">תמונות ערוכות באיכות מלאה, בגלריה דיגיטלית שנוח לשתף.</dd>
-          </div>
-          <div class="fact reveal">
-            <dt data-t="included.6">השעה הזהובה</dt>
-            <dd data-t="included.7">מתוזמן בדיוק לשקיעה של הערב שלכם.</dd>
-          </div>
-          <div class="fact reveal" data-needs="deliveryTime">
-            <dt data-bind="deliveryTime"></dt>
-            <dd data-t="included.8">לכל הגלריה. כ-10 תמונות ראשונות מגיעות כבר תוך יום, שיהיה מה להעלות לסטורי.</dd>
-          </div>
-        </dl>
-      </div>
-    </section>
-
     <!-- ===== 7. המלצות ===== -->
     <section class="section voices" id="voices" aria-labelledby="vc-title" hidden>
       <div class="container">
@@ -276,7 +246,6 @@
         <h2 id="close-title" class="section__title" data-t="contact.2">בואו נמצא את הערב שלכם</h2>
         <p class="section__lead" data-t="contact.3">ספרו לי בדקה מי אתם, ותקבלו מיד דף אישי עם הערבים הפנויים והחבילות.</p>
         <a class="btn btn--primary btn--lg" href="/hello" data-t="contact.4">בואו נכיר</a>
-        <p class="closing__hint" data-t="contact.5">בלי התחייבות. התאריך נשמר רק אחרי אישור ומקדמה.</p>
         <p class="closing__alt"><a class="link" data-wa href="#" target="_blank" rel="noopener" data-t="contact.6">מעדיפים וואטסאפ? כתבו לי ישירות</a></p>
       </div>
     </section>
@@ -307,8 +276,8 @@
     <symbol id="i-ig" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M7.5 2.75h9a4.75 4.75 0 0 1 4.75 4.75v9a4.75 4.75 0 0 1-4.75 4.75h-9A4.75 4.75 0 0 1 2.75 16.5v-9A4.75 4.75 0 0 1 7.5 2.75Z"/><circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor"/></symbol>
   </svg>
 
-  <script src="js/config.js?v=8"></script>
-  <script src="js/main.js?v=5"></script>
+  <script src="js/config.js?v=9"></script>
+  <script src="js/main.js?v=6"></script>
   <script src="js/track.js?v=1" data-event="visit"></script>
 </body>
 </html>
