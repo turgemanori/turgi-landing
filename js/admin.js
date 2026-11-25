@@ -130,7 +130,7 @@
     } else cal.render();
     refreshSave();
     kpis(); reminders(); upcoming(); filters(); list(); settings(); texts(); stats();
-    $("shareWa").href = "https://wa.me/?text=" + encodeURIComponent("היי! זה השאלון הקצר שלי: ממלאים בדקה, ומקבלים דף הזמנה עם הערבים הפנויים לבוק זוגי בשקיעה\n" + helloUrl);
+    $("shareWa").href = "https://wa.me/?text=" + encodeURIComponent("היי! זה השאלון הקצר שלי: ממלאים בדקה, ומקבלים דף הזמנה עם הערבים הפנויים לבוק זוגי\n" + helloUrl);
     if (location.hash === "#upcoming" && !setup.done) go("upcoming");
     setup.done = true;
   }
@@ -326,7 +326,7 @@
     }
     if (l.status === "booked") {
       out.push(["פרטי מפגש", "היי " + first(l) + "! מתרגש לקראת " + d + "\n" +
-        (l.location ? "נפגשים ב" + l.location + " " : "נפגשים ") + "בשעה " + meetTime(l.day) + " (השקיעה ב-" + sunset(l.day) + ").\n" +
+        (l.location ? "נפגשים ב" + l.location + " " : "נפגשים ") + "בשעה " + meetTime(l.day) + ".\n" +
         "בדף האישי שלכם יש את כל מה שכדאי להכין: " + location.origin + "/guide?t=" + l.token]);
       out.push(["הדף האישי", "היי " + first(l) + ", הכנתי לכם דף אישי לקראת הצילום: מה ללבוש, מה להביא ומה לסגור מראש\n" + location.origin + "/guide?t=" + l.token]);
     }
@@ -365,7 +365,7 @@
         a.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#i-wa"/></svg>הודעת תיאום ומזג אוויר';
         a.href = B.waLink(l.phone, "היי " + first(l) + "! מתרגש לקראת " + B.prettyDate(l.day) + "\n" +
           (w ? "התחזית לשעת הצילום: " + w.text + ".\n" : "") +
-          (l.location ? "נפגשים ב" + l.location + " " : "נפגשים ") + "בשעה " + meetTime(l.day) + ", והשקיעה ב-" + sunset(l.day) + ".\n" +
+          (l.location ? "נפגשים ב" + l.location + " " : "נפגשים ") + "בשעה " + meetTime(l.day) + ".\n" +
           "הדף האישי שלכם, עם כל מה שכדאי להכין: " + location.origin + "/guide?t=" + l.token);
         li.querySelector(".admin__actions").appendChild(a);
       });
@@ -731,7 +731,7 @@
     $("ntTopic").textContent = st.ntfy_topic || "";
     $("greetText").value =
       "היי, כאן אורי\n" +
-      "תודה שכתבתם! אני צלם בוקים זוגיים בשקיעה, וכיף להכיר.\n" +
+      "תודה שכתבתם! אני צלם בוקים זוגיים, וכיף להכיר.\n" +
       "אחזור אליכם אישית בהקדם.\n" +
       "ואם עוד לא מילאתם את השאלון, זה לוקח דקה, ובסוף מקבלים דף הזמנה עם הערבים הפנויים:\n" + helloUrl;
   }
