@@ -7,7 +7,7 @@ const Sun = require("../js/sun.js");
 const SUPABASE_URL = "https://xbtibqgluyzasrtmotjk.supabase.co";
 const SUPABASE_KEY = "sb_publishable_1Ao_qT8WnBrolvISQpC1KA_-RvU5qKU";
 const PLACE = { lat: 32.08, lon: 34.78 };
-const PKG = { basic: { name: "חבילת שקיעה", price: 1200 }, premium: { name: "חבילת פרימיום", price: 1500 } };
+const PKG = { basic: { name: "חבילה קלאסית", price: 1200 }, premium: { name: "חבילת פרימיום", price: 1500 } };
 const DEPOSIT = 0.1;
 const STATUS = { pending: "ממתין לאישור", awaiting_deposit: "מחכה למקדמה", booked: "שמור", shot: "צולם", delivered: "נמסר" };
 

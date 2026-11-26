@@ -44,8 +44,8 @@ module.exports = async (req, res) => {
   const where = l.location || l.pref_location || "";
   const page = SITE + "/for/" + token, guide = SITE + "/guide?t=" + token;
   const desc = [
-    "הבוק הזוגי שלנו בשקיעה, עם " + OWNER + ".",
-    "שקיעה: " + Sun.hhmm(set) + ". את שעת המפגש המדויקת אורי יאשר איתנו בוואטסאפ כמה ימים לפני.",
+    "הבוק הזוגי שלנו, עם " + OWNER + ".",
+    "מפגש משוער: " + Sun.hhmm(set - 2 * 3600000) + ". את שעת המפגש המדויקת אורי יאשר איתנו בוואטסאפ כמה ימים לפני.",
     l.pref_style ? "הסגנון שבחרנו: " + l.pref_style : "",
     where ? "המקום: " + where : "",
     "",
@@ -57,7 +57,7 @@ module.exports = async (req, res) => {
     "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Turgeman Ori//Couple//HE", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
     "BEGIN:VEVENT", "UID:couple-" + token + "@turgi", "DTSTAMP:" + utc(Date.now()),
     "DTSTART:" + utc(set - 2 * 3600000), "DTEND:" + utc(set + 20 * 60000),
-    "SUMMARY:" + esc("הבוק הזוגי שלנו בשקיעה 📷"),
+    "SUMMARY:" + esc("הבוק הזוגי שלנו 📷"),
     "DESCRIPTION:" + esc(desc), "URL:" + page
   ];
   if (where) L.push("LOCATION:" + esc(where));

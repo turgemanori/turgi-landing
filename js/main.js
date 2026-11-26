@@ -59,7 +59,7 @@
     var key = el.getAttribute("data-bind");
     if (key in binds) el.textContent = binds[key];
   });
-  if (C.businessName) document.title = C.businessName + " | בוק זוגי בשקיעה";
+  if (C.businessName) document.title = C.businessName + " | בוקים זוגיים";
   var year = document.getElementById("year");
   if (year) year.textContent = new Date().getFullYear();
 

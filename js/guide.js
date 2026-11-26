@@ -24,7 +24,7 @@
   var boxes = document.querySelectorAll("#todoList input");
   function prog() {
     var n = 0; boxes.forEach(function (b) { if (b.checked) n++; });
-    $("todoProgress").textContent = n === boxes.length ? "הכול מוכן. נתראה בשקיעה" : n + " מתוך " + boxes.length + " משימות";
+    $("todoProgress").textContent = n === boxes.length ? "הכול מוכן. נתראה בצילום" : n + " מתוך " + boxes.length + " משימות";
   }
   boxes.forEach(function (b) {
     b.checked = !!st[b.getAttribute("data-k")];
@@ -39,7 +39,7 @@
   var PLACE = {
     "ים": { look: 3, tip: "בים יש רוח, אז כדאי בדים קלים שזזים יפה, ולהיות מוכנים שהשיער יתבדר. על החול הכי יפה יחפים, אז מספיקות נעליים נוחות להגעה." },
     "שדות": { look: 2, tip: "בשדות גווני אדמה ושמנת מתמזגים עם הזהב של העשב. כדאי נעליים סגורות להליכה בשבילים." },
-    "מדבר": { look: 2, tip: "במדבר טרקוטה, חול וחום נראים כמו חלק מהנוף. אחרי השקיעה מתקרר מהר, אז קחו שכבה חמה." },
+    "מדבר": { look: 2, tip: "במדבר טרקוטה, חול וחום נראים כמו חלק מהנוף. בערב מתקרר מהר, אז קחו שכבה חמה." },
     "עיר": { look: 1, tip: "בעיר אפשר להתלבש קצת יותר אלגנטי: ז׳קט בהיר, שמלה פשוטה וגזרות נקיות." },
     "אצלנו בבית": { look: 1, tip: "בבית הכי טוב משהו נוח ואישי: סריג רך, פשתן, גוונים שקטים שמתאימים לבית שלכם." }
   };
@@ -59,7 +59,7 @@
       var Lc = C.sunLocation || window.Sun.DEFAULT;
       var meet = window.Sun.hhmm(window.Sun.sunsetMs(L.day, Lc.lat, Lc.lon) - 2 * 3600000);
       rows.push(["הערב", B.prettyDate(L.day)]);
-      rows.push(["שקיעה", B.sunset(L.day) + " · מפגש משוער " + meet]);
+      rows.push(["מפגש משוער", meet]);
     }
     if (where) rows.push(["המקום", where]);
     if (L.package) rows.push(["החבילה", B.pkg(L.package).name]);
