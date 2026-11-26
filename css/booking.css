@@ -138,3 +138,13 @@
   .admin__grid { grid-template-columns: 5fr 6fr; align-items: start; }
 }
 [hidden] { display: none !important; }
+
+/* ----- מובייל: לוח השנה מתכווץ לרוחב המסך ולא דוחף את הדף הצידה ----- */
+#vChoose, .admin__grid { grid-template-columns: minmax(0, 1fr); }
+.cal__day { min-width: 0; min-height: 0; padding: 0; }
+@media (max-width: 420px) {
+  .bstep { padding: 22px 14px; }
+  .bstep__title { font-size: 22px; margin-bottom: 16px; }
+  .cal__grid { gap: 4px; }
+  .sum div { gap: 12px; }
+}

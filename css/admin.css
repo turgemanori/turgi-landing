@@ -64,6 +64,15 @@
   .lcard__head { grid-template-columns: auto auto 1fr; }
   .lcard__when { grid-column: auto; text-align: end; }
 }
+/* מובייל: פילטרים בשורה אחת שגוללים לצד, וכרטיסים פחות דחוסים */
+@media (max-width: 639px) {
+  .tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; margin-inline: -14px; padding: 2px 14px 8px; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { flex: none; min-height: 40px; white-space: nowrap; }
+  .lcard__head { padding: 12px; }
+  .lcard__body { padding: 0 12px 14px; }
+  .kpi { padding: 14px; }
+}
 /* טקסטים בדף הנחיתה */
 .tx-groups { display: grid; gap: 10px; }
 .tx-group { border: 1px solid var(--beige); border-radius: 6px; background: var(--ivory); }
