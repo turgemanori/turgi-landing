@@ -36,9 +36,9 @@ window.SITE_CONFIG = {
   // תמונות למדריך ההכנה (/guide)
   guideImages: {
     cover: "images/photos/vineyard-bouquet.jpg", // תמונת פתיחה רחבה
-    outfit1: "",    // השראה ללבוש בגווני קרם (4:5)
-    outfit2: "",    // השראה ללבוש בגווני אדמה (4:5)
-    outfit3: ""     // השראה ללבוש בגוונים רכים (4:5)
+    outfit1: "images/photos/horse-linen.jpg",    // השראה ללבוש בגווני קרם (4:5)
+    outfit2: "images/photos/cliff-kiss.jpg",     // השראה ללבוש בגווני אדמה (4:5)
+    outfit3: "images/photos/garden-embrace.jpg"  // השראה ללבוש בגוונים רכים (4:5)
   },
 
   // ===== מערכת ההזמנות =====
@@ -112,11 +112,13 @@ window.SITE_CONFIG = {
   // ratio = יחס גובה-רוחב: "portrait" (4:5), "tall" (2:3), "landscape" (3:2), "square" (1:1)
   gallery: [
     { src: "images/photos/garden-smile.jpg", alt: "זוג מחובק בגן, הכלה מחייכת אליו באור רך של אחר הצהריים", ratio: "portrait" },
+    { src: "images/photos/horse-linen.jpg", alt: "זוג בלבן ליד סוס בשדה, הוא בחולצת פשתן והיא בשמלת תחרה", ratio: "portrait" },
     { src: "images/photos/cliff-kiss.jpg", alt: "החתן מנשק את הכלה על המצח, על צוק לבן מול השמש", ratio: "portrait" },
-    { src: "images/photos/proposal-bw.jpg", alt: "רגע אחרי הצעת נישואין, בשחור-לבן: היא מחבקת אותו עם הטבעת על היד", ratio: "portrait" },
-    { src: "images/photos/dead-sea.jpg", alt: "זוג צוחק על חוף ים המלח, במים טורקיז ומלח לבן", ratio: "portrait" },
+    { src: "images/photos/field-walk.jpg", alt: "זוג הולך בשדה ירוק עם סוס וכלב קטן, באור של סוף היום", ratio: "portrait" },
     { src: "images/photos/garden-embrace.jpg", alt: "החתן מחבק את הכלה מאחור בגן ירוק", ratio: "portrait" },
+    { src: "images/photos/horse-ride.jpg", alt: "היא יושבת על סוס והוא עומד לידו, בשדה פתוח בשעת ערב", ratio: "landscape" },
     { src: "images/photos/vineyard-veil.jpg", alt: "כלה בין שורות כרם באור ערב, ההינומה נפרשת ברוח", ratio: "portrait" },
+    { src: "images/photos/forest-bw.jpg", alt: "בשחור-לבן: זוג הולך יד ביד בין עצים גבוהים ומביט לאחור", ratio: "portrait" },
     { src: "images/photos/garden-walk.jpg", alt: "זוג הולך יד ביד בשביל בגן, מביטים אחד בשנייה", ratio: "portrait" },
     { src: "images/photos/cave-veil.jpg", alt: "כלה מרימה הינומה ארוכה באור שחודר למערה", ratio: "portrait" }
   ]

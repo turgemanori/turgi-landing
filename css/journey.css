@@ -189,6 +189,7 @@ button.link { font: inherit; background: none; padding: 0 0 1px; cursor: pointer
 .g-wear { background: var(--cream); }
 .g-looks { display: grid; gap: 34px; }
 .g-look .ph { border-radius: 4px; margin-bottom: 16px; background-size: cover; background-position: center; }
+.g-look .ph[data-img="outfit2"] { background-position: center 22%; }
 .g-look .ph.has-img::before, .g-look .ph.has-img .ph__label { display: none; }
 /* בלי תמונת השראה בהגדרות: לא מציגים מסגרת ריקה, רק את הגוונים והטקסט */
 .g-look .ph:not(.has-img) { display: none; }
