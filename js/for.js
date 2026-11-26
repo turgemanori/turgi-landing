@@ -44,7 +44,6 @@
   function summary(el) {
     var p = L.package ? B.pkg(L.package) : null, rows = [];
     if (L.day) rows.push(["הערב", B.prettyDate(L.day) + " · מפגש משוער " + meetTime(L.day)]);
-    if (L.day && (L.status === "booked" || L.status === "awaiting_deposit")) rows.push(["מפגש משוער", meetTime(L.day)]);
     if (L.location || L.pref_location) rows.push(["המקום", L.location || L.pref_location + " (ביקשתם)"]);
     if (L.pref_style) rows.push(["הסגנון", L.pref_style]);
     if (p) {
