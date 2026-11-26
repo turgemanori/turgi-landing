@@ -240,3 +240,16 @@ button.link { font: inherit; background: none; padding: 0 0 1px; cursor: pointer
 .teaser__dl { position: absolute; bottom: 8px; left: 8px; background: rgba(255, 255, 255, .92); color: var(--espresso); font-size: 13px; padding: 5px 12px; border-radius: 999px; text-decoration: none; }
 .review textarea { width: 100%; font: inherit; font-size: 16px; line-height: 1.6; color: var(--espresso); background: var(--ivory); border: 1px solid var(--sand); border-radius: 4px; padding: 12px; resize: vertical; }
 .review__thanks { margin-top: 22px; font-family: var(--font-display); font-size: 20px; color: var(--bronze); }
+
+/* ----- מובייל ----- */
+button.link { position: relative; }
+button.link::after { content: ""; position: absolute; inset: -10px -6px; } /* שטח לחיצה גדול יותר בלי להזיז את העיצוב */
+.addcal__btns .btn, .pay__btns .btn { width: 100%; }
+@media (max-width: 420px) {
+  .state { padding: 30px 16px; }
+  .addcal, .pay--balance { padding: 16px 14px; }
+  .state .btn { padding-inline: 20px; }
+  .track li { font-size: 13px; }
+  .teaser__dl { font-size: 14px; padding: 8px 14px; }
+  .g-mine, .g-ori, .g-pick { padding-inline: 16px; }
+}
