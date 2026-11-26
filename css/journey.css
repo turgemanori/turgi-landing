@@ -190,6 +190,9 @@ button.link { font: inherit; background: none; padding: 0 0 1px; cursor: pointer
 .g-looks { display: grid; gap: 34px; }
 .g-look .ph { border-radius: 4px; margin-bottom: 16px; background-size: cover; background-position: center; }
 .g-look .ph.has-img::before, .g-look .ph.has-img .ph__label { display: none; }
+/* בלי תמונת השראה בהגדרות: לא מציגים מסגרת ריקה, רק את הגוונים והטקסט */
+.g-look .ph:not(.has-img) { display: none; }
+.g-look:not(:has(.ph.has-img)) .g-look__tag { position: static; display: inline-block; margin-bottom: 10px; }
 .g-look h3 { font-size: 24px; margin-bottom: 10px; }
 .g-look p { color: var(--espresso-soft); font-weight: 300; }
 .swatches { display: flex; gap: 8px; margin-bottom: 12px; }
