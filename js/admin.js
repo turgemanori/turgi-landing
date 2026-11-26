@@ -504,7 +504,7 @@
     var rows = [
       ["טלפון", '<bdi dir="ltr">' + esc(l.phone) + "</bdi>"],
       ["מייל", l.email ? '<bdi dir="ltr">' + esc(l.email) + "</bdi>" : "—"],
-      ["אינסטגרם", l.instagram ? '<a class="link" target="_blank" rel="noopener" href="https://instagram.com/' + encodeURIComponent(l.instagram) + '">@' + esc(l.instagram) + "</a>" : "—"],
+      ["אינסטגרם", l.instagram ? '<a class="link" dir="ltr" target="_blank" rel="noopener" href="https://instagram.com/' + encodeURIComponent(l.instagram) + '">@' + esc(l.instagram) + "</a>" : "—"],
       ["הסיבה", esc(l.occasion || "—")],
       ["נוף", esc((l.landscape || "—").split(",").join(", "))],
       ["מתי", esc(l.timing || "—")],
