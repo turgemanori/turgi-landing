@@ -567,6 +567,8 @@ p { margin: 0; }
 .voice figcaption { display: grid; gap: 2px; font-size: 15px; }
 .voice figcaption strong { font-weight: 500; }
 .voice figcaption span { color: var(--espresso-soft); font-weight: 300; }
+.voice figcaption .voice__date { margin-top: 6px; font-size: 13px; letter-spacing: .04em; color: var(--espresso-soft); font-weight: 400; }
+.voices__more { display: flex; margin: 26px auto 0; }
 .voices__demo { text-align: center; font-size: 12px; letter-spacing: .08em; color: var(--sand-deep); margin-top: 10px; }
 
 @media (min-width: 640px) {

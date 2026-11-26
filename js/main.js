@@ -87,24 +87,68 @@
   }
 
   // ----- המלצות -----
+  // קודם ההמלצות שאישרת בדף המנהל (מ-Supabase, החדשות קודם, עם תאריך).
+  // אם עוד אין כאלה, מוצגות ההמלצות מתוך js/config.js.
   var vGrid = document.getElementById("voicesGrid");
-  if (vGrid && Array.isArray(C.testimonials) && C.testimonials.length) {
-    C.testimonials.forEach(function (v) {
+  var io = null, ioReady = false;
+  // פריט שנוסף אחרי טעינת הדף (המלצות מהמסד) מצטרף לאנימציית החשיפה
+  function revealLater(el) { if (io) io.observe(el); else if (ioReady) el.classList.add("is-in"); }
+  var MONTHS = ["ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני", "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר"];
+  function voiceDate(s) {
+    var p = String(s || "").split("-");
+    return p.length === 3 ? (+p[2]) + " ב" + MONTHS[+p[1] - 1] + " " + p[0] : "";
+  }
+  function renderVoices(list, demo) {
+    if (!vGrid || !list.length) return;
+    vGrid.innerHTML = "";
+    var old = document.querySelector(".voices__demo"); if (old) old.remove();
+    var more = document.querySelector(".voices__more"); if (more) more.remove();
+    list.forEach(function (v, i) {
       var fig = document.createElement("figure"); fig.className = "voice reveal";
+      if (i >= 6) fig.hidden = true;
       var q = document.createElement("blockquote"); q.textContent = "״" + v.text + "״";
       var cap = document.createElement("figcaption");
       var who = document.createElement("strong"); who.textContent = v.who;
       var what = document.createElement("span"); what.textContent = v.what || "";
       cap.appendChild(who); cap.appendChild(what);
+      if (v.date) {
+        var t = document.createElement("time"); t.className = "voice__date";
+        t.dateTime = v.date; t.textContent = voiceDate(v.date);
+        cap.appendChild(t);
+      }
       fig.appendChild(q); fig.appendChild(cap);
       vGrid.appendChild(fig);
+      revealLater(fig);
     });
-    if (C.testimonialsDemo) {
+    if (list.length > 6) {
+      var b = document.createElement("button"); b.type = "button"; b.className = "btn btn--ghost voices__more";
+      b.textContent = "עוד המלצות (" + (list.length - 6) + ")";
+      b.addEventListener("click", function () {
+        vGrid.querySelectorAll(".voice[hidden]").forEach(function (f) { f.hidden = false; f.classList.add("is-in"); });
+        b.remove();
+      });
+      vGrid.after(b);
+    }
+    if (demo) {
       var note = document.createElement("p"); note.className = "voices__demo"; note.textContent = "טקסט לדוגמה";
       vGrid.after(note);
     }
     document.getElementById("voices").hidden = false;
   }
+  function configVoices() {
+    if (Array.isArray(C.testimonials) && C.testimonials.length) renderVoices(C.testimonials, C.testimonialsDemo);
+  }
+  if (vGrid && C.supabaseUrl && C.supabaseKey && window.fetch) {
+    fetch(C.supabaseUrl + "/rest/v1/rpc/public_reviews", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", apikey: C.supabaseKey },
+      body: "{}"
+    }).then(function (r) { return r.ok ? r.json() : null; }).then(function (list) {
+      if (Array.isArray(list) && list.length) {
+        renderVoices(list.map(function (v) { return { text: v.text, who: v.names, what: v.what, date: v.date }; }), false);
+      } else configVoices();
+    }).catch(configVoices);
+  } else if (vGrid) configVoices();
 
   // ----- גלריה -----
   var grid = document.getElementById("galleryGrid");
@@ -158,8 +202,9 @@
   // ----- אנימציית חשיפה בגלילה -----
   // פריטים שנכנסים למסך יחד נחשפים אחד אחרי השני (בהפרש קטן)
   var items = document.querySelectorAll(".reveal");
+  ioReady = true;
   if ("IntersectionObserver" in window) {
-    var io = new IntersectionObserver(function (entries) {
+    io = new IntersectionObserver(function (entries) {
       var k = 0;
       entries.forEach(function (e) {
         if (e.isIntersecting) {

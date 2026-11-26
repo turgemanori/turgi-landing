@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="/css/style.css?v=10" />
   <link rel="stylesheet" href="/css/booking.css?v=4" />
   <link rel="stylesheet" href="/css/journey.css?v=11" />
-  <link rel="stylesheet" href="/css/admin.css?v=8" />
+  <link rel="stylesheet" href="/css/admin.css?v=10" />
 </head>
 <body class="page-admin">
 
@@ -26,6 +26,7 @@
 
   <nav class="menu" id="menu" hidden aria-label="תפריט המנהל">
     <button type="button" data-go="main">הזוגות שלך</button>
+    <button type="button" data-go="reviews">המלצות <span class="menu__count" id="rvMenuCount" hidden></span></button>
     <button type="button" data-go="upcoming">הצילומים הקרובים</button>
     <button type="button" data-go="dates">פתיחת ערבים</button>
     <button type="button" data-go="stats">סטטיסטיקות</button>
@@ -70,6 +71,12 @@
         <!-- תזכורות: מקדמה שלא שולמה אחרי יומיים -->
         <div class="reminders" id="reminders" hidden></div>
 
+        <!-- המלצות שמחכות לאישור -->
+        <div class="reminders" id="rvAlert" hidden>
+          <p class="reminders__title" id="rvAlertText"></p>
+          <div class="admin__actions" style="margin:0"><button type="button" class="btn btn--primary btn--sm" id="rvAlertBtn">לאישור ההמלצות</button></div>
+        </div>
+
         <!-- לוח הזוגות -->
       <section class="bstep" aria-labelledby="bdTitle">
         <h2 id="bdTitle" class="bstep__title">כל הזוגות</h2>
@@ -90,6 +97,33 @@
 
       <!-- כל השאר, מתוך התפריט -->
       <div class="panel__back" id="panelBack" hidden><button type="button" class="link" id="backBtn">→ חזרה לזוגות</button></div>
+      <div class="panel" data-panel="reviews" hidden>
+      <!-- המלצות -->
+      <section class="bstep" aria-labelledby="rvTitle">
+        <h2 id="rvTitle" class="bstep__title">המלצות</h2>
+        <p class="admin__hint">המלצה שזוג כותב בדף האישי שלו מחכה כאן לאישור שלך. רק אחרי "אישור והצגה באתר" היא מופיעה בדף הנחיתה, עם התאריך, והחדשות מופיעות ראשונות.</p>
+        <div class="tabs" id="rvFilters" role="tablist"></div>
+        <ul class="blist" id="rvList"><li class="empty">טוען…</li></ul>
+      </section>
+      <section class="bstep" aria-labelledby="rvAddTitle">
+        <h2 id="rvAddTitle" class="bstep__title">הוספת המלצה מוואטסאפ</h2>
+        <p class="admin__hint">מדביקים את מה שהזוג כתב לך, בוחרים את הזוג (או כותבים את השמות), והיא מופיעה באתר כאילו הם כתבו אותה.</p>
+        <form id="rvForm" class="fields lfields">
+          <label class="field field--wide"><span>הזוג <em>(לא חובה, ממלא את השמות לבד)</em></span>
+            <select id="rvLead"><option value="">בלי לקשר לזוג מהרשימה</option></select></label>
+          <label class="field"><span>השמות כמו שיופיעו באתר</span><input id="rvNames" maxlength="80" placeholder="למשל: מאיה ועומר" required /></label>
+          <label class="field"><span>סוג הצילום <em>(לא חובה)</em></span><input id="rvWhat" maxlength="60" placeholder="למשל: בוק לפני חתונה" /></label>
+          <label class="field"><span>תאריך ההמלצה</span><input id="rvDate" type="date" required /></label>
+          <label class="field field--wide"><span>ההמלצה</span><textarea id="rvText" rows="5" maxlength="2000" placeholder="מדביקים כאן את ההודעה מהוואטסאפ" required></textarea></label>
+          <label class="check field--wide"><input type="checkbox" id="rvPublish" checked /> <span>להציג באתר מיד</span></label>
+          <div class="admin__actions field--wide" style="margin:0">
+            <button class="btn btn--primary btn--sm" type="submit" id="rvAdd">הוספת ההמלצה</button>
+            <a class="btn btn--ghost btn--sm" href="/#voices" target="_blank" rel="noopener">צפייה בדף הנחיתה</a>
+            <span class="saved-note" id="rvNote" aria-live="polite"></span>
+          </div>
+        </form>
+      </section>
+      </div>
       <div class="panel" data-panel="upcoming" hidden>
       <!-- צילומים קרובים -->
       <section class="bstep" id="upcoming" aria-labelledby="upTitle">
@@ -212,6 +246,6 @@
   <script src="/js/sun.js?v=4"></script>
   <script src="/js/api.js?v=8"></script>
   <script src="/js/calendar.js?v=4"></script>
-  <script src="/js/admin.js?v=13"></script>
+  <script src="/js/admin.js?v=14"></script>
 </body>
 </html>

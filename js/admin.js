@@ -129,9 +129,10 @@
       });
     } else cal.render();
     refreshSave();
-    kpis(); reminders(); upcoming(); filters(); list(); settings(); texts(); stats();
+    kpis(); reminders(); upcoming(); filters(); list(); settings(); texts(); stats(); reviews(); rvLeads();
     $("shareWa").href = "https://wa.me/?text=" + encodeURIComponent("היי! זה השאלון הקצר שלי: ממלאים בדקה, ומקבלים דף הזמנה עם הערבים הפנויים לבוק זוגי\n" + helloUrl);
     if (location.hash === "#upcoming" && !setup.done) go("upcoming");
+    if (location.hash === "#reviews" && !setup.done) go("reviews");
     setup.done = true;
   }
   // ----- טקסטים בדף הנחיתה -----
@@ -642,6 +643,138 @@
       .then(function () { if (a === "delete") openCard = null; return reload(); })
       .catch(function (e) { err("dashError", e.message); window.scrollTo({ top: 0, behavior: "smooth" }); });
   }
+
+  // ----- המלצות -----
+  // זוג כותב בדף האישי → ממתינה → אישור → מופיעה בדף הנחיתה עם תאריך.
+  var RV_STATUS = {
+    pending: { t: "ממתינה לאישור", c: "pending" },
+    approved: { t: "מוצגת באתר", c: "booked" },
+    hidden: { t: "מוסתרת", c: "off" }
+  };
+  var RV_FILTERS = [
+    ["pending", "ממתינות לאישור", function (r) { return r.status === "pending"; }],
+    ["approved", "מוצגות באתר", function (r) { return r.status === "approved"; }],
+    ["hidden", "מוסתרות", function (r) { return r.status === "hidden"; }],
+    ["all", "הכול", function () { return true; }]
+  ];
+  var rv = [], rvFilter = null, rvOpen = null;
+  function rvDate(d) { if (!d) return ""; var p = d.split("-"); return +p[2] + "." + +p[1] + "." + p[0]; }
+  function reviews() {
+    return B.rpc("admin_reviews", { p_pass: pass }).then(function (list) {
+      rv = list || []; rvDraw();
+    }).catch(function (e) {
+      // אם העדכון של המסד עוד לא הורץ, פשוט לא מציגים
+      $("rvList").innerHTML = '<li class="empty">' + esc(e.code ? e.message : "צריך להריץ את עדכון 8 במסד הנתונים כדי להשתמש בהמלצות.") + "</li>";
+    });
+  }
+  function rvDraw() {
+    var pend = rv.filter(function (r) { return r.status === "pending"; }).length;
+    if (!rvFilter) rvFilter = pend ? "pending" : "all";
+    $("rvMenuCount").hidden = !pend; $("rvMenuCount").textContent = pend;
+    $("rvAlert").hidden = !pend;
+    $("rvAlertText").textContent = pend === 1 ? "המלצה אחת חדשה מחכה לאישור שלך" : pend + " המלצות חדשות מחכות לאישור שלך";
+    var tabs = $("rvFilters"); tabs.innerHTML = "";
+    RV_FILTERS.forEach(function (f) {
+      var n = rv.filter(f[2]).length;
+      var b = document.createElement("button"); b.type = "button"; b.className = "tab" + (rvFilter === f[0] ? " is-active" : "");
+      b.textContent = f[1] + " (" + n + ")";
+      b.addEventListener("click", function () { rvFilter = f[0]; rvDraw(); });
+      tabs.appendChild(b);
+    });
+    var f = RV_FILTERS.filter(function (x) { return x[0] === rvFilter; })[0];
+    var L = rv.filter(f[2]), ul = $("rvList"); ul.innerHTML = "";
+    if (!L.length) { ul.innerHTML = '<li class="empty">' + (rvFilter === "pending" ? "אין המלצות שמחכות לאישור." : "אין כאן המלצות כרגע.") + "</li>"; return; }
+    L.forEach(function (r) { ul.appendChild(rvCard(r)); });
+  }
+  function rvCard(r) {
+    var st = RV_STATUS[r.status] || RV_STATUS.pending;
+    var li = document.createElement("li"); li.className = "lcard" + (rvOpen === r.id ? " is-open" : "");
+    li.innerHTML =
+      '<button type="button" class="lcard__head" aria-expanded="' + (rvOpen === r.id) + '">' +
+        '<span class="lcard__names">' + esc(r.names) + "</span>" +
+        '<span class="lcard__badges"><span class="badge badge--' + st.c + '">' + st.t + "</span></span>" +
+        '<span class="lcard__when">' + esc(rvDate(r.date)) + " · " + (r.source === "whatsapp" ? "הוספת מוואטסאפ" : "נכתבה בדף האישי") + "</span>" +
+      "</button>" +
+      '<p class="rv__text">' + esc(r.text) + "</p>" +
+      '<div class="lcard__body"></div>';
+    li.querySelector(".lcard__head").addEventListener("click", function () { rvOpen = rvOpen === r.id ? null : r.id; rvDraw(); });
+    var body = li.querySelector(".lcard__body");
+    if (rvOpen === r.id) {
+      body.innerHTML =
+        '<div class="fields lfields">' +
+          '<label class="field"><span>השמות באתר</span><input data-r="names" maxlength="80" /></label>' +
+          '<label class="field"><span>סוג הצילום</span><input data-r="what" maxlength="60" /></label>' +
+          '<label class="field"><span>תאריך שמוצג באתר</span><input data-r="date" type="date" /></label>' +
+          '<label class="field field--wide"><span>ההמלצה <em>(אפשר לתקן שגיאות כתיב)</em></span><textarea data-r="text" rows="5" maxlength="2000"></textarea></label>' +
+        "</div>" +
+        '<div class="admin__actions"></div>';
+      body.querySelector('[data-r="names"]').value = r.names || "";
+      body.querySelector('[data-r="what"]').value = r.what || "";
+      body.querySelector('[data-r="date"]').value = r.date || "";
+      body.querySelector('[data-r="text"]').value = r.text || "";
+    } else body.innerHTML = '<div class="admin__actions"></div>';
+    var act = body.querySelector(".admin__actions");
+    function btn(text, cls, fn) { var x = document.createElement("button"); x.type = "button"; x.className = "btn btn--sm " + cls; x.textContent = text; x.onclick = fn; act.appendChild(x); }
+    function vals(status) {
+      var g = function (k) { var el = body.querySelector('[data-r="' + k + '"]'); return el ? el.value : r[k]; };
+      return { p_pass: pass, p_id: r.id, p_lead: r.lead_id || null, p_names: g("names"), p_what: g("what"), p_text: g("text"), p_date: g("date") || r.date, p_status: status };
+    }
+    function saveAs(status) {
+      B.rpc("admin_review_save", vals(status)).then(function () { rvOpen = null; return reviews(); })
+        .catch(function (e) { err("dashError", e.message); window.scrollTo({ top: 0, behavior: "smooth" }); });
+    }
+    if (r.status !== "approved") btn("אישור והצגה באתר", "btn--primary", function () { saveAs("approved"); });
+    if (rvOpen === r.id) btn("שמירה", r.status === "approved" ? "btn--primary" : "btn--ghost", function () { saveAs(r.status); });
+    else btn("עריכה", "btn--ghost", function () { rvOpen = r.id; rvDraw(); });
+    if (r.status === "approved") btn("הסתרה מהאתר", "btn--ghost", function () { saveAs("hidden"); });
+    if (r.status === "pending") btn("לא להציג", "btn--ghost", function () { saveAs("hidden"); });
+    btn("מחיקה", "btn--ghost btn--danger", function () {
+      if (!window.confirm("למחוק את ההמלצה של " + r.names + "?")) return;
+      B.rpc("admin_review_action", { p_pass: pass, p_id: r.id, p_action: "delete" }).then(reviews)
+        .catch(function (e) { err("dashError", e.message); });
+    });
+    return li;
+  }
+  // סוג הצילום לפי הסיבה מהשאלון (כמו במסד הנתונים)
+  var RV_WHAT = { "לפני חתונה": "בוק לפני חתונה", "יום נישואין": "בוק יום נישואין", "הריון": "בוק הריון", "במתנה": "בוק זוגי במתנה" };
+  function rvLeads() {
+    var sel = $("rvLead"), cur = sel.value;
+    sel.innerHTML = '<option value="">בלי לקשר לזוג מהרשימה</option>';
+    var L = (data.leads || []).slice().sort(function (a, b) {
+      var sa = ["shot", "delivered"].indexOf(a.status) > -1 ? 0 : 1, sb = ["shot", "delivered"].indexOf(b.status) > -1 ? 0 : 1;
+      return sa - sb || String(b.day || b.created_at || "").localeCompare(String(a.day || a.created_at || ""));
+    });
+    L.forEach(function (l) {
+      var o = document.createElement("option"); o.value = l.id;
+      o.textContent = l.names + (l.day ? " · " + B.shortDate(l.day) : "") + (["shot", "delivered"].indexOf(l.status) > -1 ? " · צולמו" : "");
+      sel.appendChild(o);
+    });
+    sel.value = cur;
+    if (!$("rvDate").value) $("rvDate").value = today;
+  }
+  $("rvLead").addEventListener("change", function () {
+    var l = (data.leads || []).filter(function (x) { return x.id === $("rvLead").value; })[0];
+    if (!l) return;
+    $("rvNames").value = l.names || "";
+    $("rvWhat").value = RV_WHAT[l.occasion] || "בוק זוגי";
+  });
+  $("rvForm").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var b = $("rvAdd"), pub = $("rvPublish").checked;
+    b.disabled = true; $("rvNote").textContent = "";
+    B.rpc("admin_review_save", {
+      p_pass: pass, p_id: null, p_lead: $("rvLead").value || null, p_names: $("rvNames").value,
+      p_what: $("rvWhat").value, p_text: $("rvText").value, p_date: $("rvDate").value || today,
+      p_status: pub ? "approved" : "pending"
+    }).then(function () {
+      $("rvForm").reset(); $("rvPublish").checked = true; $("rvDate").value = today;
+      $("rvNote").textContent = pub ? "נוספה ✓ היא כבר מופיעה בדף הנחיתה." : "נשמרה ✓ מחכה לאישור ברשימה למעלה.";
+      rvFilter = pub ? "approved" : "pending";
+      return reviews();
+    }).catch(function (e) { $("rvNote").textContent = e.message; })
+      .then(function () { b.disabled = false; });
+  });
+  $("rvAlertBtn").addEventListener("click", function () { rvFilter = "pending"; go("reviews"); rvDraw(); });
 
   // ----- סטטיסטיקות -----
   var SRC = { instagram: "אינסטגרם", whatsapp: "וואטסאפ", facebook: "פייסבוק", tiktok: "טיקטוק", google: "גוגל", direct: "ישירות", other: "אחר" };

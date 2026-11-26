@@ -188,3 +188,13 @@
   .is-picking .lcard__head { grid-template-columns: auto auto auto 1fr; }
   .is-picking .lcard__when { grid-column: auto; }
 }
+
+/* המלצות */
+#rvAlert { background: #FBF6EC; border-color: #E4D3B4; }
+#rvAlert .reminders__title { color: var(--espresso); }
+.menu__count { display: inline-block; min-width: 20px; padding: 0 6px; margin-inline-start: 6px; border-radius: 10px; background: var(--bronze); color: #fff; font-size: 13px; line-height: 20px; text-align: center; }
+.rv__text { padding: 0 16px 12px; margin: 0; font-size: 15.5px; line-height: 1.65; white-space: pre-line; color: var(--espresso); }
+#rvList .lcard:not(.is-open) .rv__text { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+#rvList .lcard__body { display: block; padding: 0 16px 14px; }
+#rvList .lcard__body .admin__actions { margin-top: 10px; }
+#rvForm textarea { width: 100%; }
